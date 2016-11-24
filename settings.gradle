@@ -1,0 +1,5 @@
+rootProject.name = 'com.bingdou.sdk.server'
+include "projects/bingdou-core", "projects/bingdou-tools",
+        "projects/bingdou-user-server", "projects/bingdou-cdn-server",
+        "projects/bingdou-live-server"
+

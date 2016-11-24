@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.ILiveMapper">
+
+    <select id="getLiveById" parameterType="java.lang.Integer" resultMap="liveDetail">
+        <![CDATA[
+        SELECT
+          li.id,ll.live_title,ll.live_picture,status,mid,push_stream,pull_stream
+        FROM ${liveDB}.lc_live_index li
+        JOIN ${liveDB}.lc_live${@com.bingdou.core.model.Live@getTableNumber(liveId)} ll ON li.id=ll.id
+        WHERE li.id=#{liveId}
+        ]]>
+    </select>
+
+    <insert id="addLive" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_live${@com.bingdou.core.model.Live@getTableNumber(liveId)}
+          (live_title,live_picture,status,mid,push_stream,pull_stream,create_time,update_time)
+          VALUE(#{liveTitle},#{livePicture},1,${mid},#{pushStream},#{pullStream},now(),now())
+        ]]>
+    </insert>
+
+    <insert id="addLiveIndex" parameterType="com.bingdou.core.model.Live">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_live_index(id,live_title)
+          VALUE(#{id},#{liveTitle})
+        ]]>
+    </insert>
+
+    <select id="getLiveList" parameterType="java.util.Map" resultMap="liveDetail">
+        <![CDATA[
+        SELECT id FROM ${liveDB}.lc_live_index WHERE status=1 order by update_time limit #{start},#{limit}
+        ]]>
+    </select>
+
+    <resultMap id="liveDetail" type="com.bingdou.core.model.Live">
+        <result property="id" column="id"/>
+        <result property="liveTitle" column="live_title"/>
+        <result property="livePicture" column="live_picture"/>
+        <result property="status" column="status"/>
+        <result property="mid" column="mid"/>
+        <result property="pushStream" column="push_stream"/>
+        <result property="pullStream" column="pull_stream"/>
+    </resultMap>
+
+</mapper>

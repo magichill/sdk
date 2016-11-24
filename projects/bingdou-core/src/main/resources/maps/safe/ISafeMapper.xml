@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.safe.ISafeMapper">
+
+    <select id="getSafeInfoByRequestSource" parameterType="java.lang.String" resultMap="safeInfoMap">
+        SELECT request_source, ip, key_group, method_name,valid_token_only_mid_rs, is_client
+        FROM ${userDB}.mc_request_source
+        WHERE request_source=#{keyGroup}
+    </select>
+
+    <select id="getDeviceLoginErrorCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT times FROM ${payDB}.mc_login_errorlog WHERE device_no=#{deviceNo} AND log_date=#{date}
+    </select>
+
+    <select id="getDeviceLoginBlacklistStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT status FROM ${payDB}.mc_blacklist WHERE device_no=#{deviceNo}
+    </select>
+
+    <insert id="insertDeviceLoginError" parameterType="java.util.Map">
+        INSERT INTO ${payDB}.mc_login_errorlog(device_no,log_date)
+        VALUE(#{deviceNo},#{date})
+    </insert>
+
+    <insert id="insertDeviceLoginBlacklist" parameterType="java.util.Map">
+        INSERT INTO ${payDB}.mc_blacklist(device_no,mid,os) VALUE(#{deviceNo},#{userId},#{osName})
+    </insert>
+
+    <update id="updateDeviceLoginErrorCount" parameterType="java.util.Map">
+        UPDATE ${payDB}.mc_login_errorlog SET times=#{count} WHERE device_no=#{deviceNo} AND log_date=#{date}
+    </update>
+
+    <update id="updateDeviceBlacklistStatus" parameterType="java.util.Map">
+        UPDATE ${payDB}.mc_blacklist SET status=#{status} WHERE device_no=#{deviceNo}
+    </update>
+
+    <select id="getCountInVipBlackList" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${payDB}.mc_vip_blacklist WHERE mid=#{userId} AND status=1
+    </select>
+
+    <resultMap id="safeInfoMap" type="com.bingdou.core.model.SafeInfo">
+        <result property="requestSource" column="request_source"/>
+        <result property="ip" column="ip"/>
+        <result property="keyGroup" column="key_group"/>
+        <result property="methodName" column="method_name"/>
+        <result property="validTokenOnlyUserIdRs" column="valid_token_only_mid_rs"/>
+        <result property="isClient" column="is_client"/>
+    </resultMap>
+
+</mapper>

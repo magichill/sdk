@@ -1,0 +1,18 @@
+archivesBaseName = 'bingdou-user-server'
+
+dependencies {
+
+    compile(
+            project(':projects/bingdou-tools'),
+            project(':projects/bingdou-core')
+    )
+
+}
+
+war {
+    manifest {
+        attributes("Implementation-Title": "Gradle")
+    }
+    version = ''
+    baseName = 'cdn_server'
+}

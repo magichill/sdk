@@ -1,0 +1,100 @@
+apply from: 'dependencyDefinitions.gradle'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+configure(subprojects.findAll { it.name.contains('server') }) {
+    apply plugin: 'war'
+
+    dependencies {
+
+        // providedCompile 鏄湪 war 鎻掍欢涓嬪畾涔夌殑
+        providedCompile(
+                libraries.'servlet-api'
+        )
+
+        compile(
+                libraries.'spring-aop',
+                libraries.'aspectjweaver',
+                libraries.'aspectjrt',
+                libraries.'spring-web',
+                libraries.'spring-webmvc'
+        )
+    }
+
+}
+
+allprojects {
+
+    version = '1.0'
+    group = 'com.bingdou.sdk.server'
+
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
+    tasks.withType(Pmd) {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+
+}
+
+subprojects {
+
+    apply plugin: 'java'
+
+    sourceCompatibility = 1.7
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        maven { url "http://nexus.ailis.de/content/groups/public/" }
+    }
+
+    jar {
+        manifest.attributes provider: 'haima'
+    }
+
+    configurations {
+        gradle.taskGraph.whenReady { taskGraph ->
+            def env = project['env']
+            sourceSets {
+                main {
+                    resources {
+                        srcDirs = ["src/main/resources", "src/main/resources-${env}"]
+                    }
+                }
+            }
+        }
+    }
+
+    dependencies {
+
+        compile(
+                libraries.'spring-core',
+                libraries.'spring-beans',
+                libraries.'spring-context',
+                libraries.'spring-context-support',
+                libraries.'spring-core',
+                libraries.'mysql-driven'
+        )
+
+        testCompile(
+                libraries.'junit'
+        )
+    }
+
+    task listJars(description: 'Display all compile jars.') << {
+        configurations.compile.each { File file -> println file.name }
+    }
+
+}

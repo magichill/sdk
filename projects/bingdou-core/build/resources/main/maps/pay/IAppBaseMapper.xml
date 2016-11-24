@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.IAppBaseMapper">
+
+    <select id="getAppByAppId" parameterType="java.lang.String" resultMap="appInfo">
+        <![CDATA[
+        SELECT id,amid,os,name,appid,authkey,notify_url
+        FROM ${payDB}.mc_application WHERE appid=#{appId} AND status=1 LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getAppByAppIdAndPackageName4Android" parameterType="java.util.Map" resultMap="appInfo">
+        <![CDATA[
+        SELECT id,amid,os,name,appid,authkey,notify_url FROM ${payDB}.mc_application
+        WHERE appid=#{appId} AND pkg=#{packageName} AND os=1 AND status=1 LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getAppByAppIdAndPackageName4Ios" parameterType="java.util.Map" resultMap="appInfo">
+        <![CDATA[
+        SELECT id,amid,os,name,appid,authkey,notify_url FROM ${payDB}.mc_application
+        WHERE appid=#{appId} AND pkg=#{packageName} AND status=1 AND os <> 1 LIMIT 1
+        ]]>
+    </select>
+
+    <update id="changeOwnership" parameterType="java.util.List">
+        update ${payDB}.mc_application set
+        amid=
+        <foreach collection="list" item="item" index="index" separator=" " open="case appid" close="end">
+            when #{item.appId} then #{item.appMemberId}
+        </foreach>
+        where appid in
+        <foreach collection="list" index="index" item="item" separator="," open="(" close=")">
+            #{item.appId}
+        </foreach>
+    </update>
+
+    <select id="getApps4Ios" parameterType="java.util.Map" resultMap="appInfo">
+        <![CDATA[
+        SELECT appid, name
+        FROM ${payDB}.mc_application
+        WHERE os <> 1 AND status=1 AND name LIKE CONCAT('%','${name}','%')
+        ]]>
+    </select>
+
+    <select id="getApps4Android" parameterType="java.util.Map" resultMap="appInfo">
+        <![CDATA[
+        SELECT appid, name
+        FROM ${payDB}.mc_application
+        WHERE os=1 AND status=1 AND name LIKE CONCAT('%','${name}','%')
+        ]]>
+    </select>
+
+    <select id="getAppByPackageName4Android" parameterType="java.lang.String" resultMap="appInfo">
+        <![CDATA[
+        SELECT id,amid,os,name,appid,authkey,notify_url
+        FROM ${payDB}.mc_application
+        WHERE pkg=#{packageName} AND os=1 AND status=1 LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getAppByPackageName4Ios" parameterType="java.lang.String" resultMap="appInfo">
+        <![CDATA[
+        SELECT id,amid,os,name,appid,authkey,notify_url
+        FROM ${payDB}.mc_application
+        WHERE pkg=#{packageName} AND status=1 AND os <> 1 LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getForceUp4Android" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT forced_up FROM ${payDB}.mc_application
+        WHERE appid=#{appId} AND pkg=#{packageName} AND os=1
+        AND status=1 LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getForceUp4Ios" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT forced_up FROM ${payDB}.mc_application
+        WHERE appid=#{appId} AND pkg=#{packageName} AND os <> 1
+        AND status=1 LIMIT 1
+        ]]>
+    </select>
+
+    <resultMap id="appInfo" type="com.bingdou.core.model.Application">
+        <result property="id" column="id"/>
+        <result property="appMemberId" column="amid"/>
+        <result property="name" column="name"/>
+        <result property="appId" column="appid"/>
+        <result property="packageName" column="pkg"/>
+        <result property="os" column="os"/>
+        <result property="payAuthKey" column="authkey"/>
+        <result property="notifyUrl" column="notify_url"/>
+    </resultMap>
+</mapper>

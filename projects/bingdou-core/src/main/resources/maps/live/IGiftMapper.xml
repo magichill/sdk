@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.IGiftMapper">
+
+    <select id="getGiftById" parameterType="java.lang.Integer" resultMap="giftDetail">
+        <![CDATA[
+        SELECT
+          id,gift_title,gift_pic,gift_type,status
+        FROM ${liveDB}.lc_gift
+        WHERE li.id=#{giftId}
+        ]]>
+    </select>
+
+    <insert id="addGift" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO lc_gift
+          (gift_title,,gift_pic,status,gift_type,create_time,update_time)
+          VALUE(#{giftTitle},#{giftPic},1,#{gift_type},UNIX_TIMESTAMP(),UNIX_TIMESTAMP())
+        ]]>
+    </insert>
+
+    <select id="getEnableGiftList" resultMap="giftDetail">
+        select id,gift_title,gift_pic,gift_type,status from ${liveDB}.lc_gift where status=1
+    </select>
+
+    <resultMap id="giftDetail" type="com.bingdou.core.model.live.Gift">
+        <result property="id" column="id"/>
+        <result property="giftTitle" column="gift_title"/>
+        <result property="giftPic" column="gift_pic"/>
+        <result property="status" column="status"/>
+        <result property="giftType" column="gift_type"/>
+
+    </resultMap>
+
+</mapper>

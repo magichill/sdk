@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.safe.IMonitorMapper">
+    <select id="monitorUserDB" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${userDB}.mc_request_source;
+    </select>
+
+    <select id="monitorPayDB" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${payDB}.mc_pay_type;
+    </select>
+
+    <select id="monitorLiveDB" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${liveDB}.lc_gift;
+    </select>
+</mapper>

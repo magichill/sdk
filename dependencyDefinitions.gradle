@@ -1,0 +1,82 @@
+/**
+ * 依赖包的定义。
+ *
+ * 这种定义方式的优点是在顶级项目目录下引入，在子项目中也可以直接用了。
+ *
+ */
+ext.versions = [
+        spring            : '4.2.2.RELEASE',
+        servletApi        : '2.5',
+        httpclient        : '3.1',
+        commonsLang3      : '3.3.2',
+        commonsIo         : '2.4',
+        commonsCodec      : '1.10',
+        commonsCollections: '3.2.1',
+        guava             : '18.0',
+        log4j             : '2.4.1',
+        gson              : '2.4',
+        jedis             : '2.1.0',
+        jstl              : '1.2',
+        sitemesh          : '2.4.2',
+        aspectj           : '1.6.12',
+        esapi             : '2.1.0',
+        mysql             : '5.1.34',
+        mybatis           : '3.2.8',
+        mybatisSpring     : '1.2.2',
+        dbcp              : '1.4',
+        dom4j             : '1.6.1',
+        javaMail          : '1.4.7',
+        junit             : '4.12',
+        jaxen             : '1.1.6',
+        chinaPay          : '1.0',
+        bcprov            : 'jdk15on-154'
+]
+
+// 各种可能会用到的jar包
+ext.libraries = [
+
+        // Spring 
+        "spring-core"           : "org.springframework:spring-core:${versions.spring}",
+        "spring-beans"          : "org.springframework:spring-beans:${versions.spring}",
+        "spring-context"        : "org.springframework:spring-context:${versions.spring}",
+        "spring-context-support": "org.springframework:spring-context-support:${versions.spring}",
+        "spring-web"            : "org.springframework:spring-web:${versions.spring}",
+        "spring-webmvc"         : "org.springframework:spring-webmvc:${versions.spring}",
+        "spring-aop"            : "org.springframework:spring-aop:${versions.spring}",
+        "spring-expression"     : "org.springframework:spring-expression:${versions.spring}",
+        "spring-jdbc"           : "org.springframework:spring-jdbc:${versions.spring}",
+        // Commons
+        "commons-io"            : "commons-io:commons-io:${versions.commonsIo}",
+        "commons-lang3"         : "org.apache.commons:commons-lang3:${versions.commonsLang3}",
+        "commons-codec"         : "commons-codec:commons-codec:${versions.commonsCodec}",
+        "commons-collections"   : "commons-collections:commons-collections:${versions.commonsCollections}",
+        // Servlet-api
+        "servlet-api"           : "javax.servlet:servlet-api:${versions.servletApi}",
+        // Log4j2
+        "log4j-core"            : "org.apache.logging.log4j:log4j-core:${versions.log4j}",
+        "log4j-api"             : "org.apache.logging.log4j:log4j-api:${versions.log4j}",
+        // Json
+        "gson"                  : "com.google.code.gson:gson:${versions.gson}",
+        // Jedis
+        "jedis"                 : "redis.clients:jedis:${versions.jedis}",
+        // Web
+        "jstl"                  : "javax.servlet:jstl:${versions.jstl}",
+        "sitemesh"              : "opensymphony:sitemesh:${versions.sitemesh}",
+        // Aspectj
+        "aspectjweaver"         : "org.aspectj:aspectjweaver:${versions.aspectj}",
+        "aspectjrt"             : "org.aspectj:aspectjrt:${versions.aspectj}",
+        // Other
+        "esapi"                 : "org.owasp.esapi:esapi:${versions.esapi}",
+        "mysql-driven"          : "mysql:mysql-connector-java:${versions.mysql}",
+        "guava"                 : "com.google.guava:guava:${versions.guava}",
+        "dbcp"                  : "commons-dbcp:commons-dbcp:${versions.dbcp}",
+        "mybatis"               : "org.mybatis:mybatis:${versions.mybatis}",
+        "mybatis-spring"        : "org.mybatis:mybatis-spring:${versions.mybatisSpring}",
+        "httpclient"            : "commons-httpclient:commons-httpclient:${versions.httpclient}",
+        "dom4j"                 : "dom4j:dom4j:${versions.dom4j}",
+        "javamail"              : "javax.mail:mail:${versions.javaMail}",
+        "jaxen"                 : "jaxen:jaxen:${versions.jaxen}",
+        "bcprov"                : "org.bouncycastle:bcprov:${versions.bcprov}",
+        // Junit
+        "junit"                 : "junit:junit:${versions.junit}"
+]

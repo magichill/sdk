@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/bingdou-sdk.iml" filepath="$PROJECT_DIR$/bingdou-sdk.iml" />
+      <module fileurl="file://$PROJECT_DIR$/com.bingdou.sdk.server.iml" filepath="$PROJECT_DIR$/com.bingdou.sdk.server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/bingdou-cdn-server/projects_bingdou-cdn-server.iml" filepath="$PROJECT_DIR$/projects/bingdou-cdn-server/projects_bingdou-cdn-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/bingdou-core/projects_bingdou-core.iml" filepath="$PROJECT_DIR$/projects/bingdou-core/projects_bingdou-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/bingdou-live-server/projects_bingdou-live-server.iml" filepath="$PROJECT_DIR$/projects/bingdou-live-server/projects_bingdou-live-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/bingdou-tools/projects_bingdou-tools.iml" filepath="$PROJECT_DIR$/projects/bingdou-tools/projects_bingdou-tools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/projects/bingdou-user-server/projects_bingdou-user-server.iml" filepath="$PROJECT_DIR$/projects/bingdou-user-server/projects_bingdou-user-server.iml" />
+    </modules>
+  </component>
+</project>

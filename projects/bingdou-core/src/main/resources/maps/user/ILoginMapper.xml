@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.user.ILoginMapper">
+
+    <update id="clearLoginError" parameterType="java.lang.String">
+        UPDATE
+          ${userDB}.mc_member_detail${@com.bingdou.core.model.User@getTableNumber(userId)}
+        SET loginerror=0 WHERE mid=#{userId}
+    </update>
+
+    <update id="setLoginError" parameterType="java.util.Map">
+        UPDATE
+          ${userDB}.mc_member_detail${@com.bingdou.core.model.User@getTableNumber(userId)}
+        SET loginerror=#{errorCount}, loginerrortime=UNIX_TIMESTAMP() WHERE mid=#{userId}
+    </update>
+
+    <update id="setLastLoginInfo" parameterType="java.util.Map">
+        UPDATE
+          ${userDB}.mc_member_detail${@com.bingdou.core.model.User@getTableNumber(userId)}
+        SET lastloginip=#{ip}, lastlogintime=UNIX_TIMESTAMP(), loginerror=0,
+            lastloginuid=#{uid},lastloginua=#{ua}
+        WHERE mid=#{userId}
+    </update>
+
+</mapper>

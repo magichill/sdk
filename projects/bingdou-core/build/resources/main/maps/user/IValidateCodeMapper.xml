@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.user.IValidateCodeMapper">
+
+    <select id="getValidateCode" parameterType="java.util.Map" resultMap="validateCodeResultMap">
+        SELECT vcode,vcode_time
+        FROM ${userDB}.mc_validate_code
+        WHERE mobile_or_email=#{mobileOrEmail} AND purpose=#{purpose} AND type=#{type}
+    </select>
+
+    <insert id="insertValidateCode" parameterType="com.bingdou.core.model.ValidateCode">
+      INSERT INTO ${userDB}.mc_validate_code(mobile_or_email,vcode,vcode_time,type,purpose)
+      VALUE(#{mobileOrEmail},#{vcode},UNIX_TIMESTAMP(),#{type},#{purpose})
+    </insert>
+
+    <update id="clearValidateCode" parameterType="java.util.Map">
+        UPDATE ${userDB}.mc_validate_code
+        SET vcode='', vcode_time=0
+        WHERE mobile_or_email=#{mobileOrEmail} AND purpose=#{purpose} AND type=#{type}
+    </update>
+
+    <update id="updateValidateCode" parameterType="com.bingdou.core.model.ValidateCode">
+        UPDATE ${userDB}.mc_validate_code
+        SET vcode=#{vcode}, vcode_time=UNIX_TIMESTAMP()
+        WHERE mobile_or_email=#{mobileOrEmail} AND purpose=#{purpose} AND type=#{type}
+    </update>
+
+    <resultMap id="validateCodeResultMap" type="com.bingdou.core.model.ValidateCode">
+        <result property="vcode" column="vcode"/>
+        <result property="vcodeTime" column="vcode_time"/>
+    </resultMap>
+
+</mapper>

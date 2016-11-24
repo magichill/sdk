@@ -1,0 +1,15 @@
+archivesBaseName = 'bingdou-core'
+
+dependencies {
+
+    compile(
+            libraries.'spring-jdbc',
+            libraries.'spring-web',
+            libraries.'jedis',
+            libraries.'mybatis',
+            libraries.'mybatis-spring',
+            libraries.'dbcp',
+            project(':projects/bingdou-tools')
+    )
+
+}

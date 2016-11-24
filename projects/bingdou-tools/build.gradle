@@ -1,0 +1,21 @@
+archivesBaseName = 'bingdou-tools'
+
+dependencies {
+
+    compile (
+            libraries.'guava',
+            libraries.'gson',
+            libraries.'log4j-core',
+            libraries.'log4j-api',
+            libraries.'commons-codec',
+            libraries.'httpclient',
+            libraries.'commons-lang3',
+            libraries.'commons-io',
+            libraries.'servlet-api',
+            libraries.'dom4j',
+            libraries.'javamail',
+            libraries.'esapi',
+            libraries.'jaxen'
+    )
+
+}

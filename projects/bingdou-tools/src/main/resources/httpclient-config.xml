@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <context:property-placeholder location="classpath:httpclient.properties" ignore-unresolvable="true"/>
+
+    <bean id="sdkHttpClient" class="org.apache.commons.httpclient.HttpClient">
+        <property name="httpConnectionManager" ref="connectionManager"/>
+    </bean>
+
+    <bean id="connectionManager" class="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager">
+        <property name="params" ref="connectionManagerParams"/>
+    </bean>
+
+    <bean id="connectionManagerParams" class="org.apache.commons.httpclient.params.HttpConnectionManagerParams">
+        <!--连接超时时间(ms)-->
+        <property name="connectionTimeout" value="${httpConnectionManagerParams.connectionTimeout}"/>
+        <!--读取返回内容超时时间(ms)-->
+        <property name="soTimeout" value="${httpConnectionManagerParams.soTimeout}"/>
+        <!--客户端总并行连接最大数-->
+        <property name="maxTotalConnections" value="${httpConnectionManagerParams.maxTotalConnections}"/>
+        <!--每个主机的最大并行连接数-->
+        <property name="defaultMaxConnectionsPerHost" value="${httpConnectionManagerParams.defaultMaxConnectionsPerHost}"/>
+    </bean>
+
+</beans>

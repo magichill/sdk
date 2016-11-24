@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.user.IUserBaseMapper">
+
+    <select id="getDetailById" parameterType="java.lang.Integer" resultMap="userDetail">
+        <![CDATA[
+        SELECT
+          mi.id,
+          m.login_name,
+          m.mobile,
+          m.email,
+          md.money,
+          m.status,
+          md.loginerrortime,
+          md.loginerror,
+          m.password,
+          m.salt,
+          m.version_flag,
+          m.cpid,
+          md.safe_level,
+          m.nickname
+        FROM ${userDB}.mc_member_index mi
+        JOIN ${userDB}.mc_member${@com.bingdou.core.model.User@getTableNumber(userId)} m ON mi.id=m.id
+        JOIN ${userDB}.mc_member_detail${@com.bingdou.core.model.User@getTableNumber(userId)} md ON md.mid=m.id
+        WHERE mi.id=#{userId}
+        ]]>
+    </select>
+
+    <select id="getUserInfoListByIdList" parameterType="java.util.List" resultMap="userDetail">
+      ${@com.bingdou.core.model.User@buildGetUserInfoListByIdListSql(idList)}
+    </select>
+
+    <select id="getIdsByUserIdList" parameterType="java.util.List" resultType="java.lang.Integer">
+        ${@com.bingdou.core.model.User@buildGetIdsByUserIdListSql(userIdList)}
+    </select>
+
+    <select id="getIdByMobile" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT id FROM ${userDB}.mc_member_index WHERE mobile=#{mobile} LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getIdByLoginName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT id FROM ${userDB}.mc_member_index WHERE loginname=#{loginName} LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getIdByEmail" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT id FROM ${userDB}.mc_member_index WHERE email=#{email} LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getIdByCpId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT id FROM ${userDB}.mc_member_index WHERE cpid=#{cpId} LIMIT 1
+        ]]>
+    </select>
+
+    <update id="updateMoneyById" parameterType="java.util.Map">
+        <![CDATA[
+        UPDATE ${userDB}.mc_member_detail${@com.bingdou.core.model.User@getTableNumber(userId)}
+        SET money=#{money} WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <select id="getUserVToken" parameterType="java.lang.Integer" resultType="java.lang.String">
+        <![CDATA[
+        SELECT v_token FROM ${userDB}.mc_user_token WHERE mid=#{userId}
+        ]]>
+    </select>
+
+    <select id="getUserToken" parameterType="java.util.Map" resultMap="userToken">
+        <![CDATA[
+        SELECT token,v_token,device,request_source,create_time
+        FROM ${userDB}.mc_user_token WHERE mid=#{userId} AND token_update_time>=#{expiredTime}
+        ]]>
+    </select>
+
+    <select id="existUserToken" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(token) FROM ${userDB}.mc_user_token WHERE mid=#{userId}
+        ]]>
+    </select>
+
+    <insert id="insertUserToken" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${userDB}.mc_user_token(mid,token,token_update_time,v_token,device,request_source)
+          VALUE(#{userId},#{token},UNIX_TIMESTAMP(),#{validateToken},#{device},#{requestSource})
+        ]]>
+    </insert>
+
+    <update id="updateUserValidateToken" parameterType="java.util.Map">
+        <![CDATA[
+        UPDATE ${userDB}.mc_user_token SET v_token=#{validateToken} WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <update id="clearUserToken" parameterType="java.lang.Integer">
+        <![CDATA[
+        UPDATE ${userDB}.mc_user_token SET token='',v_token='',
+        device='',token_update_time=0,request_source=''
+        WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <update id="updateUserToken" parameterType="java.util.Map">
+        <![CDATA[
+        UPDATE ${userDB}.mc_user_token SET token=#{token},v_token=#{validateToken},
+        device=#{device},token_update_time=UNIX_TIMESTAMP(),request_source=#{requestSource}
+        WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <insert id="addUserIndex" parameterType="com.bingdou.core.model.User">
+        <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        <![CDATA[
+          INSERT INTO ${userDB}.mc_member_index(loginname,mobile,email,device,openid,cpid)
+          VALUE(#{loginName},#{mobile},'',#{device},#{wxOpenId},'')
+        ]]>
+    </insert>
+
+    <update id="updateCpIdById" parameterType="com.bingdou.core.model.User">
+        <![CDATA[
+        UPDATE ${userDB}.mc_member_index SET cpid=#{cpId} WHERE id=#{id}
+        ]]>
+    </update>
+
+    <insert id="addUser" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${userDB}.mc_member${@com.bingdou.core.model.User@getTableNumber(userId)}
+          (id,username,login_name,mobile,email,openid,password,salt,appid,status,version_flag,cpid,vcode_time)
+          VALUE(#{userId},'',#{loginName},#{mobile},'',#{wxOpenId},#{password},#{salt},#{appId},1,1,#{cpId},0)
+        ]]>
+    </insert>
+
+    <insert id="addUserDetail" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${userDB}.mc_member_detail${@com.bingdou.core.model.User@getTableNumber(userId)}
+          (mid,regip,regtime,lastloginip,lastlogintime,reg_uid,reg_ua,lastloginuid,lastloginua,loginerror,
+          money,safe_level,client)
+          VALUE(#{userId},#{ip},UNIX_TIMESTAMP(),#{ip},UNIX_TIMESTAMP(),#{uid},#{ua},
+          #{uid},#{ua},0,0,#{safeLevel},1)
+        ]]>
+    </insert>
+
+    <update id="clearLoginError" parameterType="java.util.Map">
+        UPDATE
+        ${userDB}.mc_member_detail${@com.bingdou.core.model.User@getTableNumber(userId)}
+        SET loginerror=0
+        WHERE mid=#{userId}
+    </update>
+
+    <update id="updatePassword" parameterType="java.util.Map">
+        UPDATE
+        ${userDB}.mc_member${@com.bingdou.core.model.User@getTableNumber(userId)}
+        SET password=#{encodedPassword}, salt=#{salt}
+        WHERE id=#{userId}
+    </update>
+
+    <select id="getLoginNameCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${userDB}.mc_member_index WHERE loginname=#{loginName}
+    </select>
+
+    <select id="getUserIdCountByDevice" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT id FROM ${userDB}.mc_member_index WHERE device = #{device} LIMIT 1
+    </select>
+
+    <select id="getCountByNickname" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${userDB}.mc_member_index WHERE nickname=#{nickname}
+    </select>
+
+    <update id="updateNickname4Member" parameterType="java.util.Map">
+        UPDATE ${userDB}.mc_member${@com.bingdou.core.model.User@getTableNumber(userId)}
+        SET nickname=#{nickname} WHERE id=#{userId}
+    </update>
+
+    <update id="updateNickname4Index" parameterType="java.util.Map">
+        UPDATE ${userDB}.mc_member_index
+        SET nickname=#{nickname} WHERE id=#{userId}
+    </update>
+
+    <select id="getVirtualMoneyFen" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT money FROM ${userDB}.mc_user_virtual_money
+        WHERE mid=#{userId} AND os=#{os}
+    </select>
+
+    <update id="updateVirtualMoney" parameterType="java.util.Map">
+        UPDATE ${userDB}.mc_user_virtual_money SET money=#{moneyFen}
+        WHERE mid=#{userId} AND os=#{os}
+    </update>
+
+    <insert id="insertVirtualMoney" parameterType="java.util.Map">
+        INSERT INTO ${userDB}.mc_user_virtual_money(mid,os,money)
+        VALUE(#{userId},#{os},#{moneyFen})
+    </insert>
+
+    <resultMap id="userToken" type="com.bingdou.core.model.UserToken">
+        <result property="token" column="token"/>
+        <result property="validateToken" column="v_token"/>
+        <result property="requestSource" column="request_source"/>
+        <result property="createTime" column="create_time"/>
+        <result property="device" column="device"/>
+    </resultMap>
+
+    <resultMap id="userDetail" type="com.bingdou.core.model.User">
+        <result property="id" column="id"/>
+        <result property="loginName" column="login_name"/>
+        <result property="mobile" column="mobile"/>
+        <result property="email" column="email"/>
+        <result property="money" column="money"/>
+        <result property="status" column="status"/>
+        <result property="loginErrorTime" column="loginerrortime"/>
+        <result property="loginError" column="loginerror"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="safeLevel" column="safe_level"/>
+        <result property="versionFlag" column="version_flag"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="nickName" column="nickname"/>
+        <result property="vipLevel" column="vip_level_id"/>
+        <result property="vipBlackStatus" column="vip_black_status"/>
+    </resultMap>
+</mapper>

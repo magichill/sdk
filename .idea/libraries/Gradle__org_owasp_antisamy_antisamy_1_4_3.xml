@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.owasp.antisamy:antisamy:1.4.3">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.owasp.antisamy/antisamy/1.4.3/6bac1ebc43ac3db223f592ce904ac4c2f3ef26e5/antisamy-1.4.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.owasp.antisamy/antisamy/1.4.3/3f562a79c558eb59284c8c9ee639147e53d8809c/antisamy-1.4.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
