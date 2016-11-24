@@ -46,26 +46,13 @@ public class LoginResponse {
     private String vToken = "";
     @SerializedName("nick_name")
     private String nickName = "";
-
-    @SerializedName("is_show_live_tag")
-    private int isSupportLive = 0;
-//    @SerializedName("is_support_virtual_money")
-//    private int isSupportVirtualMoney = 0;
-//    @SerializedName("message_list")
-//    private List<MessageInfo> messageInfoList = new ArrayList<MessageInfo>();
-//    @SerializedName("notice_list")
-//    private List<NoticeInfo> noticeInfoList = new ArrayList<NoticeInfo>();
-//    @SerializedName("ali_pay_no_pwd_auth")
-//    private int aliPayNoPwdAuth = 0;
-//    @SerializedName("ali_pay_no_pwd_auth_message")
-//    private AliPayNoPwdAuthMessage aliPayNoPwdAuthMessage = new AliPayNoPwdAuthMessage();
     @SerializedName("unread_message_num")
     private int unreadMessageNum = 0;
     @SerializedName("is_need_update")
     private int isNeedUpdate = 0;
 
     public void parseFromUser(User user, UserVipGrade userVipGrade,
-                              boolean isSupportVirtualMoney, boolean isSupportLive,
+                              boolean isSupportVirtualMoney,
                               boolean aliPayNoPwdSigned, int virtualMoneyFen) {
         if (user == null)
             return;
@@ -87,24 +74,7 @@ public class LoginResponse {
         setNickName(user.getNickName());
         setToken(user.getToken());
         setvToken(user.getvToken());
-        setIsSupportLive(isSupportLive ? 1 : 0);
-//        setIsSupportVirtualMoney(isSupportVirtualMoney ? 1 : 0);
-//        setAliPayNoPwdAuth(aliPayNoPwdSigned ? 1 : 0);
         setIsNeedUpdate(StringUtils.isEmpty(user.getPassword()) ? 1 : 0);
-//        if (!aliPayNoPwdSigned) {
-//            AliPayNoPwdAuthMessage aliPayNoPwdAuthMessage = new AliPayNoPwdAuthMessage();
-//            aliPayNoPwdAuthMessage.setContent(PayConstants.ALI_PAY_NO_PWD_AUTH_CONTENT);
-//            aliPayNoPwdAuthMessage.setTitle(PayConstants.ALI_PAY_NO_PWD_AUTH_TITLE);
-//            setAliPayNoPwdAuthMessage(aliPayNoPwdAuthMessage);
-//        }
-//        setUserRechargeMoney(userVipGrade.getMoney());
-//        if (userVipGrade.getNextLevelRechargeAmount() > 0) {
-//            setNextVipLevelMoney(userVipGrade.getNextLevelRechargeAmount());
-//            setVipUpNeedMoney(userVipGrade.getNextLevelNeedRechargeAmount());
-//        } else {
-//            setNextVipLevelMoney(0f);
-//            setVipUpNeedMoney(0f);
-//        }
     }
 
     public void parseFromUser4GetUserInfoListRequest(User user) {
@@ -269,46 +239,6 @@ public class LoginResponse {
             return;
         this.userPrimaryId = userPrimaryId;
     }
-
-    public int getIsSupportLive() {
-        return isSupportLive;
-    }
-
-    public void setIsSupportLive(int isSupportLive) {
-        this.isSupportLive = isSupportLive;
-    }
-
-//    public List<MessageInfo> getMessageInfoList() {
-//        return messageInfoList;
-//    }
-//
-//    public void setMessageInfoList(List<MessageInfo> messageInfoList) {
-//        this.messageInfoList = messageInfoList;
-//    }
-//
-//    public List<NoticeInfo> getNoticeInfoList() {
-//        return noticeInfoList;
-//    }
-//
-//    public void setNoticeInfoList(List<NoticeInfo> noticeInfoList) {
-//        this.noticeInfoList = noticeInfoList;
-//    }
-//
-//    public int getAliPayNoPwdAuth() {
-//        return aliPayNoPwdAuth;
-//    }
-//
-//    public void setAliPayNoPwdAuth(int aliPayNoPwdAuth) {
-//        this.aliPayNoPwdAuth = aliPayNoPwdAuth;
-//    }
-//
-//    public AliPayNoPwdAuthMessage getAliPayNoPwdAuthMessage() {
-//        return aliPayNoPwdAuthMessage;
-//    }
-//
-//    public void setAliPayNoPwdAuthMessage(AliPayNoPwdAuthMessage aliPayNoPwdAuthMessage) {
-//        this.aliPayNoPwdAuthMessage = aliPayNoPwdAuthMessage;
-//    }
 
     public int getUnreadMessageNum() {
         return unreadMessageNum;

@@ -97,26 +97,25 @@ public class RegisterService extends BaseService implements IMethodService {
         boolean createSuccess = userBaseService.createUser(user, appId, clientIp, uid, ua,
                 UserConstants.SECURE_LEVEL_1);
         boolean isNewDevice = false;
-//        boolean isSupportVirtualMoney = false;
-        boolean isSupportLive = false;
+
         if (createSuccess) {
             RegisterResponse registerResponse = new RegisterResponse();
             LogContext.instance().info("插入用户成功");
             User newUser = userBaseService.getDetailByLoginName(registerRequest.getLoginName());
             String tokenDevice = "";
-            String sdkVersion = "";
+
+            if (isClientRequest(request)) {
+
+            }
             //TODO vip等级查询
 //            UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(newUser.getId());
             boolean updateTokenResult = userBaseService.updateToken(newUser, tokenDevice, getSafeInfo(request), true);
             LogContext.instance().info("更新用户token:" + updateTokenResult);
-//            boolean isNewUser = userStatisticsService.recordUserActiveRecord(newUser.getId(), application);
-//            LogContext.instance().info("是否是新用户:" + isNewUser);
+
             DataLogUtils.recordHadoopLog(HadoopLogAction.REGISTER, registerRequest, newUser,
                     clientIp, "", "", isNewDevice);
-//            int virtualMoneyFen = getVirtualMoneyFen4Show(newUser.getId(), application.getOs(),
-//                    sdkVersionVersion, true, isSupportVirtualMoney);
-            registerResponse.parseFromUser(newUser, null, false, isSupportLive,
-                    false, 0);
+
+            registerResponse.parseFromUser(newUser, null, false,false, 0);
             JsonElement result = JsonUtil.bean2JsonTree(registerResponse);
             LogContext.instance().info("注册成功");
             return ServiceResultUtil.success(result);

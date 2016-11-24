@@ -120,7 +120,6 @@ public class PhoneRegisterService extends BaseService implements IMethodService 
                 UserConstants.SECURE_LEVEL_3);
         boolean isNewDevice = false;
         boolean isSupportVirtualMoney = false;
-        boolean isSupportLive = false;
         if (createSuccess) {
             LogContext.instance().info("插入用户成功");
             LogContext.instance().info("清除验证码");
@@ -138,8 +137,7 @@ public class PhoneRegisterService extends BaseService implements IMethodService 
                     clientIp, "", "", isNewDevice);
 //            int virtualMoneyFen = getVirtualMoneyFen4Show(newUser.getId(), application.getOs(),
 //                    sdkVersion, true, isSupportVirtualMoney);
-            registerResponse.parseFromUser(newUser, null, isSupportVirtualMoney, isSupportLive,
-                    false, 0);
+            registerResponse.parseFromUser(newUser, null, isSupportVirtualMoney, false, 0);
             JsonElement result = JsonUtil.bean2JsonTree(registerResponse);
             LogContext.instance().info("手机号注册成功");
             return ServiceResultUtil.success(result);

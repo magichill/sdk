@@ -111,12 +111,7 @@ public class LoginService extends BaseService implements IMethodService {
             }
             return ServiceResultUtil.illegal(dealErrorPwd(user));
         }
-//        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
-//        user.setVipLevel(userVipGrade.getUserLevelId());
-//        boolean isNewUser = userStatisticsService.recordUserActiveRecord(user.getId(), application);
-//        LogContext.instance().info("是否是新用户:" + isNewUser);
         boolean isNewDevice = false;
-        boolean isSupportLive = false;
         boolean isSupportVirtualMoney = false;
         boolean isSigned = false;
         String tokenDevice = "";
@@ -166,8 +161,7 @@ public class LoginService extends BaseService implements IMethodService {
                 loginRequest, user, clientIp, "", "", isNewDevice);
 //        int virtualMoneyFen = getVirtualMoneyFen4Show(user.getId(), application.getOs(), sdkVersion,
 //                false, isSupportVirtualMoney);
-        loginResponse.parseFromUser(user, null, isSupportVirtualMoney, isSupportLive,
-                isSigned, 0);
+        loginResponse.parseFromUser(user, null, isSupportVirtualMoney, isSigned, 0);
         JsonElement result = JsonUtil.bean2JsonTree(loginResponse);
         LogContext.instance().info("登录成功");
         return ServiceResultUtil.success(result);

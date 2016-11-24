@@ -91,32 +91,33 @@ public abstract class BaseController {
             BaseService baseService = (BaseService) methodService;
             BaseRequest baseRequest = baseService.getBaseRequest(request);
             ServiceResult serviceResult;
+
             if (!isClientRequest(safeInfo)) {
                 LogContext.instance().info("服务器请求APP ID合法性检查");
-                //TODO 注释掉服务端请求安全校验处理
+                //TODO 注释掉服务端请求安全校验处理,考虑接入第三方应用
 //                if (!baseService.isApplicationValid4Server(baseRequest)) {
 //                    return new RootResponse(ReturnCode.ILLEGAL_REQUEST.getIndex(),
 //                            "非法应用").convert2Result(keyGroup);
 //                }
             } else {
-                //TODO 注释掉设备黑名单检查
-//                if (!method.equals("init")) {
-//                    LogContext.instance().info("客户端请求设备黑名单检查");
-//                    String deviceNo = baseService.getDeviceNo4Client(baseRequest);
-//                    boolean deviceInBlacklist = safeService.isInDeviceBlacklist(deviceNo);
-//                    if (deviceInBlacklist) {
-//                        return new RootResponse(ReturnCode.ILLEGAL_REQUEST.getIndex(),
-//                                "当前设备已被禁用,请联系客服人员").convert2Result(keyGroup);
-//                    }
-//                }
+                //设备黑名单检查
+                if (!method.equals("init")) {
+                    LogContext.instance().info("客户端请求设备黑名单检查");
+                    String deviceNo = baseService.getDeviceNo4Client(baseRequest);
+                    boolean deviceInBlacklist = safeService.isInDeviceBlacklist(deviceNo);
+                    if (deviceInBlacklist) {
+                        return new RootResponse(ReturnCode.ILLEGAL_REQUEST.getIndex(),
+                                "当前设备已被禁用,请联系客服人员").convert2Result(keyGroup);
+                    }
+                }
 //                LogContext.instance().info("客户端请求APP ID合法性检查");
-                //TODO 注释掉客户端请求安全校验
+                //TODO 注释掉客户端请求安全校验,检查客户端应用第三方接入
 //                if (!baseService.isApplicationValid4Client(baseRequest)) {
 //                    return new RootResponse(ReturnCode.ILLEGAL_REQUEST.getIndex(),
 //                            "应用被禁用").convert2Result(keyGroup);
 //                }
 
-                //TODO 验证客户端合法性,后加
+                //TODO 验证第三方客户端接入系统合法性,后加
 //                LogContext.instance().info("客户端OS合法性检查");
 //                Os os = baseService.getClientOsByRequest(baseRequest);
 //                if (os == null) {

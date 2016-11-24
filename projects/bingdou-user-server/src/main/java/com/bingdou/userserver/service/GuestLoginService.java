@@ -213,8 +213,7 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
 //        boolean isNewDevice = deviceService.isNewDevice(guestLoginRequest.getDeviceInfo());
 //        int virtualMoneyFen = getVirtualMoneyFen4Show(user.getId(), application.getOs(),
 //                sdkVersion, isNewGuestUser, isSupportVirtualMoney);
-        guestLoginResponse.parseFromUser(user, null, isSupportVirtualMoney, isSupportLive,
-                isSigned, 0);
+        guestLoginResponse.parseFromUser(user, null, isSupportVirtualMoney,isSigned, 0);
         DataLogUtils.recordHadoopLog(isNewGuestUser ?
                         HadoopLogAction.GUEST_REGISTER : HadoopLogAction.GUEST_LOGIN, guestLoginRequest, user,
                 clientIp, "", "", false);

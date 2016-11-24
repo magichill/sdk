@@ -80,8 +80,7 @@ public class UserInfoService extends BaseService implements IMethodService {
         boolean isSupportLive = false;
         boolean isSupportVirtualMoney = false;
         boolean isSigned = false;
-        getUserInfoResponse.parseFromUser(user, null, isSupportVirtualMoney, isSupportLive,
-                isSigned, 0);
+        getUserInfoResponse.parseFromUser(user, null, isSupportVirtualMoney, isSigned, 0);
         JsonElement result = JsonUtil.bean2JsonTree(getUserInfoResponse);
         LogContext.instance().info("获取用户信息成功");
         return ServiceResultUtil.success(result);
