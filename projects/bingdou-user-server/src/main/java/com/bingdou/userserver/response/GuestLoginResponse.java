@@ -1,7 +1,7 @@
 package com.bingdou.userserver.response;
 
 /**
- * 游客登录请求响应
+ * 娓稿鐧诲綍璇锋眰鍝嶅簲
  */
 public class GuestLoginResponse extends LoginResponse {
 

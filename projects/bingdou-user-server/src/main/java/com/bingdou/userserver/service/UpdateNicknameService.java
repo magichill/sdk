@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ĞŞ¸ÄêÇ³Æ·şÎñÀà
+ * ä¿®æ”¹æ˜µç§°æœåŠ¡ç±»
  */
 @Service
 public class UpdateNicknameService extends BaseService implements IMethodService {
@@ -60,23 +60,23 @@ public class UpdateNicknameService extends BaseService implements IMethodService
         UpdateNicknameRequest updateNicknameRequest = (UpdateNicknameRequest) baseRequest;
         if (StringUtils.isEmpty(updateNicknameRequest.getAccount())
                 || StringUtils.isEmpty(updateNicknameRequest.getNickname())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         if (!ValidateUtil.isValidNickname(updateNicknameRequest.getNickname())) {
-            return ServiceResultUtil.illegal("êÇ³Æ¸ñÊ½´íÎó");
+            return ServiceResultUtil.illegal("æ˜µç§°æ ¼å¼é”™è¯¯");
         }
         boolean exist = userBaseService.existNickname(updateNicknameRequest.getNickname());
         if (exist) {
-            return ServiceResultUtil.illegal("êÇ³ÆÒÑ´æÔÚ");
+            return ServiceResultUtil.illegal("æ˜µç§°å·²å­˜åœ¨");
         }
         boolean success = userBaseService.updateNickname(user.getId(),
                 updateNicknameRequest.getNickname());
         if (success) {
-            LogContext.instance().info("ĞŞ¸Ä³É¹¦");
+            LogContext.instance().info("ä¿®æ”¹æˆåŠŸ");
             return ServiceResultUtil.success();
         } else {
-            LogContext.instance().error("ĞŞ¸ÄÊ§°Ü");
-            return ServiceResultUtil.serverError("ĞŞ¸ÄÊ§°Ü");
+            LogContext.instance().error("ä¿®æ”¹å¤±è´¥");
+            return ServiceResultUtil.serverError("ä¿®æ”¹å¤±è´¥");
         }
     }
 

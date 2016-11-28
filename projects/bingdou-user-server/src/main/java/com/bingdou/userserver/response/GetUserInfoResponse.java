@@ -3,7 +3,7 @@ package com.bingdou.userserver.response;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * 获取用户信息请求响应
+ * 鑾峰彇鐢ㄦ埛淇℃伅璇锋眰鍝嶅簲
  */
 public class GetUserInfoResponse extends LoginResponse {
 

@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ÊÖ»ú×¢²á·şÎñÀà
+ * æ‰‹æœºæ³¨å†ŒæœåŠ¡ç±»
  */
 @Service
 public class PhoneRegisterService extends BaseService implements IMethodService {
@@ -68,8 +68,10 @@ public class PhoneRegisterService extends BaseService implements IMethodService 
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         PhoneRegisterRequest phoneRegisterRequest = (PhoneRegisterRequest) baseRequest;
 //        Application application = getValidApplication4Client(phoneRegisterRequest);
-        String ua = UserUtils.getOldUa4Client(baseRequest);
-        String uid = UserUtils.getOldUid4Client(baseRequest);
+//        String ua = UserUtils.getOldUa4Client(baseRequest);
+//        String uid = UserUtils.getOldUid4Client(baseRequest);
+        String uid = "";
+        String ua = "";
         return dealRegister(phoneRegisterRequest, request, uid, ua);
     }
 
@@ -79,31 +81,31 @@ public class PhoneRegisterService extends BaseService implements IMethodService 
     private ServiceResult dealRegister(PhoneRegisterRequest phoneRegisterRequest, HttpServletRequest request,
                                        String uid, String ua) throws Exception {
         if (!ValidateUtil.isMobileNumber(phoneRegisterRequest.getMobile())) {
-            return ServiceResultUtil.illegal("ÊÖ»úºÅ²»ºÏ·¨");
+            return ServiceResultUtil.illegal("æ‰‹æœºå·ä¸åˆæ³•");
         }
         if (!User.isValidPassword(phoneRegisterRequest.getPassword())) {
-            return ServiceResultUtil.illegal("ÃÜÂë²»ºÏ·¨");
+            return ServiceResultUtil.illegal("å¯†ç ä¸åˆæ³•");
         }
         if (StringUtils.isEmpty(phoneRegisterRequest.getCode())) {
-            return ServiceResultUtil.illegal("ÑéÖ¤Âë²»ÄÜÎª¿Õ");
+            return ServiceResultUtil.illegal("éªŒè¯ç ä¸èƒ½ä¸ºç©º");
         }
         User user = userBaseService.getDetailByMobile(phoneRegisterRequest.getMobile());
         if (user != null) {
-            return ServiceResultUtil.illegal("¸ÃÊÖ»úºÅÒÑ¾­×¢²á");
+            return ServiceResultUtil.illegal("è¯¥æ‰‹æœºå·å·²ç»æ³¨å†Œ");
         }
         ValidateCode validateCode = validateCodeService.getValidateCode4Mobile(phoneRegisterRequest.getMobile(),
                 SendCodeType.PHONE_REGISTER);
         if (validateCode == null) {
-            return ServiceResultUtil.illegal("ÑéÖ¤ÂëºÍÊÖ»úºÅ²»Æ¥Åä");
+            return ServiceResultUtil.illegal("éªŒè¯ç å’Œæ‰‹æœºå·ä¸åŒ¹é…");
         }
         if (!UserUtils.isValidationCodeValid(phoneRegisterRequest.getCode(),
                 validateCode.getVcode(), validateCode.getVcodeTime())) {
-            return ServiceResultUtil.illegal("ÑéÖ¤ÂëÓĞÎó»òÒÑÊ§Ğ§");
+            return ServiceResultUtil.illegal("éªŒè¯ç æœ‰è¯¯æˆ–å·²å¤±æ•ˆ");
         }
         String loginName = "PR" + phoneRegisterRequest.getMobile() + NumberUtil.getRandomNum(1000, 9999);
         boolean exist = userBaseService.isExistsLoginName(loginName);
         if (exist) {
-            return ServiceResultUtil.illegal("¸ÃÊÖ»úºÅÒÑ¾­×¢²á");
+            return ServiceResultUtil.illegal("è¯¥æ‰‹æœºå·å·²ç»æ³¨å†Œ");
         }
         String clientIp = RequestUtil.getClientIp(request);
         String salt = User.generateSalt();
@@ -121,8 +123,8 @@ public class PhoneRegisterService extends BaseService implements IMethodService 
         boolean isNewDevice = false;
         boolean isSupportVirtualMoney = false;
         if (createSuccess) {
-            LogContext.instance().info("²åÈëÓÃ»§³É¹¦");
-            LogContext.instance().info("Çå³ıÑéÖ¤Âë");
+            LogContext.instance().info("æ’å…¥ç”¨æˆ·æˆåŠŸ");
+            LogContext.instance().info("æ¸…é™¤éªŒè¯ç ");
             validateCodeService.clearValidateCode4Mobile(phoneRegisterRequest.getMobile(),
                     SendCodeType.PHONE_REGISTER);
             String tokenDevice = "";
@@ -132,17 +134,17 @@ public class PhoneRegisterService extends BaseService implements IMethodService 
             String sdkVersion = "";
 
             boolean updateTokenResult = userBaseService.updateToken(newUser, tokenDevice, getSafeInfo(request), true);
-            LogContext.instance().info("¸üĞÂÓÃ»§token:" + updateTokenResult);
+            LogContext.instance().info("æ›´æ–°ç”¨æˆ·token:" + updateTokenResult);
             DataLogUtils.recordHadoopLog(HadoopLogAction.PHONE_REGISTER, phoneRegisterRequest, newUser,
                     clientIp, "", "", isNewDevice);
 //            int virtualMoneyFen = getVirtualMoneyFen4Show(newUser.getId(), application.getOs(),
 //                    sdkVersion, true, isSupportVirtualMoney);
             registerResponse.parseFromUser(newUser, null, isSupportVirtualMoney, false, 0);
             JsonElement result = JsonUtil.bean2JsonTree(registerResponse);
-            LogContext.instance().info("ÊÖ»úºÅ×¢²á³É¹¦");
+            LogContext.instance().info("æ‰‹æœºå·æ³¨å†ŒæˆåŠŸ");
             return ServiceResultUtil.success(result);
         } else {
-            return ServiceResultUtil.illegal("ÊÖ»úºÅ×¢²áÊ§°Ü");
+            return ServiceResultUtil.illegal("æ‰‹æœºå·æ³¨å†Œå¤±è´¥");
         }
     }
 

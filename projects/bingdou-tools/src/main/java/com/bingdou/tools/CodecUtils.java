@@ -11,6 +11,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -130,5 +131,10 @@ public class CodecUtils {
             LogContext.instance().error(e, "验证RSA签名失败");
         }
         return false;
+    }
+
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        String base = "eyJpdGVtcyI6W3sicGVyc2lzdGVudElkIjoiMTAxMTdjMDk2YmJlNDRlNjRiNzdiM2YwYzUyYWQzOTRhYTFmIiwic3RyZWFtbmFtZSI6ImxpdmUtMTIzMTIzLmZsdiIsIm9wcyI6IndzcmVjb3JkL2Zsdi9hdXRvY3V0dGltZS8zL3Zjb2RlYy9jb3B5L2Fjb2RlYy9jb3B5fHNhdmVhcy9jM0JoWTJVdGRtbGtaVzg2SkNoemRISmxZVzF1WVcxbEtTMGtLSFJwYldWemRHRnRjQ2s9IiwiYnVja2V0Ijoic3BhY2UtdmlkZW8iLCJjb2RlIjoxLCJkZXNjIjoiZmlsZU9wZXJhdGVBY3RpdmUiLCJlcnJvciI6bnVsbCwia2V5cyI6WyJzcGFjZS12aWRlbzpsaXZlLTEyMzEyMy0tMjAxNjExMjQxNDE5NDEuZmx2Il0sInVybHMiOlsiaHR0cDovL2NuY3BsYXliYWNrLmJpbmdkb3UudHYvbGl2ZS0xMjMxMjMtLTIwMTYxMTI0MTQxOTQxLmZsdiJdLCJkZXRhaWwiOlt7ImtleSI6InNwYWNlLXZpZGVvOmxpdmUtMTIzMTIzLS0yMDE2MTEyNDE0MTk0MS5mbHYiLCJ1cmwiOiJodHRwOi8vY25jcGxheWJhY2suYmluZ2RvdS50di9saXZlLTEyMzEyMy0tMjAxNjExMjQxNDE5NDEuZmx2IiwiZHVyYXRpb24iOjU0Ljk3NywiaGFzaCI6ImxzZlQ5UDhTTDgtVkQxdDEtUVZCWm9PdnNIamgiLCJmc2l6ZSI6MTI3NTU1ODcsInN0YXJ0VGltZSI6IjIwMTYxMTI0MTQxOTQxIiwiZW5kVGltZSI6IjIwMTYxMTI0MTQyMTA2IiwiYml0X3JhdGUiOm51bGwsInJlc29sdXRpb24iOiIzMjRYMTgyIn1dfV0sImJhdGNoX25vdGlmeV9pZCI6bnVsbH0=";
+        System.out.println(new String(Base64.decodeBase64(base),"UTF-8"));
     }
 }

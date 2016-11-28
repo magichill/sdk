@@ -37,6 +37,10 @@ public class CommonLoggerNameConstants {
      */
     public static final String MAIL_LOGGER = "mail_Logger";
     /**
+     * 录播方式回调日志
+     */
+    public static final String RECORD_TYPE_CALL_BACK_LOGGER = "recordTypeCallBack_Logger";
+    /**
      * 支付方式回调日志
      */
     public static final String PAY_TYPE_CALL_BACK_LOGGER = "payTypeCallBack_Logger";

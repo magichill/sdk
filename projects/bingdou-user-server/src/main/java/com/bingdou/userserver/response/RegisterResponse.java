@@ -1,7 +1,7 @@
 package com.bingdou.userserver.response;
 
 /**
- * ×¢²áÇëÇóÏìÓ¦
+ * æ³¨å†Œè¯·æ±‚å“åº”
  */
 public class RegisterResponse extends LoginResponse {
 

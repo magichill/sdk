@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ×¢Ïú·şÎñÀà
+ * æ³¨é”€æœåŠ¡ç±»
  */
 @Service
 public class LogoutService extends BaseService implements IMethodService {
@@ -62,16 +62,16 @@ public class LogoutService extends BaseService implements IMethodService {
 
     private ServiceResult dealLogout(LogoutRequest logoutRequest, User user) {
         if (StringUtils.isEmpty(logoutRequest.getAccount())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         boolean result = userBaseService.deleteToken(user.getId());
         if (result) {
-            LogContext.instance().info("×¢Ïú³É¹¦");
+            LogContext.instance().info("æ³¨é”€æˆåŠŸ");
             DataLogUtils.recordHadoopLog(HadoopLogAction.LOGOUT, logoutRequest, user,
                     RequestUtil.getClientIp(logoutRequest.getRequest()), "", "", false);
             return ServiceResultUtil.success();
         } else {
-            return ServiceResultUtil.illegal("×¢ÏúÊ§°Ü");
+            return ServiceResultUtil.illegal("æ³¨é”€å¤±è´¥");
         }
     }
 

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ÕÒ»ØÃÜÂë·şÎñÀà
+ * æ‰¾å›å¯†ç æœåŠ¡ç±»
  */
 @Service
 public class LostPasswordService extends BaseService implements IMethodService {
@@ -70,7 +70,7 @@ public class LostPasswordService extends BaseService implements IMethodService {
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         LostPasswordRequest lostPasswordRequest = (LostPasswordRequest) baseRequest;
         if (lostPasswordRequest.getOtherInfo() == null) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         return dealLostPassword(lostPasswordRequest);
     }
@@ -79,29 +79,29 @@ public class LostPasswordService extends BaseService implements IMethodService {
         if (StringUtils.isEmpty(lostPasswordRequest.getPhoneOrEmail())
                 || StringUtils.isEmpty(lostPasswordRequest.getValidationCode())
                 || StringUtils.isEmpty(lostPasswordRequest.getPassword())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         String account = lostPasswordRequest.getPhoneOrEmail();
         User user;
         int validateCodeType;
         if (ValidateUtil.isMobileNumber(account)) {
-            LogContext.instance().info("Í¨¹ıÊÖ»úºÅÕÒ»Ø:" + account);
+            LogContext.instance().info("é€šè¿‡æ‰‹æœºå·æ‰¾å›:" + account);
             user = userBaseService.getDetailByMobile(account);
             validateCodeType = UserConstants.SEND_CODE_SMS_TYPE;
         } else if (ValidateUtil.isEmail(account)) {
-            LogContext.instance().info("Í¨¹ıÓÊÏäÕÒ»Ø:" + account);
+            LogContext.instance().info("é€šè¿‡é‚®ç®±æ‰¾å›:" + account);
             user = userBaseService.getDetailByEmail(account);
             validateCodeType = UserConstants.SEND_CODE_EMAIL_TYPE;
         } else {
-            return ServiceResultUtil.illegal("ÊÖ»úºÅ»òÓÊÏä¸ñÊ½ÓĞÎó");
+            return ServiceResultUtil.illegal("æ‰‹æœºå·æˆ–é‚®ç®±æ ¼å¼æœ‰è¯¯");
         }
         if (user == null) {
-            return ServiceResultUtil.illegal("ÓÃ»§Î´°ó¶¨ÊÖ»úºÅ»òÕßÓÊÏä");
+            return ServiceResultUtil.illegal("ç”¨æˆ·æœªç»‘å®šæ‰‹æœºå·æˆ–è€…é‚®ç®±");
         }
         ValidateCode validateCode = validateCodeService.getValidateCode(account,
                 SendCodeType.LOST_PASSWORD, validateCodeType);
         if (validateCode == null) {
-            return ServiceResultUtil.illegal("ÑéÖ¤ÂëÓëÊÖ»úºÅ»òÓÊÏä²»Æ¥Åä");
+            return ServiceResultUtil.illegal("éªŒè¯ç ä¸æ‰‹æœºå·æˆ–é‚®ç®±ä¸åŒ¹é…");
         }
         String errorMessage = getUserStatusErrorMessage(user);
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -109,24 +109,24 @@ public class LostPasswordService extends BaseService implements IMethodService {
         }
         if (!UserUtils.isValidationCodeValid(lostPasswordRequest.getValidationCode(),
                 validateCode.getVcode(), validateCode.getVcodeTime())) {
-            return ServiceResultUtil.illegal("ÑéÖ¤ÂëÓĞÎó»òÒÑÊ§Ğ§");
+            return ServiceResultUtil.illegal("éªŒè¯ç æœ‰è¯¯æˆ–å·²å¤±æ•ˆ");
         }
-        LogContext.instance().info("ÓÃ»§ĞÅÏ¢ºÏ·¨£¬×¼±¸ÖØÖÃÃÜÂë");
+        LogContext.instance().info("ç”¨æˆ·ä¿¡æ¯åˆæ³•ï¼Œå‡†å¤‡é‡ç½®å¯†ç ");
         String salt = User.generateSalt();
         String encodedPassword = User.getEncodedPassword(lostPasswordRequest.getPassword(), salt);
         int updatedRows = lostPasswordDao.updatePassword(user.getId(), encodedPassword, salt);
         if (updatedRows < 1) {
-            throw new Exception("ĞŞ¸ÄÃÜÂëĞÅÏ¢Ê§°Ü");
+            throw new Exception("ä¿®æ”¹å¯†ç ä¿¡æ¯å¤±è´¥");
         }
-        LogContext.instance().info("¸üĞÂÓÃ»§ĞÅÏ¢³É¹¦");
+        LogContext.instance().info("æ›´æ–°ç”¨æˆ·ä¿¡æ¯æˆåŠŸ");
         userBaseService.deleteToken(user.getId());
-        LogContext.instance().info("µÇÂ¼´íÎóÇåÁã");
+        LogContext.instance().info("ç™»å½•é”™è¯¯æ¸…é›¶");
         userBaseService.clearLoginError(user.getId());
-        LogContext.instance().info("Çå³ıÑéÖ¤Âë");
+        LogContext.instance().info("æ¸…é™¤éªŒè¯ç ");
         validateCodeService.clearValidateCode(account, SendCodeType.LOST_PASSWORD, validateCodeType);
         DataLogUtils.recordHadoopLog(HadoopLogAction.FIND_PWD, lostPasswordRequest, user,
                 RequestUtil.getClientIp(lostPasswordRequest.getRequest()), "", lostPasswordRequest.getValidationCode(), false);
-        LogContext.instance().info("ÃÜÂëÖØÖÃ³É¹¦");
+        LogContext.instance().info("å¯†ç é‡ç½®æˆåŠŸ");
         return ServiceResultUtil.success();
     }
 

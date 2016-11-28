@@ -28,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ÓÎ¿ÍµÇÂ¼·şÎñÀà
+ * æ¸¸å®¢ç™»å½•æœåŠ¡ç±»
  */
 @Service
 public class GuestLoginService extends BaseService implements IMethodService {
@@ -80,11 +80,11 @@ public class GuestLoginService extends BaseService implements IMethodService {
 //        GuestLoginRequest guestLoginRequest = (GuestLoginRequest) baseRequest;
 //        if (StringUtils.isEmpty(guestLoginRequest.getDeviceNo4Server())
 //                || guestLoginRequest.getDeviceNo4Server().length() > 36) {
-//            return ServiceResultUtil.illegal("·Ç·¨²ÎÊı");
+//            return ServiceResultUtil.illegal("éæ³•å‚æ•°");
 //        }
 //        Application application = appBaseService.getAppByAppId(guestLoginRequest.getAppId());
 //        return deal(request, guestLoginRequest, application, guestLoginRequest.getDeviceNo4Server());
-        //TODO ÔİÊ±ÆÁ±Î·şÎñÆ÷¶ËµÄÓÎ¿ÍµÇÂ¼
+        //TODO æš‚æ—¶å±è”½æœåŠ¡å™¨ç«¯çš„æ¸¸å®¢ç™»å½•
         return null;
     }
 
@@ -94,13 +94,13 @@ public class GuestLoginService extends BaseService implements IMethodService {
         GuestLoginRequest guestLoginRequest = (GuestLoginRequest) baseRequest;
         if (guestLoginRequest.getDeviceInfo() == null
                 || guestLoginRequest.getOtherInfo() == null) {
-            return ServiceResultUtil.illegal("·Ç·¨²ÎÊı");
+            return ServiceResultUtil.illegal("éæ³•å‚æ•°");
         }
         DeviceInfo deviceInfo = guestLoginRequest.getDeviceInfo();
         String deviceStr = getDeviceStr(deviceInfo);
         if (StringUtils.isEmpty(deviceStr)) {
-            LogContext.instance().warn("Éè±¸ĞÅÏ¢Îª¿Õ,ÓÎ¿ÍµÇÂ¼Ê§°Ü");
-            return ServiceResultUtil.illegal("ÓÎ¿ÍµÇÂ¼Ê§°Ü");
+            LogContext.instance().warn("è®¾å¤‡ä¿¡æ¯ä¸ºç©º,æ¸¸å®¢ç™»å½•å¤±è´¥");
+            return ServiceResultUtil.illegal("æ¸¸å®¢ç™»å½•å¤±è´¥");
         }
         Application application = getValidApplication4Client(guestLoginRequest);
         return deal(request, guestLoginRequest,application, deviceStr);
@@ -114,13 +114,13 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
         String clientIp = RequestUtil.getClientIp(request);
         boolean isClientRequest = isClientRequest(request);
         if (userByDevice != null && userByDevice.getId() > 0) {
-            LogContext.instance().info("²»ÊÇĞÂÉè±¸,²»´´½¨ÓÎ¿ÍÕËºÅ");
+            LogContext.instance().info("ä¸æ˜¯æ–°è®¾å¤‡,ä¸åˆ›å»ºæ¸¸å®¢è´¦å·");
             String errorMessage = userByDevice.checkStatus();
             if (StringUtils.isNotEmpty(errorMessage)) {
                 return ServiceResultUtil.illegal(errorMessage);
             }
             if (isClientRequest && StringUtils.isNotEmpty(userByDevice.getPassword())) {
-                LogContext.instance().info("ÓÎ¿ÍÕËºÅÒÑ¾­Éı¼¶,ÏÂ·¢ÓÃ»§Ãû,Ê¹ÓÃÓÃ»§ÃûÃÜÂëµÇÂ¼");
+                LogContext.instance().info("æ¸¸å®¢è´¦å·å·²ç»å‡çº§,ä¸‹å‘ç”¨æˆ·å,ä½¿ç”¨ç”¨æˆ·åå¯†ç ç™»å½•");
                 GuestLoginResponse guestLoginResponse = new GuestLoginResponse();
                 guestLoginResponse.setLoginName(userByDevice.getLoginName());
                 guestLoginResponse.setEmail(userByDevice.getEmail());
@@ -133,12 +133,12 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
             return dealGuestLogin(userByDevice, guestLoginRequest, application, request, false, isClientRequest,
                     clientIp);
         } else {
-            LogContext.instance().info("ÊÇĞÂÉè±¸,´´½¨ÓÎ¿ÍÕËºÅ");
+            LogContext.instance().info("æ˜¯æ–°è®¾å¤‡,åˆ›å»ºæ¸¸å®¢è´¦å·");
             User newUser = new User();
             String guestLoginName = newUser.generateGuestLoginName();
             boolean exist = userBaseService.isExistsLoginName(guestLoginName);
             if (exist) {
-                return ServiceResultUtil.illegal("ÓÎ¿Í×¢²áÊ§°Ü,ÇëÖØÊÔ");
+                return ServiceResultUtil.illegal("æ¸¸å®¢æ³¨å†Œå¤±è´¥,è¯·é‡è¯•");
             }
             newUser.setLoginName(guestLoginName);
             newUser.setPassword("");
@@ -147,10 +147,10 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
             newUser.setMobile("");
             String ua = "";
             String uid = "";
-            if (isClientRequest) {
-                ua = UserUtils.getOldUa4Client(guestLoginRequest);
-                uid = UserUtils.getOldUid4Client(guestLoginRequest);
-            }
+//            if (isClientRequest) {
+//                ua = UserUtils.getOldUa4Client(guestLoginRequest);
+//                uid = UserUtils.getOldUid4Client(guestLoginRequest);
+//            }
             boolean createSuccess = userBaseService.createUser(newUser, application.getAppId(),
                     clientIp, uid, ua, UserConstants.SECURE_LEVEL_0);
             if (createSuccess) {
@@ -158,7 +158,7 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
                 return dealGuestLogin(alreadyAddUser, guestLoginRequest, application, request, true, isClientRequest,
                         clientIp);
             } else {
-                return ServiceResultUtil.serverError("ÓÎ¿ÍµÇÂ¼ÄÚ²¿´íÎó");
+                return ServiceResultUtil.serverError("æ¸¸å®¢ç™»å½•å†…éƒ¨é”™è¯¯");
             }
         }
     }
@@ -167,7 +167,6 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
                                          Application application, HttpServletRequest request,
                                          boolean isNewGuestUser, boolean isClient, String clientIp) throws Exception {
         String tokenDevice = "";
-        boolean isSupportLive = false;
         boolean isSupportVirtualMoney = false;
         boolean isSigned = false;
         String sdkVersion = "";
@@ -175,44 +174,17 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
         if (isClient) {
             sdkVersion = guestLoginRequest.getOtherInfo().getSdkVersion();
             tokenDevice = getDeviceNo4Client(guestLoginRequest);
-//            userChannelMoveService.addMoveChannelRecord4Client(user.getId(), guestLoginRequest, isNewGuestUser);
-//            userStatisticsService.recordUserSourceReport4Client(user.getId(), application, guestLoginRequest, isNewGuestUser);
-//            boolean isNewUser = userStatisticsService.recordUserActiveRecord(user.getId(), application);
-            Os os = getClientOsByRequest(guestLoginRequest);
-//            List<ConfigMessage> configMessageList = messageService.getConfigMessageBox4Login(
-//                    guestLoginRequest, os, clientIp, isNewUser, user, true);
-//            isSupportVirtualMoney = switchRuleService.isSupportVirtualMoney(application.getAppId(), application.getOs(),
-//                    guestLoginRequest.getOtherInfo().getChannel());
-//            LogContext.instance().info("»ñÈ¡ÓÎÏ·±Ò¿ª¹Ø½á¹û:" + isSupportVirtualMoney);
-//            if (Os.IOS.equals(os)) {
-//                isSupportLive = switchRuleService.isSupportLive(application.getAppId(), os.getIndex(),
-//                        guestLoginRequest.getOtherInfo().getChannel());
-//                LogContext.instance().info("»ñÈ¡Ö±²¥¿ª¹Ø½á¹û:" + isSupportLive);
-//            }
-//            voucherService.giveVoucher4Login(user, guestLoginRequest, application.getAppId(),
-//                    clientIp, isNewUser);
-                String oldUid = UserUtils.getOldUid4Client(guestLoginRequest);
-                String oldUa = UserUtils.getOldUa4Client(guestLoginRequest);
-                loginBaseService.setLastLoginInfo(user.getId(), clientIp, oldUid, oldUa);
-//            }
-//            int unreadMessageCount = messageService.getMessageCountByUserId(user.getId(),
-//                    MessageStatus.UNREAD);
-//            LogContext.instance().info("Î´¶ÁÏûÏ¢ÊıÁ¿:" + unreadMessageCount);
-//            guestLoginResponse.setMessageInfoList(UserServerUtils.convertMessageInfoListBy(configMessageList));
-//            guestLoginResponse.setUnreadMessageNum(unreadMessageCount);
+                Os os = getClientOsByRequest(guestLoginRequest);
+//                String oldUid = UserUtils.getOldUid4Client(guestLoginRequest);
+//                String oldUa = UserUtils.getOldUa4Client(guestLoginRequest);
+
+                loginBaseService.setLastLoginInfo(user.getId(), clientIp, "", "");
             String model = os == Os.IOS ? guestLoginRequest.getDeviceInfo().getModel() : "";
-//            List<Notice> noticeList = noticeService.getNoticeList4Login(user, guestLoginRequest,
-//                    isNewUser, isPad(guestLoginRequest), application.getAppId(), guestLoginRequest.getOtherInfo().getChannel(),
-//                    model);
-//            guestLoginResponse.setNoticeInfoList(UserServerUtils.covertNoticeInfoListBy(noticeList));
         }
-//        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
         boolean updateTokenResult = userBaseService.updateToken(user, tokenDevice, getSafeInfo(request),
                 isNewGuestUser);
-        LogContext.instance().info("¸üĞÂtoken:" + updateTokenResult);
+        LogContext.instance().info("æ›´æ–°token:" + updateTokenResult);
 //        boolean isNewDevice = deviceService.isNewDevice(guestLoginRequest.getDeviceInfo());
-//        int virtualMoneyFen = getVirtualMoneyFen4Show(user.getId(), application.getOs(),
-//                sdkVersion, isNewGuestUser, isSupportVirtualMoney);
         guestLoginResponse.parseFromUser(user, null, isSupportVirtualMoney,isSigned, 0);
         DataLogUtils.recordHadoopLog(isNewGuestUser ?
                         HadoopLogAction.GUEST_REGISTER : HadoopLogAction.GUEST_LOGIN, guestLoginRequest, user,

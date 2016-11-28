@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Created by gaoshan on 16-11-3.
+ * Created by gaoshan on 16-11-24.
  */
-@RequestMapping("live")
+@RequestMapping("/live/client")
 @Controller
-public class LiveController extends BaseController {
+public class ClientController extends BaseController {
 
     @RequestMapping(value = "{method}", method = RequestMethod.POST)
     @ResponseBody
-    public String home(HttpServletRequest request,@PathVariable("method") String method) throws Exception {
+    public String home(HttpServletRequest request, @PathVariable("method") String method) throws Exception {
         return baseDispatch(request, CommonLoggerNameConstants.REQUEST_PARAM_LOG_NAME,method);
     }
 

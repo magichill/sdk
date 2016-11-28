@@ -45,93 +45,61 @@ public class UserUtils {
         return safeLevel;
     }
 
-    public static String getOldUid4Client(BaseRequest baseRequest) {
-        if (baseRequest == null || baseRequest.getDeviceInfo() == null)
-            return "";
-        String result = "";
-        try {
-            DeviceInfo deviceInfo = baseRequest.getDeviceInfo();
-            String udidOrImei = "";
-            String openUdid = "";
-            String androidIdOrIDFA = "";
-            String androidSerialNumberOrIDFV = "";
-            if (Os.IOS.getIndex() == deviceInfo.getOs()) {
-                udidOrImei = deviceInfo.getIosInfo().getUdid();
-                openUdid = deviceInfo.getIosInfo().getOpenUdid();
-                androidIdOrIDFA = deviceInfo.getIosInfo().getIdfa();
-                androidSerialNumberOrIDFV = deviceInfo.getIosInfo().getIdfv();
-            } else if (Os.ANDROID.getIndex() == deviceInfo.getOs()) {
-                udidOrImei = deviceInfo.getImei();
-                androidIdOrIDFA = deviceInfo.getAndroidInfo().getAndroidId();
-                androidSerialNumberOrIDFV = deviceInfo.getAndroidInfo().getAndroidSerialNumber();
-            }
-            result = deviceInfo.getMac() + "_&" +
-                    udidOrImei + "_&" +
-                    openUdid + "_&" +
-                    androidIdOrIDFA + "_&" +
-                    androidSerialNumberOrIDFV + "_&_&";
-        } catch (Exception e) {
-            LogContext.instance().error(e, "获取老服务UID字符串错误");
-        }
-        return result;
-    }
-
-    public static String getOldUa4Client(BaseRequest baseRequest) {
-        if (baseRequest == null || baseRequest.getDeviceInfo() == null)
-            return "";
-        String result = "";
-        try {
-            DeviceInfo deviceInfo = baseRequest.getDeviceInfo();
-            String osName = "";
-            if (deviceInfo.getOs() == Os.IOS.getIndex()) {
-                osName = Os.IOS.getName();
-            } else if (deviceInfo.getOs() == Os.ANDROID.getIndex()) {
-                osName = Os.ANDROID.getName();
-            }
-            result = deviceInfo.getBrand() + "_&" +
-                    deviceInfo.getModel() + "_&" +
-                    osName + "_&" +
-                    deviceInfo.getOsVersion() + "_&" +
-                    deviceInfo.getBaseBand() + "_&" +
-                    deviceInfo.getKernel() + "_&" +
-                    deviceInfo.getLac() + "_&" +
-                    deviceInfo.getCellId();
-        } catch (Exception e) {
-            LogContext.instance().error(e, "获取老服务UA字符串错误");
-        }
-        return result;
-    }
-
-//    public static SearchConfigMessageDTO buildSearchConfigMessageDTO(BaseRequest baseRequest, TrayIcon.MessageType messageType,
-//                                                                     Os os, String clientIp,
-//                                                                     List<ConfigMessageStrategyType> strategyTypeList,
-//                                                                     ConfigMessageBoxType configMessageBoxType, User user) {
-//        if (baseRequest == null)
-//            return new SearchConfigMessageDTO();
-//        SearchConfigMessageDTO dto = new SearchConfigMessageDTO();
-//        dto.setConfigMessageStrategyTypeList(strategyTypeList);
-//        dto.setConfigMessageBoxType(configMessageBoxType);
-//        dto.setUser(user);
-//        if (baseRequest.getDeviceInfo() != null) {
-//            if (Os.IOS.equals(os) && baseRequest.getDeviceInfo().getIosInfo() != null) {
-//                dto.setDeviceNo(baseRequest.getDeviceInfo().getIosInfo().getIdfa());
-//                dto.setPhoneModel(baseRequest.getDeviceInfo().getModel());
-//            } else if (Os.ANDROID.equals(os) && baseRequest.getDeviceInfo().getAndroidInfo() != null) {
-//                dto.setDeviceNo(baseRequest.getDeviceInfo().getAndroidInfo().getAndroidId());
+//    public static String getOldUid4Client(BaseRequest baseRequest) {
+//        if (baseRequest == null || baseRequest.getDeviceInfo() == null)
+//            return "";
+//        String result = "";
+//        try {
+//            DeviceInfo deviceInfo = baseRequest.getDeviceInfo();
+//            String udidOrImei = "";
+//            String openUdid = "";
+//            String androidIdOrIDFA = "";
+//            String androidSerialNumberOrIDFV = "";
+//            if (Os.IOS.getIndex() == deviceInfo.getOs()) {
+//                udidOrImei = deviceInfo.getIosInfo().getUdid();
+//                openUdid = deviceInfo.getIosInfo().getOpenUdid();
+//                androidIdOrIDFA = deviceInfo.getIosInfo().getIdfa();
+//                androidSerialNumberOrIDFV = deviceInfo.getIosInfo().getIdfv();
+//            } else if (Os.ANDROID.getIndex() == deviceInfo.getOs()) {
+//                udidOrImei = deviceInfo.getImei();
+//                androidIdOrIDFA = deviceInfo.getAndroidInfo().getAndroidId();
+//                androidSerialNumberOrIDFV = deviceInfo.getAndroidInfo().getAndroidSerialNumber();
 //            }
+//            result = deviceInfo.getMac() + "_&" +
+//                    udidOrImei + "_&" +
+//                    openUdid + "_&" +
+//                    androidIdOrIDFA + "_&" +
+//                    androidSerialNumberOrIDFV + "_&_&";
+//        } catch (Exception e) {
+//            LogContext.instance().error(e, "获取老服务UID字符串错误");
 //        }
-//        if (baseRequest.getOtherInfo() != null) {
-//            dto.setAppId(baseRequest.getOtherInfo().getAppId());
-//            dto.setChannel(baseRequest.getOtherInfo().getChannel());
+//        return result;
+//    }
+//
+//    public static String getOldUa4Client(BaseRequest baseRequest) {
+//        if (baseRequest == null || baseRequest.getDeviceInfo() == null)
+//            return "";
+//        String result = "";
+//        try {
+//            DeviceInfo deviceInfo = baseRequest.getDeviceInfo();
+//            String osName = "";
+//            if (deviceInfo.getOs() == Os.IOS.getIndex()) {
+//                osName = Os.IOS.getName();
+//            } else if (deviceInfo.getOs() == Os.ANDROID.getIndex()) {
+//                osName = Os.ANDROID.getName();
+//            }
+//            result = deviceInfo.getBrand() + "_&" +
+//                    deviceInfo.getModel() + "_&" +
+//                    osName + "_&" +
+//                    deviceInfo.getOsVersion() + "_&" +
+//                    deviceInfo.getBaseBand() + "_&" +
+//                    deviceInfo.getKernel() + "_&" +
+//                    deviceInfo.getLac() + "_&" +
+//                    deviceInfo.getCellId();
+//        } catch (Exception e) {
+//            LogContext.instance().error(e, "获取老服务UA字符串错误");
 //        }
-//        dto.setMessageType(messageType);
-//        if (user != null)
-//            dto.setVipLevelId(user.getVipLevel());
-//        if (os != null)
-//            dto.setOsIndex(os.getIndex());
-//        dto.setBaseRequest(baseRequest);
-//        dto.setClientIp(clientIp);
-//        return dto;
+//        return result;
 //    }
 
     /**

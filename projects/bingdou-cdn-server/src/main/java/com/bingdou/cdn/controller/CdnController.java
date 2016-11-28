@@ -21,11 +21,4 @@ public class CdnController extends CdnBaseController {
         String result = baseDispatch(request, CommonLoggerNameConstants.REQUEST_PARAM_LOG_NAME);
         return result;
     }
-
-    @RequestMapping(value = "/notify", method = RequestMethod.GET)
-    @ResponseBody
-    public String notify(HttpServletRequest request) throws Exception {
-        String result = "ok";
-        return result;
-    }
 }

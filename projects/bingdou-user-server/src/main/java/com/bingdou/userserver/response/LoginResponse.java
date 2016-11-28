@@ -10,7 +10,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * µÇÂ¼ÇëÇóÏìÓ¦
+ * ç™»å½•è¯·æ±‚å“åº”
  */
 public class LoginResponse {
 
@@ -216,7 +216,7 @@ public class LoginResponse {
         try {
             this.vToken = Base64.encodeBase64String(vToken.getBytes("UTF-8"));
         } catch (Exception e) {
-            LogContext.instance().error(e, "×ª»»vtokenÊ§°Ü");
+            LogContext.instance().error(e, "è½¬æ¢vtokenå¤±è´¥");
         }
     }
 

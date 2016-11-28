@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ·¢ËÍÑéÖ¤Âë·şÎñÀà
+ * å‘é€éªŒè¯ç æœåŠ¡ç±»
  */
 @Service
 public class SendCodeService extends BaseService implements IMethodService {
@@ -64,7 +64,7 @@ public class SendCodeService extends BaseService implements IMethodService {
     public ServiceResult execute4Server(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         SendCodeRequest sendCodeRequest = (SendCodeRequest) baseRequest;
         if (StringUtils.isEmpty(sendCodeRequest.getPhoneOrEmail())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         return dealSendCode(request, sendCodeRequest);
     }
@@ -74,7 +74,7 @@ public class SendCodeService extends BaseService implements IMethodService {
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         SendCodeRequest sendCodeRequest = (SendCodeRequest) baseRequest;
         if (StringUtils.isEmpty(sendCodeRequest.getPhoneOrEmail())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         return dealSendCode(request, sendCodeRequest);
     }
@@ -84,46 +84,46 @@ public class SendCodeService extends BaseService implements IMethodService {
         if (isClientRequest(request)) {
             String device = getDevice4Client(request, sendCodeRequest);
             int sendCount = sendSmsOrEmailCacheManager.getSendCount(device);
-            LogContext.instance().info("Éè±¸·¢ËÍ´ÎÊı:" + sendCount);
+            LogContext.instance().info("è®¾å¤‡å‘é€æ¬¡æ•°:" + sendCount);
             if (sendCount >= UserConstants.SEND_SMS_OR_EMAIL_COUNT_EVERY_DAY) {
-                return ServiceResultUtil.illegal("ÄúµÄ·¢ËÍ²Ù×÷¹ıÓÚÆµ·±,ÇëÃ÷ÌìÔÙÊ¹ÓÃ");
+                return ServiceResultUtil.illegal("æ‚¨çš„å‘é€æ“ä½œè¿‡äºé¢‘ç¹,è¯·æ˜å¤©å†ä½¿ç”¨");
             }
         }
         String validationCode = CodecUtils.generateValidateCode();
-        LogContext.instance().info("Éú³ÉµÄÑéÖ¤Âë : " + validationCode);
+        LogContext.instance().info("ç”Ÿæˆçš„éªŒè¯ç  : " + validationCode);
         if (ValidateUtil.isMobileNumber(sendCodeRequest.getPhoneOrEmail())) {
-            LogContext.instance().info("ÏÂ·¢µ½ÊÖ»ú");
+            LogContext.instance().info("ä¸‹å‘åˆ°æ‰‹æœº");
             if (sendCodeRequest.getType() == SendCodeType.BIND.getIndex()) {
-                LogContext.instance().info("°ó¶¨ÇëÇó");
+                LogContext.instance().info("ç»‘å®šè¯·æ±‚");
                 return dealBindMobile(request, sendCodeRequest, validationCode);
             } else if (sendCodeRequest.getType() == SendCodeType.LOST_PASSWORD.getIndex()) {
-                LogContext.instance().info("Íü¼ÇÃÜÂëÇëÇó");
+                LogContext.instance().info("å¿˜è®°å¯†ç è¯·æ±‚");
                 return dealLostPwdMobile(request, sendCodeRequest, validationCode, SendCodeType.LOST_PASSWORD);
             } else if (sendCodeRequest.getType() == SendCodeType.PHONE_REGISTER.getIndex()) {
-                LogContext.instance().info("ÊÖ»úºÅ×¢²áÇëÇó");
+                LogContext.instance().info("æ‰‹æœºå·æ³¨å†Œè¯·æ±‚");
                 return dealPhoneRegister(request, sendCodeRequest, validationCode);
             } else if (sendCodeRequest.getType() == SendCodeType.MODIFY_PASSWORD.getIndex()) {
-                LogContext.instance().info("ĞŞ¸ÄÃÜÂëÇëÇó");
+                LogContext.instance().info("ä¿®æ”¹å¯†ç è¯·æ±‚");
                 return dealModifyPwdMobile(request, sendCodeRequest, validationCode);
             } else {
-                return ServiceResultUtil.illegal("ÇëÇóÀàĞÍÓĞÎó");
+                return ServiceResultUtil.illegal("è¯·æ±‚ç±»å‹æœ‰è¯¯");
             }
         } else if (ValidateUtil.isEmail(sendCodeRequest.getPhoneOrEmail())) {
-            LogContext.instance().info("ÏÂ·¢µ½ÓÊÏä");
+            LogContext.instance().info("ä¸‹å‘åˆ°é‚®ç®±");
             if (sendCodeRequest.getType() == SendCodeType.BIND.getIndex()) {
-                LogContext.instance().info("°ó¶¨ÇëÇó");
+                LogContext.instance().info("ç»‘å®šè¯·æ±‚");
                 return dealBindEmail(request, sendCodeRequest, validationCode);
             } else if (sendCodeRequest.getType() == SendCodeType.LOST_PASSWORD.getIndex()) {
-                LogContext.instance().info("Íü¼ÇÃÜÂëÇëÇó");
+                LogContext.instance().info("å¿˜è®°å¯†ç è¯·æ±‚");
                 return dealLostPwdEmail(request, sendCodeRequest, validationCode);
             } else if (sendCodeRequest.getType() == SendCodeType.MODIFY_PASSWORD.getIndex()) {
-                LogContext.instance().info("ĞŞ¸ÄÃÜÂëÇëÇó");
+                LogContext.instance().info("ä¿®æ”¹å¯†ç è¯·æ±‚");
                 return dealModifyPwdEmail(request, sendCodeRequest, validationCode);
             } else {
-                return ServiceResultUtil.illegal("ÇëÇóÀàĞÍÓĞÎó");
+                return ServiceResultUtil.illegal("è¯·æ±‚ç±»å‹æœ‰è¯¯");
             }
         } else {
-            return ServiceResultUtil.illegal("ÊÖ»úºÅ»òÓÊÏä¸ñÊ½ÓĞÎó");
+            return ServiceResultUtil.illegal("æ‰‹æœºå·æˆ–é‚®ç®±æ ¼å¼æœ‰è¯¯");
         }
     }
 
@@ -131,7 +131,7 @@ public class SendCodeService extends BaseService implements IMethodService {
                                          String validationCode) throws Exception {
         User user = userBaseService.getDetailByMobile(sendCodeRequest.getPhoneOrEmail());
         if (user != null) {
-            return ServiceResultUtil.illegal("¸ÃÊÖ»úºÅÒÑ°ó¶¨");
+            return ServiceResultUtil.illegal("è¯¥æ‰‹æœºå·å·²ç»‘å®š");
         }
         user = userBaseService.getDetailByIdOrCpIdOrLoginName(sendCodeRequest.getAccount());
         String errorMessage = getUserStatusErrorMessage(user);
@@ -139,7 +139,7 @@ public class SendCodeService extends BaseService implements IMethodService {
             return ServiceResultUtil.illegal(errorMessage);
         }
         if (StringUtils.isNotEmpty(user.getMobile())) {
-            return ServiceResultUtil.illegal("¸ÃÕËºÅÒÑ¾­°ó¶¨ÁËÊÖ»úºÅ");
+            return ServiceResultUtil.illegal("è¯¥è´¦å·å·²ç»ç»‘å®šäº†æ‰‹æœºå·");
         }
         if (!validateRequestToken(request, user.getId(), sendCodeRequest)) {
             return ServiceResultUtil.tokenExpired();
@@ -152,7 +152,7 @@ public class SendCodeService extends BaseService implements IMethodService {
                                         String validationCode) throws Exception {
         User user = userBaseService.getDetailByEmail(sendCodeRequest.getPhoneOrEmail());
         if (user != null) {
-            return ServiceResultUtil.illegal("¸ÃÓÊÏäÒÑ°ó¶¨");
+            return ServiceResultUtil.illegal("è¯¥é‚®ç®±å·²ç»‘å®š");
         }
         user = userBaseService.getDetailByIdOrCpIdOrLoginName(sendCodeRequest.getAccount());
         String errorMessage = getUserStatusErrorMessage(user);
@@ -160,13 +160,13 @@ public class SendCodeService extends BaseService implements IMethodService {
             return ServiceResultUtil.illegal(errorMessage);
         }
         if (StringUtils.isNotEmpty(user.getEmail())) {
-            return ServiceResultUtil.illegal("¸ÃÓÊÏäÒÑ¾­°ó¶¨£¬²»ÄÜÔÙ°ó¶¨");
+            return ServiceResultUtil.illegal("è¯¥é‚®ç®±å·²ç»ç»‘å®šï¼Œä¸èƒ½å†ç»‘å®š");
         }
         boolean existsEmailLoginName = userBaseService.isExistsLoginName(sendCodeRequest.getPhoneOrEmail());
         if (existsEmailLoginName && user.getLoginName().contains("@")) {
-            LogContext.instance().info("ÓÃ»§ÃûÊÇÓÊÏäµÄÀÏÓÃ»§ÅĞ¶ÏÂß¼­");
+            LogContext.instance().info("ç”¨æˆ·åæ˜¯é‚®ç®±çš„è€ç”¨æˆ·åˆ¤æ–­é€»è¾‘");
             if (!user.getLoginName().equals(sendCodeRequest.getPhoneOrEmail())) {
-                return ServiceResultUtil.illegal("¸ÃÓÊÏäÒÑ¾­°ó¶¨£¬²»ÄÜÔÙ°ó¶¨");
+                return ServiceResultUtil.illegal("è¯¥é‚®ç®±å·²ç»ç»‘å®šï¼Œä¸èƒ½å†ç»‘å®š");
             }
         }
         if (!validateRequestToken(request, user.getId(), sendCodeRequest)) {
@@ -179,11 +179,11 @@ public class SendCodeService extends BaseService implements IMethodService {
                                             String validationCode) throws Exception {
         User user = userBaseService.getDetailByMobile(sendCodeRequest.getPhoneOrEmail());
         if (user != null) {
-            return ServiceResultUtil.illegal("¸ÃÊÖ»úºÅÒÑ¾­×¢²á");
+            return ServiceResultUtil.illegal("è¯¥æ‰‹æœºå·å·²ç»æ³¨å†Œ");
         }
         user = userBaseService.getDetailByLoginName(sendCodeRequest.getPhoneOrEmail());
         if (user != null) {
-            return ServiceResultUtil.illegal("¸ÃÊÖ»úºÅÒÑ¾­×¢²á");
+            return ServiceResultUtil.illegal("è¯¥æ‰‹æœºå·å·²ç»æ³¨å†Œ");
         }
         ValidateCode validateCode = validateCodeService.getValidateCode4Mobile(sendCodeRequest.getPhoneOrEmail(),
                 SendCodeType.PHONE_REGISTER);
@@ -205,10 +205,10 @@ public class SendCodeService extends BaseService implements IMethodService {
                                               String validationCode) throws Exception {
         User user = userBaseService.getDetailByIdOrCpIdOrLoginName(sendCodeRequest.getAccount());
         if (user == null) {
-            return ServiceResultUtil.illegal("ÓÃ»§Ãû´íÎó");
+            return ServiceResultUtil.illegal("ç”¨æˆ·åé”™è¯¯");
         }
         if (!sendCodeRequest.getPhoneOrEmail().equals(user.getMobile())) {
-            return ServiceResultUtil.illegal("ÕËºÅºÍÊÖ»úºÅ²»Æ¥Åä");
+            return ServiceResultUtil.illegal("è´¦å·å’Œæ‰‹æœºå·ä¸åŒ¹é…");
         }
         String errorMessage = getUserStatusErrorMessage(user);
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -225,10 +225,10 @@ public class SendCodeService extends BaseService implements IMethodService {
                                              String validationCode) throws Exception {
         User user = userBaseService.getDetailByIdOrCpIdOrLoginName(sendCodeRequest.getAccount());
         if (user == null) {
-            return ServiceResultUtil.illegal("ÓÃ»§Ãû´íÎó");
+            return ServiceResultUtil.illegal("ç”¨æˆ·åé”™è¯¯");
         }
         if (!sendCodeRequest.getPhoneOrEmail().equals(user.getEmail())) {
-            return ServiceResultUtil.illegal("ÕËºÅºÍÊÖ»úºÅ²»Æ¥Åä");
+            return ServiceResultUtil.illegal("è´¦å·å’Œæ‰‹æœºå·ä¸åŒ¹é…");
         }
         String errorMessage = getUserStatusErrorMessage(user);
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -244,7 +244,7 @@ public class SendCodeService extends BaseService implements IMethodService {
                                             String validationCode, SendCodeType sendCodeType) throws Exception {
         User user = userBaseService.getDetailByMobile(sendCodeRequest.getPhoneOrEmail());
         if (user == null) {
-            return ServiceResultUtil.illegal("¸ÃÊÖ»úºÅÎ´°ó¶¨");
+            return ServiceResultUtil.illegal("è¯¥æ‰‹æœºå·æœªç»‘å®š");
         }
         String errorMessage = getUserStatusErrorMessage(user);
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -257,7 +257,7 @@ public class SendCodeService extends BaseService implements IMethodService {
                                            String validationCode) throws Exception {
         User user = userBaseService.getDetailByEmail(sendCodeRequest.getPhoneOrEmail());
         if (user == null) {
-            return ServiceResultUtil.illegal("¸ÃÓÊÏäÎ´°ó¶¨");
+            return ServiceResultUtil.illegal("è¯¥é‚®ç®±æœªç»‘å®š");
         }
         String errorMessage = getUserStatusErrorMessage(user);
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -268,7 +268,7 @@ public class SendCodeService extends BaseService implements IMethodService {
 
     private String validateCodeTime(long validateCodeTime) {
         if (DateUtil.getCurrentTimeSeconds() - validateCodeTime < UserConstants.VALIDATION_CODE_SEND_INTERVAL_SECONDS) {
-            return "Á½´Î·¢ËÍ¼ä¸ô²»×ã" + UserConstants.VALIDATION_CODE_SEND_INTERVAL_SECONDS + "Ãë";
+            return "ä¸¤æ¬¡å‘é€é—´éš”ä¸è¶³" + UserConstants.VALIDATION_CODE_SEND_INTERVAL_SECONDS + "ç§’";
         }
         return "";
     }
@@ -283,19 +283,19 @@ public class SendCodeService extends BaseService implements IMethodService {
                 return ServiceResultUtil.illegal(errorMessage);
             }
         }
-        String title = "±ù¶¹Ö±²¥";
+        String title = "å†°è±†ç›´æ’­";
         String content = validationCode + UserConstants.SEND_CODE_TEMPLATE_4_EMAIL;
         if (EmailUtil.sendEmail(sendCodeRequest.getPhoneOrEmail(), title, content)) {
-            LogContext.instance().info("·¢ËÍÓÊ¼ş³É¹¦");
+            LogContext.instance().info("å‘é€é‚®ä»¶æˆåŠŸ");
             validateCodeService.insertOrUpdateValidateCode4Email(sendCodeRequest.getPhoneOrEmail(), validationCode,
                     sendCodeType);
-            LogContext.instance().info("¸üĞÂÓÃ»§ÑéÖ¤ÂëºÍ·¢ËÍÊ±¼ä³É¹¦");
+            LogContext.instance().info("æ›´æ–°ç”¨æˆ·éªŒè¯ç å’Œå‘é€æ—¶é—´æˆåŠŸ");
             updateSendCount(getDevice4Client(request, sendCodeRequest));
             DataLogUtils.recordHadoopLog(HadoopLogAction.SEND_CODE, sendCodeRequest, user,
                     RequestUtil.getClientIp(sendCodeRequest.getRequest()), "", validationCode, false);
             return ServiceResultUtil.success();
         }
-        return ServiceResultUtil.illegal("ÓÊ¼ş·¢ËÍÊ§°Ü");
+        return ServiceResultUtil.illegal("é‚®ä»¶å‘é€å¤±è´¥");
     }
 
     private ServiceResult sendSMS4BindAndLostPwdAndModifyPwd(SendCodeRequest sendCodeRequest, String validationCode,
@@ -313,16 +313,16 @@ public class SendCodeService extends BaseService implements IMethodService {
         String device = getDevice4Client(request, sendCodeRequest);
         String ip = RequestUtil.getClientIp(request);
         if (smsSendService.sendSMS(sendCodeRequest.getPhoneOrEmail(), content, sendCodeType, device, ip)) {
-            LogContext.instance().info("·¢ËÍ¶ÌĞÅ³É¹¦");
+            LogContext.instance().info("å‘é€çŸ­ä¿¡æˆåŠŸ");
             validateCodeService.insertOrUpdateValidateCode4Mobile(sendCodeRequest.getPhoneOrEmail(),
                     validationCode, sendCodeType);
-            LogContext.instance().info("¸üĞÂÓÃ»§ÑéÖ¤ÂëºÍ·¢ËÍÊ±¼ä³É¹¦");
+            LogContext.instance().info("æ›´æ–°ç”¨æˆ·éªŒè¯ç å’Œå‘é€æ—¶é—´æˆåŠŸ");
             updateSendCount(device);
             DataLogUtils.recordHadoopLog(HadoopLogAction.SEND_CODE, sendCodeRequest, user,
                     RequestUtil.getClientIp(sendCodeRequest.getRequest()), "", validationCode, false);
             return ServiceResultUtil.success();
         }
-        return ServiceResultUtil.illegal("¶ÌĞÅ·¢ËÍÊ§°Ü");
+        return ServiceResultUtil.illegal("çŸ­ä¿¡å‘é€å¤±è´¥");
     }
 
     private ServiceResult sendSMS4PhoneRegister(HttpServletRequest request, SendCodeRequest sendCodeRequest,
@@ -332,18 +332,18 @@ public class SendCodeService extends BaseService implements IMethodService {
         String ip = RequestUtil.getClientIp(request);
         if (smsSendService.sendSMS(sendCodeRequest.getPhoneOrEmail(), content, SendCodeType.PHONE_REGISTER,
                 device, ip)) {
-            LogContext.instance().info("·¢ËÍ¶ÌĞÅ³É¹¦");
+            LogContext.instance().info("å‘é€çŸ­ä¿¡æˆåŠŸ");
             updateSendCount(device);
             DataLogUtils.recordHadoopLog(HadoopLogAction.SEND_CODE, sendCodeRequest, null,
                     RequestUtil.getClientIp(sendCodeRequest.getRequest()), "", validationCode, false);
             return ServiceResultUtil.success();
         }
-        return ServiceResultUtil.illegal("¶ÌĞÅ·¢ËÍÊ§°Ü");
+        return ServiceResultUtil.illegal("çŸ­ä¿¡å‘é€å¤±è´¥");
     }
 
     private void updateSendCount(String device) {
         boolean result = sendSmsOrEmailCacheManager.updateSendCount(device);
-        LogContext.instance().info("·¢ËÍ´ÎÊı¼Ó1½á¹û:" + result);
+        LogContext.instance().info("å‘é€æ¬¡æ•°åŠ 1ç»“æœ:" + result);
     }
 
     private String getDevice4Client(HttpServletRequest request, SendCodeRequest sendCodeRequest) {
@@ -359,7 +359,7 @@ public class SendCodeService extends BaseService implements IMethodService {
             }
             return device;
         } catch (Exception e) {
-            LogContext.instance().error(e, "»ñÈ¡Éè±¸±êÊ¶´íÎó");
+            LogContext.instance().error(e, "è·å–è®¾å¤‡æ ‡è¯†é”™è¯¯");
         }
         return "";
     }

@@ -5,12 +5,12 @@ import com.bingdou.tools.JsonUtil;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * 更新昵称请求
+ * 鏇存柊鏄电О璇锋眰
  */
 public class UpdateNicknameRequest extends BaseRequest {
 
     /**
-     * 用户账号,可以是登录名或者CP ID
+     * 鐢ㄦ埛璐﹀彿,鍙互鏄櫥褰曞悕鎴栬�匔P ID
      */
     @SerializedName("account")
     private String account;

@@ -62,8 +62,10 @@ public class RegisterService extends BaseService implements IMethodService {
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         RegisterRequest registerRequest = (RegisterRequest) baseRequest;
 //        Application application = getValidApplication4Client(registerRequest);
-        String ua = UserUtils.getOldUa4Client(baseRequest);
-        String uid = UserUtils.getOldUid4Client(baseRequest);
+//        String ua = UserUtils.getOldUa4Client(baseRequest);
+//        String uid = UserUtils.getOldUid4Client(baseRequest);
+        String uid = "";
+        String ua = "";
         return dealRegister(registerRequest, request, uid, ua);
     }
 

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * µÇÂ¼·şÎñÀà
+ * ç™»å½•æœåŠ¡ç±»
  */
 @Service
 public class LoginService extends BaseService implements IMethodService {
@@ -71,7 +71,7 @@ public class LoginService extends BaseService implements IMethodService {
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         LoginRequest loginRequest = (LoginRequest) baseRequest;
         if (loginRequest.getOtherInfo() == null) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
 //        Application application = getValidApplication4Client(loginRequest);
         return dealLogin(loginRequest, request);
@@ -82,7 +82,7 @@ public class LoginService extends BaseService implements IMethodService {
     private ServiceResult dealLogin(LoginRequest loginRequest,
                                     HttpServletRequest request) throws Exception {
         if (StringUtils.isEmpty(loginRequest.getAccount())) {
-            return ServiceResultUtil.illegal("ÕÊºÅÎª¿Õ");
+            return ServiceResultUtil.illegal("å¸å·ä¸ºç©º");
         }
         User user = userBaseService.getUserDetailByAccount(loginRequest.getAccount());
         String errorMessage = getUserStatusErrorMessage(user);
@@ -94,13 +94,13 @@ public class LoginService extends BaseService implements IMethodService {
         if (isClientRequest && StringUtils.isEmpty(loginRequest.getPassword())
                 && StringUtils.isNotEmpty(loginRequest.getToken())) {
             isAutoLogin = true;
-            LogContext.instance().info("×Ô¶¯µÇÂ¼Âß¼­");
+            LogContext.instance().info("è‡ªåŠ¨ç™»å½•é€»è¾‘");
             String tokenDevice = getDeviceNo4Client(loginRequest);
 
             boolean checkResult = userBaseService.checkUserToken4Client(user.getId(),
                         loginRequest.getToken(), tokenDevice, getSafeInfo(request));
             if (!checkResult) {
-                return ServiceResultUtil.illegal("×Ô¶¯µÇÂ¼Ê§Ğ§£¬ÇëÖØĞÂµÇÂ¼");
+                return ServiceResultUtil.illegal("è‡ªåŠ¨ç™»å½•å¤±æ•ˆï¼Œè¯·é‡æ–°ç™»å½•");
             }
         }
         String clientIp = RequestUtil.getClientIp(request);
@@ -120,50 +120,23 @@ public class LoginService extends BaseService implements IMethodService {
         String sdkVersion = "";
         LoginResponse loginResponse = new LoginResponse();
         if (isClientRequest) {
-            LogContext.instance().info("¿Í»§¶Ë×¨ÓĞÂß¼­");
+            LogContext.instance().info("å®¢æˆ·ç«¯ä¸“æœ‰é€»è¾‘");
             sdkVersion = loginRequest.getOtherInfo().getSdkVersion();
-            oldUid = UserUtils.getOldUid4Client(loginRequest);
-            oldUa = UserUtils.getOldUa4Client(loginRequest);
+//            oldUid = UserUtils.getOldUid4Client(loginRequest);
+//            oldUa = UserUtils.getOldUa4Client(loginRequest);
             Os os = getClientOsByRequest(loginRequest);
             tokenDevice = getDeviceNo4Client(loginRequest);
 //            isNewDevice = deviceService.isNewDevice(loginRequest.getDeviceInfo());
-//            LogContext.instance().info("ÊÇ·ñÊÇĞÂÉè±¸:" + isNewDevice);
-//            isSupportVirtualMoney = switchRuleService.isSupportVirtualMoney(application.getAppId(), application.getOs(),
-//                    loginRequest.getOtherInfo().getChannel());
-//            LogContext.instance().info("»ñÈ¡ÓÎÏ·±Ò¿ª¹Ø½á¹û:" + isSupportVirtualMoney);
-//            if (Os.IOS.equals(os)) {
-//                isSupportLive = switchRuleService.isSupportLive(application.getAppId(), os.getIndex(),
-//                        loginRequest.getOtherInfo().getChannel());
-//                LogContext.instance().info("»ñÈ¡Ö±²¥¿ª¹Ø½á¹û:" + isSupportLive);
-//            }
-//            List<ConfigMessage> configMessageList = messageService.getConfigMessageBox4Login(
-//                    loginRequest, os, clientIp, isNewUser, user, false);
-//            loginResponse.setMessageInfoList(UserServerUtils.convertMessageInfoListBy(configMessageList));
-//            voucherService.giveVoucher4Login(user, loginRequest, application.getAppId(),
-//                    clientIp, isNewUser);
-
-//            int unreadMessageCount = messageService.getMessageCountByUserId(user.getId(),
-//                    MessageStatus.UNREAD);
-//            LogContext.instance().info("Î´¶ÁÏûÏ¢ÊıÁ¿:" + unreadMessageCount);
-//            loginResponse.setUnreadMessageNum(unreadMessageCount);
-//            String model = os == Os.IOS ? loginRequest.getDeviceInfo().getModel() : "";
-//            List<Notice> noticeList = noticeService.getNoticeList4Login(user, loginRequest,
-//                    isNewUser, isPad(loginRequest), application.getAppId(), loginRequest.getOtherInfo().getChannel(),
-//                    model);
-//            loginResponse.setNoticeInfoList(UserServerUtils.covertNoticeInfoListBy(noticeList));
-//            userChannelMoveService.addMoveChannelRecord4Client(user.getId(), loginRequest, false);
-//            userStatisticsService.recordUserSourceReport4Client(user.getId(), application, loginRequest, false);
+//            LogContext.instance().info("æ˜¯å¦æ˜¯æ–°è®¾å¤‡:" + isNewDevice);
         }
         loginBaseService.setLastLoginInfo(user.getId(), clientIp, oldUid, oldUa);
         boolean updateTokenResult = userBaseService.updateToken(user, tokenDevice, getSafeInfo(request), false);
-        LogContext.instance().info("¸üĞÂtoken½á¹û:" + updateTokenResult);
+        LogContext.instance().info("æ›´æ–°tokenç»“æœ:" + updateTokenResult);
         DataLogUtils.recordHadoopLog(isAutoLogin ? HadoopLogAction.AUTO_LOGIN : HadoopLogAction.LOGIN,
                 loginRequest, user, clientIp, "", "", isNewDevice);
-//        int virtualMoneyFen = getVirtualMoneyFen4Show(user.getId(), application.getOs(), sdkVersion,
-//                false, isSupportVirtualMoney);
         loginResponse.parseFromUser(user, null, isSupportVirtualMoney, isSigned, 0);
         JsonElement result = JsonUtil.bean2JsonTree(loginResponse);
-        LogContext.instance().info("µÇÂ¼³É¹¦");
+        LogContext.instance().info("ç™»å½•æˆåŠŸ");
         return ServiceResultUtil.success(result);
     }
 
@@ -171,7 +144,7 @@ public class LoginService extends BaseService implements IMethodService {
         int errorCount;
         if (user.isLoginErrorInOneHour()) {
             if (user.isTouchLoginErrorTimes()) {
-                throw new Exception("Âß¼­´íÎó£¬ÒÑÑéÖ¤¹ı¸ÃÂ·¾¶");
+                throw new Exception("é€»è¾‘é”™è¯¯ï¼Œå·²éªŒè¯è¿‡è¯¥è·¯å¾„");
             } else {
                 errorCount = user.getLoginError();
             }
@@ -181,9 +154,9 @@ public class LoginService extends BaseService implements IMethodService {
         }
         loginBaseService.setLoginError(user.getId(), errorCount + 1);
         if (errorCount > 2 && errorCount < 5) {
-            return "ÃÜÂë´íÎó£¬Á¬ĞøÊä´í5´Î½«½ûÓÃ1Ğ¡Ê±£¬" + "»¹ÓĞ" + (5 - errorCount) + "´Î";
+            return "å¯†ç é”™è¯¯ï¼Œè¿ç»­è¾“é”™5æ¬¡å°†ç¦ç”¨1å°æ—¶ï¼Œ" + "è¿˜æœ‰" + (5 - errorCount) + "æ¬¡";
         }
-        return "ÃÜÂë´íÎó";
+        return "å¯†ç é”™è¯¯";
     }
 
 }

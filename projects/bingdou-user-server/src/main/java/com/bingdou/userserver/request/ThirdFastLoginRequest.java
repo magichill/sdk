@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * µÚÈı·½ÊÚÈ¨µÇÂ¼ÇëÇó
+ * ç¬¬ä¸‰æ–¹æˆæƒç™»å½•è¯·æ±‚
  */
 public class ThirdFastLoginRequest extends BaseRequest {
 

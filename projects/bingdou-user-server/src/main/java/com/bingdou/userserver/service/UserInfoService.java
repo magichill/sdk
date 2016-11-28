@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ÓÃ»§ĞÅÏ¢·şÎñÀà
+ * ç”¨æˆ·ä¿¡æ¯æœåŠ¡ç±»
  */
 @Service
 public class UserInfoService extends BaseService implements IMethodService {
@@ -66,23 +66,22 @@ public class UserInfoService extends BaseService implements IMethodService {
 
     private ServiceResult deal(HttpServletRequest request, GetUserInfoRequest getUserInfoRequest, User user) throws Exception {
         if (StringUtils.isEmpty(getUserInfoRequest.getAccount())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         GetUserInfoResponse getUserInfoResponse = new GetUserInfoResponse();
-        //TODO ÓÃ»§µÈ¼¶Ôİ²»¿¼ÂÇ
+        //TODO ç”¨æˆ·ç­‰çº§æš‚ä¸è€ƒè™‘
 //        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
-        LogContext.instance().info("»ñÈ¡ÓÃ»§TOKEN¶ÔÏó");
+        LogContext.instance().info("è·å–ç”¨æˆ·TOKENå¯¹è±¡");
         UserToken userToken = userBaseService.getUserTokenObject(user.getId());
         if (userToken != null) {
             user.setToken(userToken.getToken());
             user.setvToken(userToken.getValidateToken());
         }
-        boolean isSupportLive = false;
         boolean isSupportVirtualMoney = false;
         boolean isSigned = false;
         getUserInfoResponse.parseFromUser(user, null, isSupportVirtualMoney, isSigned, 0);
         JsonElement result = JsonUtil.bean2JsonTree(getUserInfoResponse);
-        LogContext.instance().info("»ñÈ¡ÓÃ»§ĞÅÏ¢³É¹¦");
+        LogContext.instance().info("è·å–ç”¨æˆ·ä¿¡æ¯æˆåŠŸ");
         return ServiceResultUtil.success(result);
     }
 
