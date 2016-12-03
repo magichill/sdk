@@ -1,4 +1,4 @@
-package com.bingdou.core.model;
+package com.bingdou.core.model.live;
 
 import com.bingdou.tools.IndexUtil;
 

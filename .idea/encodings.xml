@@ -45,13 +45,13 @@
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/mapper/user/ISmsSendRecordMapper.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/mapper/user/IValidateCodeMapper.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/Application.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/Live.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/Os.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/SafeInfo.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/SendCodeType.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/SmsSendRecord.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/UserStatus.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/UserToken.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/model/live/Live.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/repository/pay/AppBaseDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/repository/safe/SafeDao.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/projects/bingdou-core/src/main/java/com/bingdou/core/repository/user/BindDao.java" charset="GBK" />

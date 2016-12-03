@@ -9,6 +9,7 @@ dependencies {
             libraries.'mybatis',
             libraries.'mybatis-spring',
             libraries.'dbcp',
+            libraries.'jersey-bundle',
             project(':projects/bingdou-tools')
     )
 

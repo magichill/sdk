@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 public class CreateLiveRequest extends BaseRequest {
 
     @SerializedName("user_id")
-    private int userId;
+    private long userId;
 
     @SerializedName("live_title")
     private String liveTitle;
@@ -30,11 +30,11 @@ public class CreateLiveRequest extends BaseRequest {
         return request;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

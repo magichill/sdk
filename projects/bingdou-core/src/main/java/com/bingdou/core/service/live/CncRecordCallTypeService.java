@@ -30,6 +30,8 @@ public class CncRecordCallTypeService implements IRecordCallTypeService {
             dealCallbackStart(request);
         }else if(messageType.equals(MESSAGE_TYPE_FINISH)){
             dealCallbackFinish(request);
+        }else{
+            LogContext.instance().warn("网宿消息类型参数不正确");
         }
 
     }

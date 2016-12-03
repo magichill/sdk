@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by gaoshan on 16-11-24.
@@ -32,7 +33,7 @@ public class CallbackController {
 
     @RequestMapping(value = "cnc", method = RequestMethod.POST)
     @ResponseBody
-    public String cnc_callback(HttpServletRequest request, @RequestBody String cncRecordRequest) {
+    public String cnc_callback(HttpServletRequest request, HttpServletResponse response, @RequestBody String cncRecordRequest) {
         boolean isSuccess = false;
         try {
             initLogger();
@@ -42,10 +43,12 @@ public class CallbackController {
             getResponse(request,RecordType.CNC);
         } catch (Exception e) {
             LogContext.instance().error(e, "网宿录播回调失败");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         } finally {
             LogContext.instance().info("网宿录播回调回调结果:" + isSuccess);
             LogContext.instance().info("网宿录播回调结束");
         }
+
         return isSuccess ? "Y" : "N";
     }
 

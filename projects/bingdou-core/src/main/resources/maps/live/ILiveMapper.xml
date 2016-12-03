@@ -20,7 +20,7 @@
         ]]>
     </insert>
 
-    <insert id="addLiveIndex" parameterType="com.bingdou.core.model.Live">
+    <insert id="addLiveIndex" parameterType="com.bingdou.core.model.live.Live">
         <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
@@ -36,7 +36,14 @@
         ]]>
     </select>
 
-    <resultMap id="liveDetail" type="com.bingdou.core.model.Live">
+    <update id="updateLive" parameterType="java.util.Map">
+        <![CDATA[
+        update ${liveDB}.lc_live${@com.bingdou.core.model.Live@getTableNumber(liveId)}
+        set status=#{status},replay_url=#{replayUrl}
+        where id=#{liveId}
+        ]]>
+    </update>
+    <resultMap id="liveDetail" type="com.bingdou.core.model.live.Live">
         <result property="id" column="id"/>
         <result property="liveTitle" column="live_title"/>
         <result property="livePicture" column="live_picture"/>
@@ -44,6 +51,7 @@
         <result property="mid" column="mid"/>
         <result property="pushStream" column="push_stream"/>
         <result property="pullStream" column="pull_stream"/>
+        <result property="replayUrl" column="replay_url"/>
     </resultMap>
 
 </mapper>

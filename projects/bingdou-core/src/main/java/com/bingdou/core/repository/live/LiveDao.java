@@ -1,7 +1,7 @@
 package com.bingdou.core.repository.live;
 
 import com.bingdou.core.mapper.live.ILiveMapper;
-import com.bingdou.core.model.Live;
+import com.bingdou.core.model.live.Live;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

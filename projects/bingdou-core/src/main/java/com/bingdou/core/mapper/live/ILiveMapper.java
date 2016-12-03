@@ -1,6 +1,6 @@
 package com.bingdou.core.mapper.live;
 
-import com.bingdou.core.model.Live;
+import com.bingdou.core.model.live.Live;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

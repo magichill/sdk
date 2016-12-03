@@ -29,13 +29,14 @@ ext.versions = [
         junit             : '4.12',
         jaxen             : '1.1.6',
         chinaPay          : '1.0',
-        bcprov            : 'jdk15on-154'
+        bcprov            : 'jdk15on-154',
+        jersey            : '1.19.2'
 ]
 
 // 各种可能会用到的jar包
 ext.libraries = [
 
-        // Spring 
+        // Spring
         "spring-core"           : "org.springframework:spring-core:${versions.spring}",
         "spring-beans"          : "org.springframework:spring-beans:${versions.spring}",
         "spring-context"        : "org.springframework:spring-context:${versions.spring}",
@@ -78,5 +79,6 @@ ext.libraries = [
         "jaxen"                 : "jaxen:jaxen:${versions.jaxen}",
         "bcprov"                : "org.bouncycastle:bcprov:${versions.bcprov}",
         // Junit
-        "junit"                 : "junit:junit:${versions.junit}"
+        "junit"                 : "junit:junit:${versions.junit}",
+        "jersey-bundle"         : "com.sun.jersey:jersey-bundle:${versions.jersey}"
 ]

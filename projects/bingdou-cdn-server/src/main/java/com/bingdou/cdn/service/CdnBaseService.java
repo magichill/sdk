@@ -3,7 +3,7 @@ package com.bingdou.cdn.service;
 import com.bingdou.cdn.constant.LiveType;
 import com.bingdou.cdn.request.CreateLiveRequest;
 import com.bingdou.cdn.response.CreateLiveResponse;
-import com.bingdou.core.model.Live;
+import com.bingdou.core.model.live.Live;
 import com.bingdou.core.repository.live.LiveDao;
 import com.bingdou.tools.LogContext;
 import org.springframework.beans.factory.annotation.Autowired;

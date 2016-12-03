@@ -10,7 +10,7 @@ configure(subprojects.findAll { it.name.contains('server') }) {
 
     dependencies {
 
-        // providedCompile 鏄湪 war 鎻掍欢涓嬪畾涔夌殑
+        // providedCompile
         providedCompile(
                 libraries.'servlet-api'
         )
@@ -61,7 +61,7 @@ subprojects {
     }
 
     jar {
-        manifest.attributes provider: 'haima'
+        manifest.attributes provider: 'bingdou'
     }
 
     configurations {

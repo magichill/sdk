@@ -1,6 +1,6 @@
 package com.bingdou.api.service;
 
-import com.bingdou.core.model.Live;
+import com.bingdou.core.model.live.Live;
 import com.bingdou.core.repository.live.LiveDao;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.tools.LogContext;
