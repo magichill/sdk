@@ -20,14 +20,15 @@ public class CdnBaseService {
     private LiveDao liveDao;
 
     @Transactional
-    public void createLive(CreateLiveRequest createLiveRequest, CreateLiveResponse response){
+    public void createLive(CreateLiveRequest createLiveRequest, CreateLiveResponse response,String streamName){
         Live live = new Live();
 
         live.setLiveTitle(createLiveRequest.getLiveTitle());
-        live.setMid(Integer.valueOf(createLiveRequest.getUserId()));
+        live.setMid(createLiveRequest.getUserId());
         live.setLiveType(LiveType.LIVE.getIndex());
         live.setPushStream(response.getPushUrl());
         live.setPullStream(response.getPlayUrl());
+        live.setStreamName(streamName);
 
         liveDao.addLiveIndex(live);
         if (live.getId() <= 0) {

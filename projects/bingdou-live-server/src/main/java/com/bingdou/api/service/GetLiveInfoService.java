@@ -40,16 +40,19 @@ public class GetLiveInfoService extends BaseService implements IMethodService {
 
     @Override
     public ServiceResult execute4Server(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
+        GetLiveInfoRequest getLiveInfoRequest = (GetLiveInfoRequest) baseRequest;
+
         return null;
     }
 
     @Override
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
+        GetLiveInfoRequest getLiveInfoRequest = (GetLiveInfoRequest) baseRequest;
+
         return null;
     }
 
-    private ServiceResult dealFindLive(GetLiveInfoRequest getLiveInfoRequest, HttpServletRequest request) throws Exception {
-
+    private ServiceResult getLiveInfo(GetLiveInfoRequest getLiveInfoRequest, HttpServletRequest request) throws Exception {
 
         return ServiceResultUtil.success(JsonUtil.bean2JsonTree(""));
     }

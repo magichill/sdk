@@ -5,9 +5,11 @@ import com.bingdou.core.model.live.CncRecordStartRequest;
 import com.bingdou.core.model.live.RecordType;
 import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by gaoshan on 16-11-25.
@@ -17,6 +19,9 @@ public class CncRecordCallTypeService implements IRecordCallTypeService {
 
     private static final String MESSAGE_TYPE_START = "ws_record_start";
     private static final String MESSAGE_TYPE_FINISH = "ws_record_finish";
+
+    @Autowired
+    private RecordCallbackService recordCallbackService;
 
     @Override
     public String getCallType() {
@@ -47,5 +52,11 @@ public class CncRecordCallTypeService implements IRecordCallTypeService {
         CncRecordFinishRequest cncRequest = JsonUtil.jsonStr2Bean((String)request.getAttribute("cncRequest"),CncRecordFinishRequest.class);
         LogContext.instance().info("处理网宿录制结束回调请求");
         LogContext.instance().info("请求参数:"+ JsonUtil.bean2JsonStr(cncRequest));
+        List<CncRecordFinishRequest.FinishItem> items = cncRequest.getItems();
+        for(CncRecordFinishRequest.FinishItem item : items ){
+            recordCallbackService.notifyAppServer(item.getStreamName(),false,item.getUrls().get(0));
+        }
     }
+
+
 }

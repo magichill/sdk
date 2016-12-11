@@ -1,5 +1,6 @@
 package com.bingdou.cdn.constant;
 
+
 /**
  * Created by gaoshan on 16-11-13.
  */
@@ -18,10 +19,11 @@ public class UpYunConstant {
     public static final String BUCKET_NAME = "bingdou";
 
     public static final String UPYUN_PUSH_URL = "rtmp://upyunpublish.bingdou.tv/";
-    public static final String UPYUN_PLAY_URL = "rtmp://upyunpublish.bingdou.tv/";
+    public static final String UPYUN_PLAY_URL = "rtmp://upyunplay.bingdou.tv/";
 
     public static final String UPYUN_APP_NAME = "live";
     public static final String FLV_SUFFIX = ".flv";
     public static final String M3U8_SUFFIX = ".m3u8";
+
 
 }

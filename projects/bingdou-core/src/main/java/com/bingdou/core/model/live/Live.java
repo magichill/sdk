@@ -16,15 +16,19 @@ public class Live {
 
     private String livePicture;
 
+    private String streamName;
+
     private int status;
 
-    private int mid;
+    private String mid;
 
     private int liveType;
 
     private String pushStream;
 
     private String pullStream;
+
+    private String replayUrl;
 
     public int getId() {
         return id;
@@ -58,11 +62,11 @@ public class Live {
         this.status = status;
     }
 
-    public int getMid() {
+    public String getMid() {
         return mid;
     }
 
-    public void setMid(int mid) {
+    public void setMid(String mid) {
         this.mid = mid;
     }
 
@@ -88,6 +92,22 @@ public class Live {
 
     public void setPullStream(String pullStream) {
         this.pullStream = pullStream;
+    }
+
+    public String getReplayUrl() {
+        return replayUrl;
+    }
+
+    public void setReplayUrl(String replayUrl) {
+        this.replayUrl = replayUrl;
+    }
+
+    public String getStreamName() {
+        return streamName;
+    }
+
+    public void setStreamName(String streamName) {
+        this.streamName = streamName;
     }
 
     /**

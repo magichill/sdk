@@ -10,6 +10,7 @@ import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.tools.LogContext;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,15 +39,27 @@ public class UpYunService extends BaseService implements ICdnService{
         try {
             CreateLiveRequest createLiveRequest = (CreateLiveRequest) baseRequest;
 
-            String streamName = String.valueOf(System.currentTimeMillis()) + createLiveRequest.getUserId();
+            String streamName = getStreamName(createLiveRequest);
             CreateLiveResponse response = buildUpyunLiveResponse(streamName);
 
-            cdnBaseService.createLive(createLiveRequest,response);
+            cdnBaseService.createLive(createLiveRequest,response,streamName);
             return ServiceResultUtil.success(response);
         }catch (Exception e){
             LogContext.instance().error(e,"创建又拍云直播失败");
             return ServiceResultUtil.serverError("创建直播失败");
         }
+    }
+
+    @Override
+    public String getStreamName(CreateLiveRequest createLiveRequest) {
+        LogContext.instance().info("生成又拍云流名称");
+        String streamName = StringUtils.EMPTY;
+        if(StringUtils.isNotBlank(createLiveRequest.getStreamId())){
+            streamName = createLiveRequest.getStreamId();
+        }else {
+            streamName = String.valueOf(System.currentTimeMillis()) + createLiveRequest.getUserId();
+        }
+        return streamName;
     }
 
     @Override

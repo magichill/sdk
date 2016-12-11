@@ -17,12 +17,12 @@ public abstract class LiveBaseService extends BaseService {
     private LiveDao liveDao;
 
     public Live getLiveInfo(int liveId){
-        LogContext.instance().info("插入获取直播详细数据");
+        LogContext.instance().info("获取直播详细数据");
         return liveDao.getLiveById(liveId);
     }
 
     public List<Live> getLiveList(int start,int limit){
-        LogContext.instance().info("插入获取直播列表数据");
+        LogContext.instance().info("获取直播列表数据");
         return liveDao.getLiveList(start,limit);
     }
 

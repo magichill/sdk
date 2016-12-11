@@ -1,5 +1,6 @@
 package com.bingdou.cdn.service;
 
+import com.bingdou.cdn.request.CreateLiveRequest;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 
@@ -18,4 +19,6 @@ public interface ICdnService {
      * @return
      */
     ServiceResult createCdnLive(BaseRequest baseRequest);
+
+    String getStreamName(CreateLiveRequest createLiveRequest);
 }

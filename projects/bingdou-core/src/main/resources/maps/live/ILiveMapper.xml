@@ -7,16 +7,16 @@
         SELECT
           li.id,ll.live_title,ll.live_picture,status,mid,push_stream,pull_stream
         FROM ${liveDB}.lc_live_index li
-        JOIN ${liveDB}.lc_live${@com.bingdou.core.model.Live@getTableNumber(liveId)} ll ON li.id=ll.id
+        JOIN ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)} ll ON li.id=ll.id
         WHERE li.id=#{liveId}
         ]]>
     </select>
 
     <insert id="addLive" parameterType="java.util.Map">
         <![CDATA[
-          INSERT INTO ${liveDB}.lc_live${@com.bingdou.core.model.Live@getTableNumber(liveId)}
-          (live_title,live_picture,status,mid,push_stream,pull_stream,create_time,update_time)
-          VALUE(#{liveTitle},#{livePicture},1,${mid},#{pushStream},#{pullStream},now(),now())
+          INSERT INTO ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
+          (live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,create_time,update_time)
+          VALUE(#{liveTitle},#{livePicture},1,${streamName},${mid},#{liveType},#{pushStream},#{pullStream},now(),now())
         ]]>
     </insert>
 
@@ -25,20 +25,38 @@
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
         <![CDATA[
-          INSERT INTO ${liveDB}.lc_live_index(id,live_title)
-          VALUE(#{id},#{liveTitle})
+          INSERT INTO ${liveDB}.lc_live_index(id,live_title,stream_name)
+          VALUE(#{id},#{liveTitle},#{streamName})
         ]]>
     </insert>
 
     <select id="getLiveList" parameterType="java.util.Map" resultMap="liveDetail">
         <![CDATA[
-        SELECT id FROM ${liveDB}.lc_live_index WHERE status=1 order by update_time limit #{start},#{limit}
+        SELECT id,live_pic FROM ${liveDB}.lc_live_index WHERE status=1 order by update_time limit #{start},#{limit}
+        ]]>
+    </select>
+
+    <select id="getOnlineLiveList" parameterType="java.util.Map" resultMap="liveDetail">
+        <![CDATA[
+        SELECT id,live_pic FROM ${liveDB}.lc_live_index WHERE status=1 and live_type=1 order by update_time limit #{start},#{limit}
+        ]]>
+    </select>
+
+    <select id="getRecordLiveList" parameterType="java.util.Map" resultMap="liveDetail">
+        <![CDATA[
+        SELECT id,live_pic FROM ${liveDB}.lc_live_index WHERE status=1 and live_type=2 order by update_time limit #{start},#{limit}
+        ]]>
+    </select>
+
+    <select id="getLiveByStreamName" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT count(id) FROM ${liveDB}.lc_live_index WHERE stream_name=#{streamName}
         ]]>
     </select>
 
     <update id="updateLive" parameterType="java.util.Map">
         <![CDATA[
-        update ${liveDB}.lc_live${@com.bingdou.core.model.Live@getTableNumber(liveId)}
+        update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
         set status=#{status},replay_url=#{replayUrl}
         where id=#{liveId}
         ]]>

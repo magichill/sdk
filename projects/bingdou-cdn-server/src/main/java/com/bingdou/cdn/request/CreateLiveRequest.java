@@ -12,8 +12,14 @@ public class CreateLiveRequest extends BaseRequest{
     @SerializedName("live_title")
     private String liveTitle;
 
+    @SerializedName("live_pic")
+    private String livePic;
+
     @SerializedName("user_id")
     private String userId;
+
+    @SerializedName("stream_id")
+    private String streamId;
 
 
     @Override
@@ -26,6 +32,8 @@ public class CreateLiveRequest extends BaseRequest{
         CreateLiveRequest request = JsonUtil.jsonStr2Bean(requestString, CreateLiveRequest.class);
         this.liveTitle = request.getLiveTitle();
         this.userId = request.getUserId();
+        this.livePic = request.getLivePic();
+        this.streamId = request.getStreamId();
         return request;
     }
 
@@ -43,5 +51,21 @@ public class CreateLiveRequest extends BaseRequest{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getLivePic() {
+        return livePic;
+    }
+
+    public void setLivePic(String livePic) {
+        this.livePic = livePic;
+    }
+
+    public String getStreamId() {
+        return streamId;
+    }
+
+    public void setStreamId(String streamId) {
+        this.streamId = streamId;
     }
 }

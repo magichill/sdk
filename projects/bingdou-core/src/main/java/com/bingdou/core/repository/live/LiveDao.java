@@ -21,7 +21,7 @@ public class LiveDao {
     }
 
     public void addLive(Live live){
-        liveMapper.addLive(live.getId(),live.getLiveTitle(),live.getMid(),live.getLivePicture(),live.getPushStream(),live.getPullStream());
+        liveMapper.addLive(live.getId(),live.getLiveTitle(),live.getMid(),live.getLiveType(),live.getLivePicture(),live.getPushStream(),live.getPullStream(),live.getStreamName());
     }
 
     public Live getLiveById(int liveId){
@@ -30,5 +30,16 @@ public class LiveDao {
 
     public List<Live> getLiveList(int start,int limit){
         return liveMapper.getLiveList(start,limit);
+    }
+
+    public List<Live> getRecordLiveList(int start,int limit){
+        return liveMapper.getRecordLiveList(start,limit);
+    }
+    public List<Live> getOnlineLiveList(int start,int limit){
+        return liveMapper.getOnlineLiveList(start,limit);
+    }
+
+    public Integer getLiveByStreamName(String streamName){
+        return liveMapper.getLiveByStreamName(streamName);
     }
 }

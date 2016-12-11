@@ -1,6 +1,7 @@
 package com.bingdou.api.service;
 
 import com.bingdou.api.request.FindLiveRequest;
+import com.bingdou.api.response.FindLiveResponse;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
@@ -58,7 +59,12 @@ public class FindLiveService extends LiveBaseService implements IMethodService {
         int start = findLiveRequest.getStart();
         int limit = findLiveRequest.getLimit();
         List<Live> result = getLiveList(start,limit);
-        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(result));
+        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildLiveResponse(result)));
     }
 
+    private FindLiveResponse buildLiveResponse(List<Live> liveList){
+        FindLiveResponse response = new FindLiveResponse();
+        response.setLiveList(liveList);
+        return response;
+    }
 }
