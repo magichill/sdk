@@ -5,6 +5,7 @@ import com.bingdou.core.model.live.CncRecordStartRequest;
 import com.bingdou.core.model.live.RecordType;
 import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +55,27 @@ public class CncRecordCallTypeService implements IRecordCallTypeService {
         LogContext.instance().info("请求参数:"+ JsonUtil.bean2JsonStr(cncRequest));
         List<CncRecordFinishRequest.FinishItem> items = cncRequest.getItems();
         for(CncRecordFinishRequest.FinishItem item : items ){
-            recordCallbackService.notifyAppServer(item.getStreamName(),false,item.getUrls().get(0));
+            String streamName = dealCncStreamName(item.getStreamName());
+            if(StringUtils.isNotBlank(streamName)) {
+                recordCallbackService.notifyAppServer(streamName, false, item.getUrls().get(0));
+            }
+        }
+    }
+
+    private String dealCncStreamName(String callbackStreamName){
+        LogContext.instance().info("网宿录播回调流名称"+callbackStreamName);
+        String[] streamArg = callbackStreamName.split("-");
+
+        if(streamArg.length>1) {
+            String streamName = streamArg[1].substring(0,streamArg[1].indexOf("."));
+            if(StringUtils.isNumeric(streamName)){
+                LogContext.instance().info("处理后网宿录播回调流名称"+streamName);
+                return streamName;
+            }else{
+                return "";
+            }
+        }else{
+            return "";
         }
     }
 
