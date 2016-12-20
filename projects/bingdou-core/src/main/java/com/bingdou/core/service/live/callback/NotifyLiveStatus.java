@@ -50,26 +50,4 @@ public class NotifyLiveStatus {
         }
     }
 
-    public static void main(String[] args){
-        String streamId = "1029028816420935";
-        boolean status = false;
-        String playUrl = "";
-        String url = "http://intra.bingdou.tv:8088/1/data/live/update.json";
-        NotifyLiveStatus notifyLiveStatus = new NotifyLiveStatus();
-        notifyLiveStatus.setId(Long.valueOf(streamId));
-        NotifyLiveStatus.Data data = new NotifyLiveStatus().new Data();
-        if(StringUtils.isNotBlank(playUrl)) {
-            data.setH5_play_url(playUrl);
-        }
-        data.setLive_status(status?"1":"2");
-        notifyLiveStatus.setData(data);
-        String param = JsonUtil.bean2JsonStr(notifyLiveStatus);
-        System.out.println("请求参数："+param);
-        try {
-            String result = HttpClientUtil.doPostJsonOrXmlHttpClient("直播状态通知请求",url,param,false,3000,3000);
-            System.out.println(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -18,7 +18,7 @@ public class UpyunRecordCallTypeService implements IRecordCallTypeService {
     }
 
     @Override
-    public void dealRecordCallback(HttpServletRequest request) {
-
+    public boolean dealRecordCallback(HttpServletRequest request) {
+        return false;
     }
 }

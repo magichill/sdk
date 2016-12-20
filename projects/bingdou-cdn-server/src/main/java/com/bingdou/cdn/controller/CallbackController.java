@@ -42,8 +42,7 @@ public class CallbackController {
             if(liveStatusRequest != null) {
                 LogContext.instance().info("网宿开启推流回调参数：" + liveStatusRequest.toString());
                 if(recordCallbackService.checkLiveExist(liveStatusRequest.getStreamName())){
-                    isSuccess = true;
-                    recordCallbackService.notifyAppServer(liveStatusRequest.getStreamName(),true,"");
+                    isSuccess = recordCallbackService.notifyAppServer(liveStatusRequest.getStreamName(),true,"");
                 }
 
             }
@@ -68,8 +67,7 @@ public class CallbackController {
             if(liveStatusRequest != null) {
                 LogContext.instance().info("网宿关闭推流回调参数：" + liveStatusRequest.toString());
                 if(recordCallbackService.checkLiveExist(liveStatusRequest.getStreamName())){
-                    isSuccess = true;
-                    recordCallbackService.notifyAppServer(liveStatusRequest.getStreamName(),false,"");
+                    isSuccess = recordCallbackService.notifyAppServer(liveStatusRequest.getStreamName(),false,"");
                 }
             }
         } catch (Exception e) {
@@ -92,15 +90,16 @@ public class CallbackController {
             String param = new String(Base64.decodeBase64(cncRecordRequest),"UTF-8");
             LogContext.instance().info("网宿录播回调开始");
             request.setAttribute("cncRequest", param);
-            getResponse(request,RecordType.CNC);
+            isSuccess = getResponse(request,RecordType.CNC);
         } catch (Exception e) {
             LogContext.instance().error(e, "网宿录播回调失败");
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
         } finally {
             LogContext.instance().info("网宿录播回调结果:" + isSuccess);
             LogContext.instance().info("网宿录播回调结束");
         }
-
+        if(!isSuccess)
+            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
         return isSuccess ? "Y" : "N";
     }
 
@@ -116,15 +115,14 @@ public class CallbackController {
             LogContext.instance().error(e, "又拍云录播回调失败");
         } finally {
             LogContext.instance().info("又拍云录播回调结果:" + isSuccess);
-            LogContext.instance().info("又牌运录播回调结束");
+            LogContext.instance().info("又拍云录播回调结束");
         }
         return isSuccess ? "Y" : "N";
     }
 
-    private RecordTypeCallBackResponse getResponse(HttpServletRequest request, RecordType recordType) {
+    private boolean getResponse(HttpServletRequest request, RecordType recordType) {
         IRecordCallTypeService recordCallTypeService = recordCallTypeFactory.getRecordTypeService(recordType);
-        recordCallTypeService.dealRecordCallback(request);
-        return null;
+        return recordCallTypeService.dealRecordCallback(request);
     }
 
     private CncLiveStatusRequest getCncLiveStatusParam(HttpServletRequest request){

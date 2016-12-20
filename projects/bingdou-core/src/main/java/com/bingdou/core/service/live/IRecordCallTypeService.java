@@ -8,5 +8,5 @@ import javax.servlet.http.HttpServletRequest;
 public interface IRecordCallTypeService {
 
     String getCallType();
-    void dealRecordCallback(HttpServletRequest request);
+    boolean dealRecordCallback(HttpServletRequest request);
 }

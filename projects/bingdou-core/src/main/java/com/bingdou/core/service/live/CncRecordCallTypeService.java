@@ -30,26 +30,28 @@ public class CncRecordCallTypeService implements IRecordCallTypeService {
     }
 
     @Override
-    public void dealRecordCallback(HttpServletRequest request) {
+    public boolean dealRecordCallback(HttpServletRequest request) {
         String messageType = request.getParameter("message_type");
+        boolean isSuccess = false;
         if(messageType.equals(MESSAGE_TYPE_START)){
-            dealCallbackStart(request);
+            isSuccess = dealCallbackStart(request);
         }else if(messageType.equals(MESSAGE_TYPE_FINISH)){
-            dealCallbackFinish(request);
+            isSuccess = dealCallbackFinish(request);
         }else{
             LogContext.instance().warn("网宿消息类型参数不正确");
         }
-
+        return isSuccess;
     }
 
-    private void dealCallbackStart(HttpServletRequest request){
+    private boolean dealCallbackStart(HttpServletRequest request){
         CncRecordStartRequest cncRequest = JsonUtil.jsonStr2Bean((String)request.getAttribute("cncRequest"),CncRecordStartRequest.class);
         LogContext.instance().info("处理网宿录制开始回调请求");
         LogContext.instance().info("请求参数:"+ JsonUtil.bean2JsonStr(cncRequest));
-
+        return true;
     }
 
-    private void dealCallbackFinish(HttpServletRequest request){
+    private boolean dealCallbackFinish(HttpServletRequest request){
+        boolean isSuccess = false;
         CncRecordFinishRequest cncRequest = JsonUtil.jsonStr2Bean((String)request.getAttribute("cncRequest"),CncRecordFinishRequest.class);
         LogContext.instance().info("处理网宿录制结束回调请求");
         LogContext.instance().info("请求参数:"+ JsonUtil.bean2JsonStr(cncRequest));
@@ -57,9 +59,10 @@ public class CncRecordCallTypeService implements IRecordCallTypeService {
         for(CncRecordFinishRequest.FinishItem item : items ){
             String streamName = dealCncStreamName(item.getStreamName());
             if(StringUtils.isNotBlank(streamName)) {
-                recordCallbackService.notifyAppServer(streamName, false, item.getUrls().get(0));
+                isSuccess = recordCallbackService.notifyAppServer(streamName, false, item.getUrls().get(0));
             }
         }
+        return isSuccess;
     }
 
     private String dealCncStreamName(String callbackStreamName){

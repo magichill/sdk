@@ -19,7 +19,7 @@ public class RecordCallbackService {
     @Autowired
     private LiveDao liveDao;
 
-    private static final String UPDATE_STATUS_URL = "http://intra.bingdou.tv:8088/1/data/live/update.json";
+    private static final String UPDATE_STATUS_URL = "http://m.api.bingdou.tv/1/data/live/update.json";
 
     public boolean checkLiveExist(String streamName){
         boolean isExist = false;
@@ -52,10 +52,11 @@ public class RecordCallbackService {
         String param = JsonUtil.bean2JsonStr(notifyLiveStatus);
         try {
             HttpClientUtil.doPostJsonOrXmlHttpClient("直播状态通知请求",UPDATE_STATUS_URL,param,false,3000,3000);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
 
 }

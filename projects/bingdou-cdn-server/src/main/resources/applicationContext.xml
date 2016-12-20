@@ -19,4 +19,12 @@
         </property>
     </bean>
 
+    <bean id="methodServiceFactory" class="com.bingdou.core.service.MethodServiceFactory">
+        <property name="methodServiceList">
+            <list>
+                <ref local="viewerCountService" />
+            </list>
+        </property>
+    </bean>
+
 </beans>

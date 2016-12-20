@@ -336,6 +336,7 @@ public class HttpClientUtil {
                 logger.info(uuid + " - " + bizName + "结果:" + result);
         } else {
             logger.error(uuid + " - 状态码不是200:" + statusCode);
+            logger.info(uuid + " - " + bizName + "结果:" + result);
         }
     }
 

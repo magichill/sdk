@@ -12,6 +12,7 @@ import java.util.TimeZone;
 public class DateUtil {
 
     public static final String YYYYMMDDHHMMSSSSS = "yyyyMMddHHmmssSSS";
+    public static final String DHHMMSSSSS = "dHHmmssSSS";
     public static final String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
@@ -68,5 +69,9 @@ public class DateUtil {
             LogContext.instance().error(e);
         }
         return 0;
+    }
+
+    public static void main(String[] args){
+        System.out.println(DateUtil.format(new Date(),DHHMMSSSSS));
     }
 }
