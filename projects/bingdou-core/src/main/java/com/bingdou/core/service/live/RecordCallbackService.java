@@ -10,6 +10,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by gaoshan on 16-11-26.
  */
@@ -44,10 +46,19 @@ public class RecordCallbackService {
         NotifyLiveStatus notifyLiveStatus = new NotifyLiveStatus();
         notifyLiveStatus.setId(Long.valueOf(streamName));
         NotifyLiveStatus.Data data = new NotifyLiveStatus().new Data();
+        if(status) {
+            data.setLive_status("1");
+            data.setStart_time(new Date().getTime());
+            data.setOnline_status("0");
+        }else{
+            data.setLive_status("2");
+            data.setEnd_time(new Date().getTime());
+            data.setOnline_status("1");
+        }
         if(StringUtils.isNotBlank(playUrl)) {
             data.setH5_play_url(playUrl);
+            data.setEnd_time(null);
         }
-        data.setLive_status(status?"1":"2");
         notifyLiveStatus.setData(data);
         String param = JsonUtil.bean2JsonStr(notifyLiveStatus);
         try {
