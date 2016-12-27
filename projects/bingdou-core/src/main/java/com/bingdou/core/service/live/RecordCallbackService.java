@@ -8,6 +8,7 @@ import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -21,7 +22,8 @@ public class RecordCallbackService {
     @Autowired
     private LiveDao liveDao;
 
-    private static final String UPDATE_STATUS_URL = "http://m.api.bingdou.tv/1/data/live/update.json";
+    @Value("${update.status.url:http://intra.bingdou.tv:8088/1/data/live/update.json}")
+    private String UPDATE_STATUS_URL;
 
     public boolean checkLiveExist(String streamName){
         boolean isExist = false;
@@ -48,11 +50,11 @@ public class RecordCallbackService {
         NotifyLiveStatus.Data data = new NotifyLiveStatus().new Data();
         if(status) {
             data.setLive_status("1");
-            data.setStart_time(new Date().getTime());
+            data.setStart_time(String.valueOf(new Date().getTime()));
             data.setOnline_status("0");
         }else{
             data.setLive_status("2");
-            data.setEnd_time(new Date().getTime());
+            data.setEnd_time(String.valueOf(new Date().getTime()));
             data.setOnline_status("1");
         }
         if(StringUtils.isNotBlank(playUrl)) {

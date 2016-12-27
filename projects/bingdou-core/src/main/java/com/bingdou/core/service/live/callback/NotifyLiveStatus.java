@@ -35,8 +35,8 @@ public class NotifyLiveStatus {
         private String h5_play_url;
         private String live_status;
         private String online_status;
-        private Long start_time;
-        private Long end_time;
+        private String start_time;
+        private String end_time;
 
         public String getH5_play_url() {
             return h5_play_url;
@@ -62,19 +62,19 @@ public class NotifyLiveStatus {
             this.online_status = online_status;
         }
 
-        public Long getStart_time() {
+        public String getStart_time() {
             return start_time;
         }
 
-        public void setStart_time(Long start_time) {
+        public void setStart_time(String start_time) {
             this.start_time = start_time;
         }
 
-        public Long getEnd_time() {
+        public String getEnd_time() {
             return end_time;
         }
 
-        public void setEnd_time(Long end_time) {
+        public void setEnd_time(String end_time) {
             this.end_time = end_time;
         }
     }

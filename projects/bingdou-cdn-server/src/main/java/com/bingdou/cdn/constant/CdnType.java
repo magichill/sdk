@@ -6,7 +6,7 @@ package com.bingdou.cdn.constant;
  */
 public enum CdnType {
 
-    UPYUN("upyun",1),CHINANET("cnc",2);
+    UPYUN("upyun",1),CHINANET("cnc",2),CC("cc",3);
 
     private int index;
     private String name;

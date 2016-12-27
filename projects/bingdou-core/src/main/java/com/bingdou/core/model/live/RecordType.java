@@ -5,7 +5,7 @@ package com.bingdou.core.model.live;
  */
 public enum RecordType {
 
-    CNC(1,"cnc"),UPYUN(2,"upyun");
+    CNC(1,"cnc"),UPYUN(2,"upyun"),CC(3,"cc");
 
     private int index;
     private String name;

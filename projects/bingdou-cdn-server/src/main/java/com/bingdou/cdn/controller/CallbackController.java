@@ -103,6 +103,27 @@ public class CallbackController {
         return isSuccess ? "Y" : "N";
     }
 
+    @RequestMapping(value = "cc", method = RequestMethod.POST)
+    @ResponseBody
+    public String cc_callback(HttpServletRequest request, HttpServletResponse response, @RequestBody String ccRecordRequest) {
+        boolean isSuccess = false;
+        try {
+            initLogger();
+            LogContext.instance().info("CC回调开始");
+            request.setAttribute("ccRequest", ccRecordRequest);
+            isSuccess = getResponse(request,RecordType.CC);
+        } catch (Exception e) {
+            LogContext.instance().error(e, "CC回调失败");
+            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+        } finally {
+            LogContext.instance().info("CC回调结果:" + isSuccess);
+            LogContext.instance().info("CC回调结束");
+        }
+        if(!isSuccess)
+            response.setStatus(HttpServletResponse.SC_BAD_GATEWAY);
+        return isSuccess ? "Y" : "N";
+    }
+
     @RequestMapping(value = "upyun", method = RequestMethod.POST)
     @ResponseBody
     public String upyun_callback(HttpServletRequest request) {
