@@ -23,7 +23,9 @@
                 <ref local="userInfoService"/>
                 <ref local="sendCodeService"/>
                 <ref local="phoneRegisterService"/>
+                <ref local="phoneLoginService"/>
                 <ref local="updateNicknameService"/>
+                <ref local="certificateService" />
             </list>
         </property>
     </bean>

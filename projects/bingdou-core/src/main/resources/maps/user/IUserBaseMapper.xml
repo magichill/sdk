@@ -118,8 +118,8 @@
             SELECT LAST_INSERT_ID() AS id
         </selectKey>
         <![CDATA[
-          INSERT INTO ${userDB}.mc_member_index(loginname,mobile,email,device,openid,cpid)
-          VALUE(#{loginName},#{mobile},'',#{device},#{wxOpenId},'')
+          INSERT INTO ${userDB}.mc_member_index(loginname,mobile,email,avatar,signature,device,openid,cpid)
+          VALUE(#{loginName},#{mobile},'',#{avatar},#{signature},#{device},#{wxOpenId},'')
         ]]>
     </insert>
 
@@ -132,8 +132,8 @@
     <insert id="addUser" parameterType="java.util.Map">
         <![CDATA[
           INSERT INTO ${userDB}.mc_member${@com.bingdou.core.model.User@getTableNumber(userId)}
-          (id,username,login_name,mobile,email,openid,password,salt,appid,status,version_flag,cpid,vcode_time)
-          VALUE(#{userId},'',#{loginName},#{mobile},'',#{wxOpenId},#{password},#{salt},#{appId},1,1,#{cpId},0)
+          (id,username,login_name,mobile,email,avatar,signature,openid,password,salt,appid,status,version_flag,cpid,vcode_time)
+          VALUE(#{userId},'',#{loginName},#{mobile},'',#{avatar},#{signature},#{wxOpenId},#{password},#{salt},#{appId},1,1,#{cpId},0)
         ]]>
     </insert>
 

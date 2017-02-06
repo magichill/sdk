@@ -13,9 +13,9 @@ import java.util.Date;
  */
 public class CncConstant {
 
-    public static final String CNC_PUSH_URL = "rtmp://cncpublish.bingdou.tv/";
-    public static final String CNC_PLAY_URL = "rtmp://cncplay.bingdou.tv/";
-    public static final String CNC_H5_PLAY_URL = "http://cnchls.bingdou.tv/";
+    public static final String CNC_PUSH_URL = "rtmp://cncpublish."+Constant.BINGDOU_DOMAIN+"/";
+    public static final String CNC_PLAY_URL = "rtmp://cncplay."+Constant.BINGDOU_DOMAIN+"/";
+    public static final String CNC_H5_PLAY_URL = "http://cnchls."+Constant.BINGDOU_DOMAIN+"/";
 
     public static final String CNC_APP_NAME = "live";
 
@@ -23,7 +23,7 @@ public class CncConstant {
 
     public static final String CNC_PORTAL = "bingdou";
     public static final String CNC_KEY = "ACEA1635C73D25A";
-    public static final String CNC_DOMAIN = "cncpublish.bingdou.tv";
+    public static final String CNC_DOMAIN = "cncpublish."+Constant.BINGDOU_DOMAIN;
 
 
     public static void main(String[] args) throws Exception {

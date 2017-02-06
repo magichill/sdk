@@ -52,7 +52,8 @@ public interface IUserBaseMapper {
     void addUser(@Param("userId") Integer userId, @Param("loginName") String loginName,
                  @Param("wxOpenId") String wxOpenId, @Param("password") String password,
                  @Param("salt") String salt, @Param("appId") String appId, @Param("cpId") String cpId,
-                 @Param("mobile") String mobile);
+                 @Param("mobile") String mobile,@Param("avatar") String avatar,
+                 @Param("signature") String signature);
 
     void addUserDetail(@Param("userId") Integer userId, @Param("ip") String ip, @Param("uid") String uid,
                        @Param("ua") String ua, @Param("safeLevel") int safeLevel);

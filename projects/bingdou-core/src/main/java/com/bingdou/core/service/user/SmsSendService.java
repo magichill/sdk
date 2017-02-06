@@ -41,7 +41,8 @@ public class SmsSendService {
     /**
      * luosimao auth key
      */
-    private static final String LUOSIMAO_AUTH_KEY = "key-d609b769db914a4d959bae3414ed1f7X";
+//    private static final String LUOSIMAO_AUTH_KEY = "key-d609b769db914a4d959bae3414ed1f7X";
+    private static final String LUOSIMAO_AUTH_KEY = "key-b3310832e3b2c4201508e83057eefa49";
 
     @Autowired
     private SmsSendRecordDao smsSendRecordDao;
@@ -60,6 +61,7 @@ public class SmsSendService {
         boolean isSuccess = sendLsmSMS(mobile, smsContent, sendCodeType, device, ip);
 
         if (!isSuccess) {
+//            System.out.println("fail to send sms");
             LogContext.instance().error(SEND_CHANNEL_TYPE + "-短信发送失败");
         }
         return isSuccess;
@@ -84,6 +86,7 @@ public class SmsSendService {
                     post(ClientResponse.class, formData);
             String textEntity = response.getEntity(String.class);
             LsmSmsResponse lsmSmsResponse = JsonUtil.jsonStr2Bean(textEntity, LsmSmsResponse.class);
+//            System.out.println("铁壳返回："+textEntity);
             LogContext.instance().info("铁壳返回:"+textEntity);
             if(lsmSmsResponse.getError() == 0) {
                 isSuccess = true;
@@ -91,6 +94,7 @@ public class SmsSendService {
             }
         }catch (Exception e){
             LogContext.instance().error(e, "铁壳短信发送失败");
+//            System.out.println("fail to send");
         }finally{
 
             client.destroy();
@@ -117,7 +121,7 @@ public class SmsSendService {
 
     public static void main(String[] args){
         SmsSendService smsSendService = new SmsSendService();
-        smsSendService.sendSMS("15801460509","test",null,"1","1");
+        smsSendService.sendSMS("15801460509","test",SendCodeType.PHONE_REGISTER,"1","1");
     }
 
 }

@@ -30,6 +30,16 @@ public class User {
      * Email
      */
     private String email;
+
+    /**
+     * 用户头像
+     */
+    private String avatar;
+
+    /**
+     * 签名
+     */
+    private String signature;
     /**
      * 余额(分)
      */
@@ -430,6 +440,22 @@ public class User {
 
     public void setWxOpenId(String wxOpenId) {
         this.wxOpenId = wxOpenId;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     public Integer getVipLevel() {

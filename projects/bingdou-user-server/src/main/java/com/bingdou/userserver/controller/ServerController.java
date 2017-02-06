@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by gaoshan on 16-10-29.
  */
-@RequestMapping("/user/server")
+@RequestMapping("/server")
 @Controller
 public class ServerController extends BaseController{
 

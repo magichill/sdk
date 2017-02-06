@@ -7,6 +7,7 @@ import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.core.service.user.DeviceService;
 import com.bingdou.core.utils.DataLogUtils;
 import com.bingdou.core.utils.UserUtils;
 import com.bingdou.tools.JsonUtil;
@@ -16,6 +17,7 @@ import com.bingdou.tools.constants.HadoopLogAction;
 import com.bingdou.userserver.request.RegisterRequest;
 import com.bingdou.userserver.response.RegisterResponse;
 import com.google.gson.JsonElement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 public class RegisterService extends BaseService implements IMethodService {
+
+    @Autowired
+    private DeviceService deviceService;
+
 
     @Override
     public BaseRequest getBaseRequest(HttpServletRequest request) throws Exception {
@@ -94,6 +100,8 @@ public class RegisterService extends BaseService implements IMethodService {
         user.setSalt(salt);
         user.setDevice("");
         user.setMobile("");
+        user.setAvatar(registerRequest.getAvatar());
+        user.setSignature(registerRequest.getSignature());
         String appId = isClientRequest(request) ? registerRequest.getOtherInfo().getAppId()
                 : registerRequest.getAppId();
         boolean createSuccess = userBaseService.createUser(user, appId, clientIp, uid, ua,
@@ -107,7 +115,7 @@ public class RegisterService extends BaseService implements IMethodService {
             String tokenDevice = "";
 
             if (isClientRequest(request)) {
-
+                isNewDevice = deviceService.isNewDevice(registerRequest.getDeviceInfo());
             }
             //TODO vip等级查询
 //            UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(newUser.getId());

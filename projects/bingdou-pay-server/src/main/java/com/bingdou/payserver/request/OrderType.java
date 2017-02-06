@@ -1,15 +1,15 @@
-package com.bingdou.core.model;
+package com.bingdou.payserver.request;
 
 /**
- * 验证码类型枚举
+ * Created by gaoshan on 16/12/25.
  */
-public enum SendCodeType {
+public enum OrderType {
 
-    BIND(1), LOST_PASSWORD(2), PHONE_REGISTER(3), MODIFY_PASSWORD(5),PHONE_LOGIN(6);
+    RECHARGE(1), CONSUME(2);
 
     private int index;
 
-    SendCodeType(int index) {
+    OrderType(int index) {
         this.index = index;
     }
 

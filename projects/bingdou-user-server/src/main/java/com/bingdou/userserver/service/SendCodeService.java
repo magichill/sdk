@@ -105,6 +105,9 @@ public class SendCodeService extends BaseService implements IMethodService {
             } else if (sendCodeRequest.getType() == SendCodeType.MODIFY_PASSWORD.getIndex()) {
                 LogContext.instance().info("修改密码请求");
                 return dealModifyPwdMobile(request, sendCodeRequest, validationCode);
+            } else if (sendCodeRequest.getType() == SendCodeType.PHONE_LOGIN.getIndex()){
+                LogContext.instance().info("手机登录请求");
+                return dealPhoneLogin(request, sendCodeRequest, validationCode);
             } else {
                 return ServiceResultUtil.illegal("请求类型有误");
             }
@@ -175,6 +178,23 @@ public class SendCodeService extends BaseService implements IMethodService {
         return sendEmail(request, sendCodeRequest, validationCode, user, SendCodeType.BIND);
     }
 
+    private ServiceResult dealPhoneLogin(HttpServletRequest request, SendCodeRequest sendCodeRequest,
+                                         String validationCode) throws Exception {
+        ValidateCode validateCode = validateCodeService.getValidateCode4Mobile(sendCodeRequest.getPhoneOrEmail(),
+                SendCodeType.PHONE_LOGIN);
+        if (validateCode == null) {
+            validateCodeService.insertValidateCode4Mobile(sendCodeRequest.getPhoneOrEmail(), validationCode,
+                    SendCodeType.PHONE_LOGIN);
+        } else {
+            String errorMessage = validateCodeTime(validateCode.getVcodeTime());
+            if (StringUtils.isNotEmpty(errorMessage)) {
+                return ServiceResultUtil.illegal(errorMessage);
+            }
+            validateCodeService.updateValidateCode4Mobile(sendCodeRequest.getPhoneOrEmail(), validationCode,
+                    SendCodeType.PHONE_LOGIN);
+        }
+        return sendSMS4PhoneLogin(request, sendCodeRequest, validationCode);
+    }
     private ServiceResult dealPhoneRegister(HttpServletRequest request, SendCodeRequest sendCodeRequest,
                                             String validationCode) throws Exception {
         User user = userBaseService.getDetailByMobile(sendCodeRequest.getPhoneOrEmail());
@@ -331,6 +351,22 @@ public class SendCodeService extends BaseService implements IMethodService {
         String device = getDevice4Client(request, sendCodeRequest);
         String ip = RequestUtil.getClientIp(request);
         if (smsSendService.sendSMS(sendCodeRequest.getPhoneOrEmail(), content, SendCodeType.PHONE_REGISTER,
+                device, ip)) {
+            LogContext.instance().info("发送短信成功");
+            updateSendCount(device);
+            DataLogUtils.recordHadoopLog(HadoopLogAction.SEND_CODE, sendCodeRequest, null,
+                    RequestUtil.getClientIp(sendCodeRequest.getRequest()), "", validationCode, false);
+            return ServiceResultUtil.success();
+        }
+        return ServiceResultUtil.illegal("短信发送失败");
+    }
+
+    private ServiceResult sendSMS4PhoneLogin(HttpServletRequest request, SendCodeRequest sendCodeRequest,
+                                                String validationCode) throws Exception {
+        String content = validationCode + UserConstants.SEND_CODE_TEMPLATE_4_SMS;
+        String device = getDevice4Client(request, sendCodeRequest);
+        String ip = RequestUtil.getClientIp(request);
+        if (smsSendService.sendSMS(sendCodeRequest.getPhoneOrEmail(), content, SendCodeType.PHONE_LOGIN,
                 device, ip)) {
             LogContext.instance().info("发送短信成功");
             updateSendCount(device);

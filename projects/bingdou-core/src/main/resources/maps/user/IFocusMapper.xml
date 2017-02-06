@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.user.IFocusMapper">
+
+    <select id="getFollowerCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(1) FROM ${userDB}.mc_focus_info WHERE mid = #{userId} and status = 1
+        ]]>
+    </select>
+
+    <select id="getFansCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(1) FROM ${userDB}.mc_focus_info WHERE follow_id = #{userId} and status = 1
+        ]]>
+    </select>
+
+    <insert id="insertFocus" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${userDB}.mc_focus_info(mid,follow_id,status)
+          VALUE(#{userId},#{followId},1)
+        ]]>
+    </insert>
+
+</mapper>

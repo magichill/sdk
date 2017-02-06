@@ -110,8 +110,8 @@ public abstract class BaseController {
 //                                "当前设备已被禁用,请联系客服人员").convert2Result(keyGroup);
 //                    }
 //                }
-                LogContext.instance().info("客户端请求APP ID合法性检查");
-                //TODO 注释掉客户端请求安全校验,检查客户端应用第三方接入
+//                LogContext.instance().info("客户端请求APP ID合法性检查");
+//                //TODO 注释掉客户端请求安全校验,检查客户端应用第三方接入
 //                if (!baseService.isApplicationValid4Client(baseRequest)) {
 //                    return new RootResponse(ReturnCode.ILLEGAL_REQUEST.getIndex(),
 //                            "应用被禁用").convert2Result(keyGroup);

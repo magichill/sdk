@@ -17,11 +17,24 @@ public class RegisterRequest extends BaseRequest {
      */
     @SerializedName("login_name")
     private String loginName;
+
     /**
      * 密码
      */
     @SerializedName("password")
     private String password;
+
+    /**
+     * 用户头像
+     */
+    @SerializedName("avatar")
+    private String avatar;
+
+    /**
+     * 用户签名
+     */
+    @SerializedName("signature")
+    private String signature;
 
     @Override
     protected String getLoggerName() {
@@ -34,6 +47,8 @@ public class RegisterRequest extends BaseRequest {
                 RegisterRequest.class);
         this.loginName = request.getLoginName();
         this.password = request.getPassword();
+        this.avatar = request.getAvatar();
+        this.signature = request.getSignature();
         return request;
     }
 
@@ -51,6 +66,22 @@ public class RegisterRequest extends BaseRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 
     @Override
