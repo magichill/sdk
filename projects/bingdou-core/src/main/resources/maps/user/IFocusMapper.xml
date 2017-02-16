@@ -16,11 +16,25 @@
         ]]>
     </select>
 
-    <insert id="insertFocus" parameterType="java.util.Map">
+    <select id="checkFocusInfo" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(1) FROM ${userDB}.mc_focus_info WHERE mid=#{userId} and follow_id = #{followId}
+        ]]>
+    </select>
+
+    <insert id="insertFocusInfo" parameterType="java.util.Map">
         <![CDATA[
           INSERT INTO ${userDB}.mc_focus_info(mid,follow_id,status)
           VALUE(#{userId},#{followId},1)
         ]]>
     </insert>
+
+    <update id="updateFocusInfo" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${userDB}.mc_focus_info(mid,follow_id,status)
+          VALUE(#{userId},#{followId},#{status})
+        ]]>
+    </update>
 
 </mapper>

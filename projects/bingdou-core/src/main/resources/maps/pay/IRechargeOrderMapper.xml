@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IRechargeOrderMapper">
+
+    <insert id="addRechargeOrder" parameterType="com.bingdou.core.model.RechargeOrder">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_order_cz
+        (mid, amid, orderid,order_money,order_time,payed_money,payed_time,
+        payed_type,status,verify,verify_money,verify_time,verify_msg,
+        remark,goods,quantity,appid,union_pay_order,user_orderid,
+        channel,sdk_ver,os,act_type,client_scene,prop_id)
+        VALUES (#{userId},#{appMemberId},#{orderId},#{orderMoney},#{orderTime},
+        #{payedMoney},#{payedTime},#{payType},#{status},#{verify},#{verifyMoney},
+        #{verifyTime},'',#{remark},#{goodsName},#{quantity},#{appId},#{unionPayOrderId},#{userOrderId},
+        #{channel},#{sdkVersion},#{osName},#{activityType},#{clientScene},#{propId})
+        ]]>
+    </insert>
+
+    <update id="updateRechargeOrder" parameterType="com.bingdou.core.model.RechargeOrder">
+        <![CDATA[
+        UPDATE ${payDB}.mc_order_cz SET payed_money=#{payedMoney},payed_time=#{payedTime},status=#{status},
+        verify=#{verify},verify_money=#{verifyMoney},verify_time=#{verifyTime},verify_msg=#{verifyMessage},
+        back_money=#{backMoney},is_act=#{isAct}
+        WHERE orderid=#{orderId}
+        ]]>
+    </update>
+
+    <update id="updateRechargeOrderBackInfo" parameterType="java.util.Map">
+        <![CDATA[
+        UPDATE ${payDB}.mc_order_cz SET rule_id=#{ruleId},buffer_id=#{bufferId}
+        WHERE orderid=#{orderId}
+        ]]>
+    </update>
+
+    <select id="getRechargeOrderCountByOrderId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(id) FROM ${payDB}.mc_order_cz
+        WHERE orderid = #{orderId}
+        ]]>
+    </select>
+
+    <select id="getRechargeOrderCountByOrderIdAndStatus" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(id) FROM ${payDB}.mc_order_cz
+        WHERE orderid = #{orderId} AND status=#{status}
+        ]]>
+    </select>
+
+    <select id="getByOrderIdAndUserId" parameterType="java.util.Map" resultMap="rechargeOrderResultMap">
+        <![CDATA[
+        SELECT orderid, order_money, status, payed_type, act_type, prop_id, appid, mid, os
+        FROM ${payDB}.mc_order_cz
+        WHERE orderid = #{orderId} AND mid = #{userId}
+        ]]>
+    </select>
+
+    <select id="getByUnionOrderIdAndUserId" parameterType="java.util.Map" resultMap="rechargeOrderResultMap">
+        <![CDATA[
+        SELECT orderid, order_money, status, payed_type, act_type, prop_id, appid, mid, os
+        FROM ${payDB}.mc_order_cz
+        WHERE union_pay_order = #{orderId} AND mid = #{userId}
+        ]]>
+    </select>
+
+    <select id="getByOrderId" parameterType="java.lang.String" resultMap="rechargeOrderResultMap">
+        <![CDATA[
+        SELECT orderid, order_money, status, payed_type, act_type, prop_id, appid, mid, os
+        FROM ${payDB}.mc_order_cz
+        WHERE orderid = #{orderId}
+        ]]>
+    </select>
+
+    <select id="getByConsumeOrderIdAndUserId" parameterType="java.util.Map" resultMap="rechargeOrderResultMap">
+        <![CDATA[
+        SELECT b.orderid, b.order_money, b.status, b.payed_type, b.appid, b.mid, b.os
+        FROM ${payDB}.mc_order_xf a
+        JOIN ${payDB}.mc_order_cz b
+        ON a.czorderid = b.orderid
+        WHERE a.orderid=#{consumeOrderId} AND a.mid=#{userId} AND b.mid=#{userId}
+        ]]>
+    </select>
+
+    <select id="getByConsumeOrderId" parameterType="java.lang.String" resultMap="rechargeOrderResultMap">
+        <![CDATA[
+        SELECT b.orderid, b.order_money, b.status, b.payed_type, b.appid, b.mid, b.os
+        FROM ${payDB}.mc_order_xf a
+        JOIN ${payDB}.mc_order_cz b
+        ON a.czorderid = b.orderid
+        WHERE a.orderid=#{consumeOrderId}
+        ]]>
+    </select>
+
+    <select id="getUserRechargeOrdersLately" parameterType="java.util.Map" resultMap="rechargeOrderResultMap">
+        SELECT
+          orderid, order_money, order_time, goods, status, back_money, payed_type, os
+        FROM ${payDB}.mc_order_cz
+        WHERE mid=#{userId} AND order_time > unix_timestamp(date_sub(now(), interval 90 day))
+        ORDER BY id DESC LIMIT #{limit}
+    </select>
+
+    <insert id="addPayedRechargeOrder" parameterType="com.bingdou.core.model.RechargeOrder">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_order_cz
+        (mid, amid, orderid,order_money,order_time,payed_money,payed_time,
+        payed_type,status,verify,verify_money,verify_time,verify_msg,
+        remark,goods,quantity,appid,union_pay_order,user_orderid,
+        channel,sdk_ver,os)
+        VALUES (#{userId},#{appMemberId},#{orderId},#{orderMoney},UNIX_TIMESTAMP(),
+        #{orderMoney},UNIX_TIMESTAMP(),#{payType},1,1,#{orderMoney},
+        UNIX_TIMESTAMP(),'鍏呭�兼垚鍔�','',#{goodsName},#{quantity},#{appId},'','',
+        #{channel},#{sdkVersion},#{osName})
+        ]]>
+    </insert>
+
+    <resultMap id="rechargeOrderResultMap" type="com.bingdou.core.model.RechargeOrder">
+        <result column="orderid" property="orderId"/>
+        <result column="order_money" property="orderMoney"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="goods" property="goodsName"/>
+        <result column="status" property="status"/>
+        <result column="back_money" property="backMoney"/>
+        <result column="payed_type" property="payType"/>
+        <result column="act_type" property="activityType"/>
+        <result column="prop_id" property="propId"/>
+        <result column="appid" property="appId"/>
+        <result column="mid" property="userId"/>
+        <result column="os" property="osName"/>
+    </resultMap>
+</mapper>

@@ -126,6 +126,35 @@ public class UserConstants {
     public static final int DEVICE_LOGIN_BLACK_LIST_YES_STATUS = 1;
 
     /**
+     * 支付宝无限登录授权APP ID
+     */
+    public static final String ALI_FAST_LOGIN_AUTH_APP_ID = "2016051001385237";
+    /**
+     * 支付宝PKCS8 RSA私钥
+     */
+    public static final String ALI_PKCS8_RSA_PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALPuP+K5Dq1ZXOD2"
+            + "rHJ7/mxa78IpwcJu/RWXE2jgavHZSB9yqFxW00qXSn8d14BJdKChYN9Gr1QVfXsn"
+            + "5nukvZpvIXqN5hpob7c7SZmVufKbKzBaNB5qOGJHwqgOlDieGWLitXSFDdMyDnql"
+            + "h4I2Z6XZ+eITUzovNoa9CXRnOhvpAgMBAAECgYBULHoAk7g1CmAz8dIcwLr2b9hI"
+            + "CgbV8dw99G4lGw+M0qw14gq3H/s6ouo763b8UeDYoIZUDZpKCL+qFLFzWE9GHdS6"
+            + "V3fSWCu3n4YRBcEPRc9OAv1B2vYQtAT8IJRMtPQkcbsB3xvHuZqjFUQYXXvJABFY"
+            + "GjpY8BTxglJk3jvezQJBAORB+JxskP3GbDnBZjz11EASW9YFxPXkpZwafhTxMPfc"
+            + "9LToem5zlIsh5x5D+UXQseXiZrOOBKqxtFayk7UNhEMCQQDJzKCCun4JKKoPNBQ4"
+            + "QlozZYz2pdRja0/FL2gCom0h0Oe87l8c6NxNteucx7EsVyOMmZsGGu+s5mcCYiPh"
+            + "69JjAkEAgAjFRDDdr4vSfx8NkxotYXcqzkVUMr17a7GskWCtIAtvs95HdpccdmKg"
+            + "+mgUdeXXM+SnyQXbdkfRqWPn2IHpcwJAK0sHNISl/XkH4vMdU2SIzXX/4/p3skyX"
+            + "dIpTGh2WpCaZUOMi7KTYfqOExMHitMyNB+D8bTbiLInRl6VOZW2eWQJBALbplKGU"
+            + "vTPkdh2lTMx1aKNvBkcfXEjaNsk2Ds6fMGaJUCmRVh5U+VITR2HSRRdZf6EdzhSX"
+            + "gAokMiEh1XB1Iqk=";
+    /**
+     * 支付宝授权登录成功状态码
+     */
+    public static final String ALI_FAST_LOGIN_AUTH_SUCCESS_STATUS = "9000";
+    /**
+     * 支付宝授权登录成功码
+     */
+    public static final String ALI_FAST_LOGIN_AUTH_SUCCESS_CODE = "200";
+    /**
      * 发送验证码类型-短信
      */
     public static final int SEND_CODE_SMS_TYPE = 1;

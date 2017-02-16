@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IConsumeOrderMapper">
+
+    <select id="getOrderCountByUserOrderIdAndAppId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(1) FROM ${payDB}.mc_order_xf WHERE user_orderid = #{userOrderId} AND appid=#{appId}
+        ]]>
+    </select>
+
+    <insert id="addConsumeOrder" parameterType="com.bingdou.core.model.ConsumeOrder">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_order_xf
+        (mid, amid, orderid,user_orderid,consume_money,order_time,status,
+        goods_subject,goods_body,payed_money,payed_time,payed_type,appid,
+        remark,userparam,czorderid,channel,union_pay_order,sdk_ver,os,ua,uid)
+        VALUES (#{userId}, #{appMemberId},#{orderId},#{userOrderId},
+                #{consumeMoney},#{orderTime},#{status},#{goodsName},#{goodsDescription},
+                #{payedMoney},#{payedTime},#{payType},#{appId},#{remark},#{userParam},
+                #{rechargeOrderId},#{channel},#{unionPayOrderId},#{sdkVersion},#{osName},#{ua},#{uid})
+        ]]>
+    </insert>
+
+    <select id="getOrderByUserOrderIdAndAppId" parameterType="java.util.Map" resultMap="consumeOrderResultMap">
+        <![CDATA[
+        SELECT id, user_orderid, consume_money, orderid, order_time, status, payed_type, appid,
+        goods_subject, goods_body, userparam
+        FROM ${payDB}.mc_order_xf WHERE user_orderid = #{userOrderId} AND appid=#{appId}
+        ]]>
+    </select>
+
+    <select id="getCountByOrderId" parameterType="java.lang.String" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(id) FROM ${payDB}.mc_order_xf
+        WHERE orderid = #{orderId}
+        ]]>
+    </select>
+
+    <select id="getCountByOrderIdAndStatus" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(id) FROM ${payDB}.mc_order_xf
+        WHERE orderid = #{orderId} AND status=#{status}
+        ]]>
+    </select>
+
+    <select id="getCountByUserIdAndDate" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT COUNT(1) FROM ${payDB}.mc_order_xf
+        WHERE mid=#{userId} AND (payed_time >=#{beginTime} AND payed_time <=#{endTime})
+        AND status=1
+        ]]>
+    </select>
+
+    <select id="getUserConsumeOrdersLately" parameterType="java.util.Map" resultMap="consumeOrderResultMap">
+        SELECT a.*,b.name as game_name FROM (
+            SELECT orderid, consume_money, order_time, goods_subject, goods_body, status, payed_type, appid
+            FROM ${payDB}.mc_order_xf
+            WHERE mid=#{userId} AND order_time > unix_timestamp(date_sub(now(), interval 90 day))
+            ORDER BY id DESC LIMIT #{limit}
+        ) a
+        JOIN ${payDB}.mc_application b
+        ON a.appid=b.appid
+    </select>
+
+    <update id="updateConsumeOrder" parameterType="com.bingdou.core.model.ConsumeOrder">
+        UPDATE ${payDB}.mc_order_xf SET status=#{status},payed_money=#{payedMoney},
+        payed_time=#{payedTime}
+        WHERE orderid=#{orderId}
+    </update>
+
+    <select id="getOrderByOrderId" parameterType="java.lang.String" resultMap="consumeOrderResultMap">
+        <![CDATA[
+        SELECT id, user_orderid, consume_money, orderid, order_time, status, payed_type, appid,
+        goods_subject, goods_body, userparam
+        FROM ${payDB}.mc_order_xf WHERE orderid = #{orderId} LIMIT 1
+        ]]>
+    </select>
+
+    <insert id="insertUserMoneyOrder" parameterType="java.util.Map">
+          INSERT INTO ${payDB}.mc_user_money_order(mid,order_id,money_type,money,status)
+          VALUE(#{userId},#{orderId},#{moneyType},#{moneyFen},#{status})
+    </insert>
+
+    <select id="getUnDoneUserMoneyOrderList" parameterType="java.util.Map" resultMap="userMoneyOrderResultMap">
+        SELECT money_type,money FROM ${payDB}.mc_user_money_order
+        WHERE order_id=#{orderId} AND mid=#{userId} AND status=0
+    </select>
+
+    <update id="updateUserMoneyOrderByOrderId" parameterType="java.lang.String">
+        UPDATE ${payDB}.mc_user_money_order SET status=1 WHERE order_id=#{orderId}
+    </update>
+
+    <select id="getStatusByUserOrderIdAndUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT status FROM ${payDB}.mc_order_xf
+        WHERE user_orderid=#{userOrderId} AND mid=#{userId}
+    </select>
+
+    <resultMap id="userMoneyOrderResultMap" type="com.bingdou.core.model.UserMoneyOrder">
+        <result property="moneyType" column="money_type"/>
+        <result property="moneyFen" column="money"/>
+    </resultMap>
+
+    <resultMap id="consumeOrderResultMap" type="com.bingdou.core.model.ConsumeOrder">
+        <result property="id" column="id"/>
+        <result property="userOrderId" column="user_orderid"/>
+        <result property="consumeMoney" column="consume_money"/>
+        <result property="orderId" column="orderid"/>
+        <result property="orderTime" column="order_time"/>
+        <result property="status" column="status"/>
+        <result property="payType" column="payed_type"/>
+        <result property="goodsName" column="goods_subject"/>
+        <result property="goodsDescription" column="goods_body"/>
+        <result property="gameName" column="game_name"/>
+        <result property="appId" column="appid"/>
+        <result property="userParam" column="userparam"/>
+    </resultMap>
+
+</mapper>

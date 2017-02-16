@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="OFF">
+
+    <Properties>
+        <Property name="rootLoggerLevel">INFO</Property>
+        <Property name="bizLoggerLevel">INFO</Property>
+        <Property name="exceptionLoggerLevel">ERROR</Property>
+        <!-- 日志根目录 -->
+        <Property name="baseLogPath">/tmp/pay-server</Property>
+        <Property name="dataLogPath">${baseLogPath}/data</Property>
+        <Property name="commonLogPath">${baseLogPath}/common</Property>
+        <!-- 日志格式 -->
+        <Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss:SSS} - %p - %msg%ex%n</Property>
+        <Property name="hadoopLogPattern">%msg%n</Property>
+        <!-- 按 XXX(这里是按天) 循环的日志格式
+            注：这里如果想用按照小时为单位，请修改成 %d{yyyy-MM-dd-HH}，
+            这样下面的TimeBasedTriggeringPolicy的interval的单位就变成小时了 -->
+        <Property name="dailyRollingFilePattern">%d{yyyy-MM-dd}</Property>
+        <Property name="hourRollingFilePattern">%d{yyyy-MM-dd-HH}</Property>
+
+        <Property name="exceptionLogFileName">${commonLogPath}/Exception_DailyRolling.log</Property>
+        <Property name="timerCalculatorLogFileName">${commonLogPath}/timerCalculator_DailyRolling.log</Property>
+        <Property name="httpClientLogFileName">${commonLogPath}/httpClientLog_DailyRolling.log</Property>
+        <Property name="mailLogFileName">${commonLogPath}/mail_DailyRolling.log</Property>
+        <Property name="serverToHadoopLogFileName">${dataLogPath}/serverToHadoop_DailyRolling.log</Property>
+        <Property name="payTypeCallBackLogFileName">${commonLogPath}/payTypeCallBack_DailyRolling.log</Property>
+        <Property name="payTypeWebLogFileName">${commonLogPath}/payTypeWeb_DailyRolling.log</Property>
+        <Property name="callBackCpLogFileName">${commonLogPath}/callBackCp_DailyRolling.log</Property>
+        <Property name="callBackCpRecordLogFileName">${commonLogPath}/callBackCpRecord_DailyRolling.log</Property>
+        <Property name="otherCallBackLogFileName">${commonLogPath}/otherCallBack_DailyRolling.log</Property>
+        <Property name="monitorLogFileName">${commonLogPath}/monitor_DailyRolling.log</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- 控制台输出，请在调试环境下使用 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${logPattern}"/>
+        </Console>
+
+        <!-- 系统监控和公共日志 Begin -->
+        <RollingFile name="timerCalculator_LogAppender" fileName="${timerCalculatorLogFileName}"
+                     filePattern="${timerCalculatorLogFileName}.${hourRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="httpClient_LogAppender" fileName="${httpClientLogFileName}"
+                     filePattern="${httpClientLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="exception_LogAppender" fileName="${exceptionLogFileName}"
+                     filePattern="${exceptionLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <ThresholdFilter level="${exceptionLoggerLevel}" onMatch="ACCEPT" onMismatch="DENY"/>
+        </RollingFile>
+
+        <RollingFile name="serverToHadoop_LogAppender" fileName="${serverToHadoopLogFileName}"
+                     filePattern="${serverToHadoopLogFileName}.${hourRollingFilePattern}">
+            <PatternLayout pattern="${hadoopLogPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="mail_LogAppender" fileName="${mailLogFileName}"
+                     filePattern="${mailLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="payTypeCallBack_LogAppender" fileName="${payTypeCallBackLogFileName}"
+                     filePattern="${payTypeCallBackLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="payTypeWeb_LogAppender" fileName="${payTypeWebLogFileName}"
+                     filePattern="${payTypeWebLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="callBackCp_LogAppender" fileName="${callBackCpLogFileName}"
+                     filePattern="${callBackCpLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="callBackCpRecord_LogAppender" fileName="${callBackCpRecordLogFileName}"
+                     filePattern="${callBackCpRecordLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="otherCallBack_LogAppender" fileName="${otherCallBackLogFileName}"
+                     filePattern="${otherCallBackLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+
+        <RollingFile name="monitor_LogAppender" fileName="${monitorLogFileName}"
+                     filePattern="${monitorLogFileName}.${dailyRollingFilePattern}">
+            <PatternLayout pattern="${logPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+        <!-- 系统监控和公共日志 End -->
+
+    </Appenders>
+
+    <Loggers>
+
+        <Logger name="timerCalculator_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="timerCalculator_LogAppender"/>
+        </Logger>
+
+        <Logger name="httpClient_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="httpClient_LogAppender"/>
+            <appender-ref ref="exception_LogAppender"/>
+        </Logger>
+
+        <Logger name="serverToHadoop_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="serverToHadoop_LogAppender"/>
+        </Logger>
+
+        <Logger name="mail_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="mail_LogAppender"/>
+            <appender-ref ref="exception_LogAppender"/>
+        </Logger>
+
+        <Logger name="payTypeCallBack_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="payTypeCallBack_LogAppender"/>
+            <appender-ref ref="exception_LogAppender"/>
+        </Logger>
+
+        <Logger name="payTypeWeb_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="payTypeWeb_LogAppender"/>
+            <appender-ref ref="exception_LogAppender"/>
+        </Logger>
+
+        <Logger name="callBackCp_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="callBackCp_LogAppender"/>
+            <appender-ref ref="exception_LogAppender"/>
+        </Logger>
+
+        <Logger name="callBackCpRecord_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="callBackCpRecord_LogAppender"/>
+        </Logger>
+
+        <Logger name="otherCallBack_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="otherCallBack_LogAppender"/>
+            <appender-ref ref="exception_LogAppender"/>
+        </Logger>
+
+        <Logger name="monitor_Logger" level="${bizLoggerLevel}" additivity="false">
+            <appender-ref ref="monitor_LogAppender"/>
+            <appender-ref ref="exception_LogAppender"/>
+        </Logger>
+
+        <!-- 根输出流配置,当Logger配置的additivity=true时起作用,会收集所配置Logger的流到这里,
+             请在调试环境下使用 -->
+        <Root level="${rootLoggerLevel}">
+            <appender-ref ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>

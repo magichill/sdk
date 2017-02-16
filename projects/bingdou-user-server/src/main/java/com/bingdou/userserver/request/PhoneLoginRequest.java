@@ -14,14 +14,18 @@ public class PhoneLoginRequest extends BaseRequest {
     /**
      * 手机号
      */
+    //TODO phone_number
     @SerializedName("mobile")
     private String mobile;
 
     /**
      * 验证码
      */
+    //TODO captcha
     @SerializedName("code")
     private String code;
+
+    //TODO user_name & password
 
     @Override
     protected String getLoggerName() {

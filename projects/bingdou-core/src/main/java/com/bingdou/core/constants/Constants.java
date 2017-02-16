@@ -14,4 +14,12 @@ public class Constants {
 
     public static final String REQUEST_SAFE_INFO_NAME = "safe_info";
 
+    /**
+     * 支付宝合作者ID
+     */
+    public static final String ALI_PID = "2088411345750633";
+    /**
+     * 支付宝卖家ID
+     */
+    public static final String ALI_SELLER_ID = "haimapay002@haima.me";
 }

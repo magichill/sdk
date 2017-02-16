@@ -13,15 +13,23 @@ public class FocusDao {
     @Autowired
     private IFocusMapper focusMapper;
 
-    public int getFollowerCount(String userId){
+    public boolean checkFocusInfo(int userId,int followId){
+        int count = focusMapper.checkFocusInfo(userId,followId);
+        return count > 0;
+    }
+    public int getFollowerCount(int userId){
         return focusMapper.getFollowerCount(userId);
     }
 
-    public int getFansCount(String userId){
+    public int getFansCount(int userId){
         return focusMapper.getFansCount(userId);
     }
 
     public void insertFocus(int userId,int followId){
         focusMapper.insertFocusInfo(userId,followId);
+    }
+
+    public void updateFocusInfo(int userId,int followId,int status){
+        focusMapper.updateFocusInfo(userId,followId,status);
     }
 }

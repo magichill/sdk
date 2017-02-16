@@ -5,8 +5,10 @@ import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
+import com.bingdou.core.model.UserVipGrade;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.core.service.pay.VipGradeService;
 import com.bingdou.core.service.user.DeviceService;
 import com.bingdou.core.utils.DataLogUtils;
 import com.bingdou.core.utils.UserUtils;
@@ -32,6 +34,8 @@ public class RegisterService extends BaseService implements IMethodService {
     @Autowired
     private DeviceService deviceService;
 
+    @Autowired
+    private VipGradeService vipGradeService;
 
     @Override
     public BaseRequest getBaseRequest(HttpServletRequest request) throws Exception {
@@ -118,14 +122,14 @@ public class RegisterService extends BaseService implements IMethodService {
                 isNewDevice = deviceService.isNewDevice(registerRequest.getDeviceInfo());
             }
             //TODO vip等级查询
-//            UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(newUser.getId());
+            UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(newUser.getId());
             boolean updateTokenResult = userBaseService.updateToken(newUser, tokenDevice, getSafeInfo(request), true);
             LogContext.instance().info("更新用户token:" + updateTokenResult);
 
             DataLogUtils.recordHadoopLog(HadoopLogAction.REGISTER, registerRequest, newUser,
                     clientIp, "", "", isNewDevice);
 
-            registerResponse.parseFromUser(newUser, null, false,false, 0);
+            registerResponse.parseFromUser(newUser, userVipGrade, false,false, 0);
             JsonElement result = JsonUtil.bean2JsonTree(registerResponse);
             LogContext.instance().info("注册成功");
             return ServiceResultUtil.success(result);

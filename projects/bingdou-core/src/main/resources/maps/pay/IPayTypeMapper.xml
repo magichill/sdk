@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IPayTypeMapper">
+
+    <select id="getPayTypeCountByIdAndOsAndVersion" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${payDB}.mc_pay_type
+        WHERE id=#{id} AND (os = #{os} OR os = -1)
+        <if test="sdkVersion!=null">
+            <![CDATA[
+            AND (
+              (start_version='' AND (end_version='' OR end_version>=#{sdkVersion}))
+            OR
+              (start_version<=#{sdkVersion} AND (end_version='' OR end_version>=#{sdkVersion}))
+            )
+            ]]>
+        </if>
+        AND is_show = 1 AND pay_type_limit >= #{moneyYuan}
+    </select>
+
+    <select id="getPayTypeList" parameterType="java.util.Map" resultMap="payTypeResultMap">
+        SELECT id,pay_type_name,pay_type_description,pay_type_limit,pay_type_display
+        FROM ${payDB}.mc_pay_type
+        WHERE (os = #{os} OR os = -1)
+        <if test="sdkVersion!=null">
+            <![CDATA[
+            AND (
+              (start_version='' AND (end_version='' OR end_version>=#{sdkVersion}))
+            OR
+              (start_version<=#{sdkVersion} AND (end_version='' OR end_version>=#{sdkVersion}))
+            )
+            ]]>
+        </if>
+        AND is_show = 1 ORDER BY order_no ASC
+    </select>
+
+    <insert id="insertPPOrderDetail" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_order_cz_detail_pp(tranResult,resultInfo,merId,merOrderNo,merUserId,
+        orderNo,payAmt,remark,transTime,orderStatus,sign,create_date,update_date)
+        VALUE(#{tranResult},#{resultInfo},#{merId},#{merOrderNo},#{merUserId},#{orderNo},
+        #{payAmt},#{remark},#{transTime},#{orderStatus},#{sign},UNIX_TIMESTAMP(),UNIX_TIMESTAMP())
+        ]]>
+    </insert>
+
+    <insert id="insertHeepayWxOrderDetail" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_order_cz_detail_heepay(result,pay_message,agent_id,jnet_bill_no,agent_bill_id,
+        pay_type,pay_amt,remark,sign)
+        VALUE(#{result},#{payMessage},#{agentId},#{jnetBillNo},#{agentBillId},#{payType},
+        #{payAmt},#{remark},#{sign})
+        ]]>
+    </insert>
+
+    <insert id="insertAliOrderDetail" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_ali_call_back_record(notify_time,notify_type,notify_id,sign_type,
+        sign,out_trade_no,subject,payment_type,trade_no,trade_status,gmt_create,gmt_payment,gmt_close,
+        refund_status,gmt_refund,seller_email,buyer_email,seller_id,buyer_id,price,total_fee,quantity,
+        body,discount,is_total_fee_adjust,use_coupon,extra_common_param,business_scene)
+        VALUE(#{notify_time},#{notify_type},#{notify_id},#{sign_type},
+        #{sign},#{out_trade_no},#{subject},#{payment_type},#{trade_no},#{trade_status},#{gmt_create},
+        #{gmt_payment},#{gmt_close},#{refund_status},#{gmt_refund},#{seller_email},#{buyer_email},#{seller_id},#{buyer_id},
+        #{price},#{total_fee},#{quantity},#{body},#{discount},#{is_total_fee_adjust},#{use_coupon},#{extra_common_param}
+        ,#{business_scene})
+        ]]>
+    </insert>
+
+    <insert id="insertChinaPayUnionOrderDetail" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_china_pay_union_call_back_record(Version,AccessType,AcqCode,MerId,MerOrderNo,
+        TranDate,TranTime,OrderAmt,TranType,BusiType,CurryNo,OrderStatus,AcqSeqId,AcqDate,BankInstNo,CommodityMsg,
+        MerResv,PayTimeOut,CompleteDate,CompleteTime,Signature)
+        VALUE(#{Version},#{AccessType},#{AcqCode},#{MerId},#{MerOrderNo},
+        #{TranDate},#{TranTime},#{OrderAmt},#{TranType},#{BusiType},#{CurryNo},#{OrderStatus},
+        #{AcqSeqId},#{AcqDate},#{BankInstNo},#{CommodityMsg},
+        #{MerResv},#{PayTimeOut},#{CompleteDate},#{CompleteTime},#{Signature})
+        ]]>
+    </insert>
+
+    <insert id="insertWeixinOrderDetail" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_order_cz_detail_wx(return_code,return_msg,appid,mch_id,device_info,
+        nonce_str,sign,result_code,err_code,err_code_des,openid,is_subscribe,trade_type,bank_type,
+        total_fee,fee_type,cash_fee,cash_fee_type,coupon_fee,coupon_count,transaction_id,
+        out_trade_no,attach,time_end)
+        VALUE(#{return_code},#{return_msg},#{appid},#{mch_id},#{device_info},
+        #{nonce_str},#{sign},#{result_code},#{err_code},#{err_code_des},#{openid},#{is_subscribe},
+        #{trade_type},#{bank_type},#{total_fee},#{fee_type},#{cash_fee},#{cash_fee_type},#{coupon_fee},
+        #{coupon_count},#{transaction_id},#{out_trade_no},#{attach},#{time_end})
+        ]]>
+    </insert>
+
+    <insert id="insertUpmpOrderDetail" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_order_cz_detail_un(version,charset,signMethod,signature,transType,
+        merId,transStatus,respCode,respMsg,orderNumber,orderTime,settleAmount,settleCurrency,settleDate,
+        exchangeRate,exchangeDate,merReserved,reqReserved,sysReserved)
+        VALUE(#{version},#{charset},#{signMethod},#{signature},#{transType},
+        #{merId},#{transStatus},#{respCode},#{respMsg},#{orderNumber},#{orderTime},
+        #{settleAmount},#{settleCurrency},#{settleDate},
+        #{exchangeRate},#{exchangeDate},#{merReserved},#{reqReserved},#{sysReserved})
+        ]]>
+    </insert>
+
+    <insert id="insert19PayOrderDetail" parameterType="java.util.Map">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_19pay(order_id,verifystring,pay_sq,pay_date,card_num,
+        card_pwd,pm_id,pc_id,card_status,card_code,error_msg,card_amount)
+        VALUE(#{order_id},#{verifystring},#{pay_sq},#{pay_date},#{card_num},
+        #{card_pwd},#{pm_id},#{pc_id},#{card_status},#{card_code},'',#{card_amount})
+        ]]>
+    </insert>
+
+    <resultMap id="payTypeResultMap" type="com.bingdou.core.model.PayTypeModel">
+        <result property="id" column="id"/>
+        <result property="name" column="pay_type_name"/>
+        <result property="description" column="pay_type_description"/>
+        <result property="limit" column="pay_type_limit"/>
+        <result property="display" column="pay_type_display"/>
+    </resultMap>
+
+</mapper>

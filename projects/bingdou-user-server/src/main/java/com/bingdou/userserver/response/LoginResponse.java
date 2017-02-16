@@ -1,6 +1,7 @@
 package com.bingdou.userserver.response;
 
 import com.bingdou.core.model.User;
+import com.bingdou.core.model.UserStat;
 import com.bingdou.core.model.UserVipGrade;
 import com.bingdou.core.utils.UserUtils;
 import com.bingdou.tools.LogContext;
@@ -50,7 +51,49 @@ public class LoginResponse {
     private int unreadMessageNum = 0;
     @SerializedName("is_need_update")
     private int isNeedUpdate = 0;
+    @SerializedName("avatar_url")
+    private String avatar = "http://tva2.sinaimg.cn/crop.3.0.634.634.1024/cd516b22jw8fa4mlfynwzj20hs0hm0tr.jpg";
+    @SerializedName("signature")
+    private String signature = "这个人的签名被吃了";
+    @SerializedName("certification_status")
+    private Integer certificationStatus = 0;
+    @SerializedName("like_count")
+    private Integer likeCount = 0;
+    @SerializedName("followers")
+    private Integer followers = 0;
 
+    public void parseFromUser(User user, UserVipGrade userVipGrade,
+                              int certificationStatus, int virtualMoneyFen, UserStat userStat){
+        if (user == null)
+            return;
+        setUserPrimaryId(user.getId());
+        setCpIdOrId(user.getReturnUserId());
+        setLoginName(user.getLoginName());
+        setMobile(user.getMobile());
+        setEmail(user.getEmail());
+        setVirtualMoney(NumberUtil.convertYuanFromFen(virtualMoneyFen));
+        if (user.getMoney() != null)
+            setMoney(NumberUtil.convertYuanFromFen(user.getMoney() + virtualMoneyFen));
+        setSafeLevel(UserUtils.getSafeLevel(user));
+        setLevelId(user.getSafeLevel());
+        setVipLevel(userVipGrade.getUserLevelId());
+        setNickName(user.getNickName());
+        setToken(user.getToken());
+        setvToken(user.getvToken());
+        setIsNeedUpdate(StringUtils.isEmpty(user.getPassword()) ? 1 : 0);
+
+        setUserRechargeMoney(userVipGrade.getMoney());
+        if (userVipGrade.getNextLevelRechargeAmount() > 0) {
+            setNextVipLevelMoney(userVipGrade.getNextLevelRechargeAmount());
+            setVipUpNeedMoney(userVipGrade.getNextLevelNeedRechargeAmount());
+        } else {
+            setNextVipLevelMoney(0f);
+            setVipUpNeedMoney(0f);
+        }
+        setCertificationStatus(certificationStatus);
+        setLikeCount(userStat.getLikeCount());
+        setFollowers(userStat.getFollowers());
+    }
     public void parseFromUser(User user, UserVipGrade userVipGrade,
                               boolean isSupportVirtualMoney,
                               boolean aliPayNoPwdSigned, int virtualMoneyFen) {
@@ -264,7 +307,47 @@ public class LoginResponse {
         this.virtualMoney = virtualMoney;
     }
 
-//    public int getIsSupportVirtualMoney() {
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
+    }
+
+    public Integer getCertificationStatus() {
+        return certificationStatus;
+    }
+
+    public void setCertificationStatus(Integer certificationStatus) {
+        this.certificationStatus = certificationStatus;
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
+    }
+
+    public Integer getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Integer followers) {
+        this.followers = followers;
+    }
+
+    //    public int getIsSupportVirtualMoney() {
 //        return isSupportVirtualMoney;
 //    }
 //

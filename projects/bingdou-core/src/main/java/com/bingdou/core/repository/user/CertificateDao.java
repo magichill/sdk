@@ -13,7 +13,7 @@ public class CertificateDao {
     @Autowired
     private IAnchorCertificateMapper anchorCertificateMapper;
 
-    public Integer getAnchorStatus(String userId) {
+    public Integer getAnchorStatus(int userId) {
         return anchorCertificateMapper.getAnchorStatus(userId);
     }
 

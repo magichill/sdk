@@ -4,7 +4,9 @@ package com.bingdou.core.utils;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.DeviceInfo;
 import com.bingdou.core.helper.OtherInfo;
+import com.bingdou.core.model.Order;
 import com.bingdou.core.model.Os;
+import com.bingdou.core.model.RechargeOrder;
 import com.bingdou.core.model.User;
 import com.bingdou.tools.LogContext;
 import com.bingdou.tools.RecordLogger;
@@ -40,17 +42,40 @@ public class DataLogUtils {
                                        String bizId, String otherCode, boolean isNewDevice) {
         LogContext.instance().info("记录服务器关键点统计日志");
         HadoopLogObject object = createHadoopLogObject(action, request, user, clientIp,
-                isNewDevice ? 1 : 0, bizId, otherCode);
+                isNewDevice ? 1 : 0, bizId, otherCode, null);
         RecordLogger.hadoopLog(object);
     }
 
+    public static void recordHadoopLog(HadoopLogAction action, BaseRequest request,
+                                       User user, String clientIp,
+                                       String bizId, Order order, boolean isRecharge,
+                                       boolean isUseConsumeVoucher) {
+        LogContext.instance().info("记录服务器关键点统计日志");
+        DataLogPayObject payObject = new DataLogPayObject();
+        if (order != null) {
+            payObject.setPayType(order.getPayType() == null ? -1 : order.getPayType());
+            payObject.setOrderId(order.getOrderId());
+            payObject.setPayedMoney(order.getPayedMoney() == null ? 0 : order.getPayedMoney());
+            payObject.setOrderStatus(order.getStatus() == null ? -1 : order.getStatus());
+            if (isRecharge) {
+                RechargeOrder rechargeOrder = (RechargeOrder) order;
+                payObject.setOrderMoney(rechargeOrder.getOrderMoney());
+                payObject.setOrderType(1);
+                payObject.setActivityType(rechargeOrder.getActivityType());
+            } else {
+                payObject.setOrderType(2);
+                payObject.setIsUseVoucher(isUseConsumeVoucher ? 1 : 0);
+            }
+        }
+        HadoopLogObject object = createHadoopLogObject(action, request, user, clientIp, 0, bizId, "", payObject);
+        RecordLogger.hadoopLog(object);
+    }
 
     private static HadoopLogObject createHadoopLogObject(HadoopLogAction action, BaseRequest request,
                                                          User user, String clientIp, int isNewDevice,
-                                                         String bizId, String otherCode){
+                                                         String bizId, String otherCode, DataLogPayObject payObject) {
         HadoopLogObject object = new HadoopLogObject();
         try {
-
             DeviceInfo deviceInfo = null;
             OtherInfo otherInfo = null;
             if (request != null) {
@@ -109,16 +134,16 @@ public class DataLogUtils {
                 object.setIosSerial("");
                 object.setIosBreakout(iosInfo.getBreakout());
             }
-//            if (payObject != null) {
-//                object.setPayType(payObject.getPayType());
-//                object.setOrderId(payObject.getOrderId());
-//                object.setOrderMoney(payObject.getOrderMoney());
-//                object.setPayedMoney(payObject.getPayedMoney());
-//                object.setOrderType(payObject.getOrderType());
-//                object.setOrderStatus(payObject.getOrderStatus());
-//                object.setActivityType(payObject.getActivityType());
-//                object.setIsUseVoucher(payObject.getIsUseVoucher());
-//            }
+            if (payObject != null) {
+                object.setPayType(payObject.getPayType());
+                object.setOrderId(payObject.getOrderId());
+                object.setOrderMoney(payObject.getOrderMoney());
+                object.setPayedMoney(payObject.getPayedMoney());
+                object.setOrderType(payObject.getOrderType());
+                object.setOrderStatus(payObject.getOrderStatus());
+                object.setActivityType(payObject.getActivityType());
+                object.setIsUseVoucher(payObject.getIsUseVoucher());
+            }
         } catch (Exception e) {
             LogContext.instance().error(e, "创建服务器入库日志对象失败");
         }
@@ -126,3 +151,4 @@ public class DataLogUtils {
     }
 
 }
+

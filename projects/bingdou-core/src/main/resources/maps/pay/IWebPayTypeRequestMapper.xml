@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IWebPayTypeRequestMapper">
+
+    <insert id="addRequest" parameterType="com.bingdou.core.model.WebPayTypeRequest">
+      INSERT INTO ${payDB}.mc_web_pay_type_request(order_id,order_type,order_money,order_desc,client_ip,
+      return_url,pay_type,request_source_index,pay_sign,create_time,mid)
+      VALUE (#{orderId},#{orderType},#{orderMoney},#{orderDesc},#{clientIp},
+      #{returnUrl},#{payType},#{requestSourceIndex},#{paySign},UNIX_TIMESTAMP(),#{userId})
+    </insert>
+
+    <select id="getRequestByOrderId" parameterType="java.lang.String" resultMap="requestResultMap">
+      SELECT mid,order_id,order_type,order_money,order_desc,client_ip,
+             return_url,pay_type,request_source_index,pay_sign,create_time
+      FROM ${payDB}.mc_web_pay_type_request
+      WHERE order_id=#{orderId}
+    </select>
+
+    <resultMap id="requestResultMap" type="com.bingdou.core.model.WebPayTypeRequest">
+        <result column="mid" property="userId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="order_type" property="orderType"/>
+        <result column="order_money" property="orderMoney"/>
+        <result column="order_desc" property="orderDesc"/>
+        <result column="client_ip" property="clientIp"/>
+        <result column="return_url" property="returnUrl"/>
+        <result column="pay_type" property="payType"/>
+        <result column="request_source_index" property="requestSourceIndex"/>
+        <result column="pay_sign" property="paySign"/>
+        <result column="create_time" property="createTime"/>
+    </resultMap>
+
+</mapper>

@@ -2,9 +2,12 @@ package com.bingdou.core.service.user;
 
 import com.bingdou.core.cache.IUserCacheManager;
 import com.bingdou.core.constants.UserConstants;
+import com.bingdou.core.model.MoneyLog;
 import com.bingdou.core.model.SafeInfo;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.UserToken;
+import com.bingdou.core.repository.pay.MoneyLogDao;
+import com.bingdou.core.repository.user.CertificateDao;
 import com.bingdou.core.repository.user.UserBaseDao;
 import com.bingdou.tools.DateUtil;
 import com.bingdou.tools.LogContext;
@@ -25,9 +28,12 @@ public class UserBaseService {
 
     @Autowired
     private UserBaseDao userBaseDao;
-
+    @Autowired
+    private MoneyLogDao moneyLogDao;
     @Autowired
     private IUserCacheManager userCacheManager;
+    @Autowired
+    private CertificateDao certificateDao;
 
     /**
      * 通过手机号获取用户详细信息
@@ -105,41 +111,41 @@ public class UserBaseService {
         return user;
     }
 
-//    /**
-//     * 更新用户余额
-//     */
-//    public void updateMoneyById(Integer userId, int oldUserMoney, MoneyLog moneyLog) throws Exception {
-//        if (userId == null || userId <= 0 || moneyLog == null) {
-//            throw new Exception("更新用户余额错误");
-//        }
-//        if (oldUserMoney != moneyLog.getMoneyBalance()) {
-//            int count = userBaseDao.updateMoneyById(userId, moneyLog.getMoneyBalance());
-//            if (count < 1)
-//                throw new Exception("更新用户余额错误");
-//            moneyLogDao.add(moneyLog);
-//        }
-//    }
-//
-//    public void insertOrUpdateVirtualMoney(int userId, int userVirtualMoneyOld, int osIndex,
-//                                           MoneyLog moneyLog) throws Exception {
-//        if (userId <= 0 || moneyLog == null || osIndex < 0) {
-//            throw new Exception("插入(更新)用户币游戏余额错误");
-//        }
-//        Integer virtualMoneyFen = userBaseDao.getVirtualMoney(userId, osIndex);
-//        if (virtualMoneyFen == null) {
-//            LogContext.instance().info("没有游戏币余额记录,插入");
-//            userBaseDao.insertVirtualMoney(userId, osIndex, moneyLog.getMoneyBalance());
-//            moneyLogDao.add(moneyLog);
-//        } else {
-//            if (userVirtualMoneyOld != moneyLog.getMoneyBalance()) {
-//                LogContext.instance().info("有游戏币余额记录,更新");
-//                int count = userBaseDao.updateVirtualMoney(userId, osIndex, moneyLog.getMoneyBalance());
-//                if (count < 1)
-//                    throw new Exception("更新用户币游戏余额错误");
-//                moneyLogDao.add(moneyLog);
-//            }
-//        }
-//    }
+    /**
+     * 更新用户余额
+     */
+    public void updateMoneyById(Integer userId, int oldUserMoney, MoneyLog moneyLog) throws Exception {
+        if (userId == null || userId <= 0 || moneyLog == null) {
+            throw new Exception("更新用户余额错误");
+        }
+        if (oldUserMoney != moneyLog.getMoneyBalance()) {
+            int count = userBaseDao.updateMoneyById(userId, moneyLog.getMoneyBalance());
+            if (count < 1)
+                throw new Exception("更新用户余额错误");
+            moneyLogDao.add(moneyLog);
+        }
+    }
+
+    public void insertOrUpdateVirtualMoney(int userId, int userVirtualMoneyOld, int osIndex,
+                                           MoneyLog moneyLog) throws Exception {
+        if (userId <= 0 || moneyLog == null || osIndex < 0) {
+            throw new Exception("插入(更新)用户币游戏余额错误");
+        }
+        Integer virtualMoneyFen = userBaseDao.getVirtualMoney(userId, osIndex);
+        if (virtualMoneyFen == null) {
+            LogContext.instance().info("没有游戏币余额记录,插入");
+            userBaseDao.insertVirtualMoney(userId, osIndex, moneyLog.getMoneyBalance());
+            moneyLogDao.add(moneyLog);
+        } else {
+            if (userVirtualMoneyOld != moneyLog.getMoneyBalance()) {
+                LogContext.instance().info("有游戏币余额记录,更新");
+                int count = userBaseDao.updateVirtualMoney(userId, osIndex, moneyLog.getMoneyBalance());
+                if (count < 1)
+                    throw new Exception("更新用户币游戏余额错误");
+                moneyLogDao.add(moneyLog);
+            }
+        }
+    }
 
     /**
      * 通过用户cpid或者id集合获取主键ID集合
@@ -437,5 +443,9 @@ public class UserBaseService {
         if (StringUtils.isEmpty(cpId))
             return null;
         return userBaseDao.getIdByCpId(cpId);
+    }
+
+    public Integer getCertificateStatus(int userId ){
+        return certificateDao.getAnchorStatus(userId);
     }
 }

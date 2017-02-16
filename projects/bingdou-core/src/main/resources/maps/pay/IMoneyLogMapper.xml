@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IMoneyLogMapper">
+
+    <insert id="add" parameterType="com.bingdou.core.model.MoneyLog">
+        INSERT INTO ${payDB}.mc_money_log(mid, money, money_banlance, time, item, reason, remark, type)
+        VALUES (#{userId}, #{money}, #{moneyBalance}, UNIX_TIMESTAMP(), #{item}, #{reason}, '', #{type})
+    </insert>
+
+</mapper>

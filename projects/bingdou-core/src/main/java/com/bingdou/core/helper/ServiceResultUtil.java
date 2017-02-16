@@ -32,6 +32,20 @@ public class ServiceResultUtil {
     }
 
     /**
+     * 构造支付宝免密未授权结果
+     */
+    public static ServiceResult aliPayNoPwdUnSign() {
+        return new ServiceResult(ReturnCode.ALI_PAY_NO_PWD_UN_SIGN, "未开通支付宝免密支付");
+    }
+
+    /**
+     * 构造支付宝免密支付处理中结果
+     */
+    public static ServiceResult aliPayNoPwdInProcess() {
+        return new ServiceResult(ReturnCode.ORDER_PAY_IN_PROCESS, "请查收支付宝短信，完成支付");
+    }
+
+    /**
      * 构造非法请求结果
      */
     public static ServiceResult illegal(String msg) {

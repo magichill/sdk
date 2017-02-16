@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bingdou.core.mapper.user.IAnchorCertificateMapper">
 
-    <select id="getAnchorStatus" parameterType="java.lang.String"
+    <select id="getAnchorStatus" parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         <![CDATA[
         SELECT COUNT(1) FROM ${userDB}.mc_anchor_certificate WHERE mid = #{userId}
@@ -15,5 +15,11 @@
           VALUE(#{userId},1)
         ]]>
     </insert>
+
+    <update id="updateAnchorCertificate" parameterType="java.util.Map">
+        <![CDATA[
+        UPDATE ${userDB}.mc_anchor_certificate SET status=#{status} WHERE mid=#{userId}
+        ]]>
+    </update>
 
 </mapper>

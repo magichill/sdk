@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IVipGradeMapper">
+
+    <select id="getVipRechargeAmountByLevelId" parameterType="java.lang.Integer"
+            resultType="java.lang.Float">
+        <![CDATA[
+          SELECT recharge_amount FROM ${payDB}.mc_vip_grade
+          WHERE level_id = #{levelId}
+        ]]>
+    </select>
+
+    <select id="getUserVipGradeInfo" parameterType="int" resultMap="userVipGrade">
+        <![CDATA[
+          SELECT money, level_id AS user_level_id FROM ${payDB}.mc_user_vip WHERE mid=#{userId} LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getVipLevelByRechargeAmount" parameterType="java.lang.Float" resultType="java.lang.Integer">
+        <![CDATA[
+          SELECT level_id FROM ${payDB}.mc_vip_grade WHERE recharge_amount<=#{rechargeAmount} ORDER BY level_id DESC LIMIT 1
+        ]]>
+    </select>
+
+    <update id="updateUserVip" parameterType="java.util.Map">
+        <![CDATA[
+          UPDATE ${payDB}.mc_user_vip SET level_id=#{levelId},money=#{money} WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <update id="updateUserVipMoney" parameterType="java.util.Map">
+        <![CDATA[
+          UPDATE ${payDB}.mc_user_vip SET money=#{money} WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <insert id="insertUserVip" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT ${payDB}.mc_user_vip(mid,money,level_id)
+          VALUE(#{userId},#{money},#{levelId})
+        ]]>
+    </insert>
+
+    <resultMap id="userVipGrade" type="com.bingdou.core.model.UserVipGrade">
+        <result property="money" column="money"/>
+        <result property="userLevelId" column="user_level_id"/>
+        <result property="rechargeAmount" column="recharge_amount"/>
+    </resultMap>
+
+</mapper>

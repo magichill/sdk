@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface IAnchorCertificateMapper {
 
-    int getAnchorStatus(@Param("userId") String userId);
+    int getAnchorStatus(@Param("userId") Integer userId);
 
     void insertAnchorCertificate(@Param("userId") Integer userId, @Param("status") int status);
 }

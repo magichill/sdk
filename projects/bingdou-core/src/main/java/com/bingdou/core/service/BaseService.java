@@ -7,6 +7,9 @@ import com.bingdou.core.model.Os;
 import com.bingdou.core.model.SafeInfo;
 import com.bingdou.core.model.User;
 import com.bingdou.core.service.pay.AppBaseService;
+import com.bingdou.core.service.pay.PayTypeBaseService;
+import com.bingdou.core.service.pay.RechargeOrderService;
+import com.bingdou.core.service.pay.paytype.PayTypeFactory;
 import com.bingdou.core.service.user.UserBaseService;
 import com.bingdou.tools.LogContext;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +28,12 @@ public abstract class BaseService {
     @Autowired
     protected AppBaseService appBaseService;
 
+    @Autowired
+    protected PayTypeBaseService payTypeBaseService;
+    @Autowired
+    protected RechargeOrderService rechargeOrderService;
+    @Autowired
+    protected PayTypeFactory payTypeFactory;
     /**
      * 获取请求父类
      */
@@ -185,4 +194,38 @@ public abstract class BaseService {
         LogContext.instance().info("需要检查token");
         return true;
     }
+
+    protected int getVirtualMoneyFen4Use(int userId, int osIndex, String appId, String channel) {
+//        boolean isSupportVirtualMoney = switchRuleService.isSupportVirtualMoney(appId,
+//                osIndex, channel);
+//        if (!isSupportVirtualMoney)
+//            return 0;
+        return userBaseService.getVirtualMoney(userId, osIndex, false);
+    }
+
+    protected int getVirtualMoneyFen4Show(int userId, int osIndex, String sdkVersion, String appId,
+                                          String channel, boolean isNewUser) {
+//        boolean isSupportVirtualMoney = switchRuleService.isSupportVirtualMoney(appId,
+//                osIndex, channel);
+        return getVirtualMoneyFen4Show(userId, osIndex, sdkVersion, isNewUser, false);
+    }
+
+    protected int getVirtualMoneyFen4Show(int userId, int osIndex, String sdkVersion, boolean isNewUser,
+                                          boolean isSupportVirtualMoney) {
+        int virtualMoneyFen;
+        if (isSupportVirtualMoney) {
+            virtualMoneyFen = userBaseService.getVirtualMoney(userId, osIndex, isNewUser);
+        } else {
+            //为了兼容老版本,IOS小于1.6.0版本,ANDROID小于1.3.0版本,余额不加游戏币余额
+            if (osIndex == Os.IOS.getIndex() && "1.6.0".compareTo(sdkVersion) > 0) {
+                return 0;
+            } else if (osIndex == Os.ANDROID.getIndex() && "1.3.0".compareTo(sdkVersion) > 0) {
+                return 0;
+            }
+            virtualMoneyFen = userBaseService.getVirtualMoney(userId, osIndex, isNewUser);
+        }
+        return virtualMoneyFen;
+    }
+
+
 }

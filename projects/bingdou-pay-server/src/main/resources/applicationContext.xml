@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd"
+       default-lazy-init="true">
+
+    <context:component-scan base-package="com.bingdou.payserver">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <bean id="methodServiceFactory" class="com.bingdou.core.service.MethodServiceFactory">
+        <property name="methodServiceList">
+            <list>
+                <!--<ref local="cpLoginService"/>-->
+                <!--<ref local="cpCheckService"/>-->
+                <!--<ref local="cpGetAppsService"/>-->
+                <!--<ref local="changeAppOwnershipService"/>-->
+                <!--<ref local="getAppInfoService"/>-->
+                <!--<ref local="filterAppsService"/>-->
+                <!--<ref local="consumeHaimaCoinService"/>-->
+                <!--<ref local="transferMoneyService"/>-->
+                <!--<ref local="search4TransferOrderService"/>-->
+                <!--<ref local="search4MerchantMoneyService"/>-->
+                <!--<ref local="createRechargeOrderService"/>-->
+                <!--<ref local="createConsumeOrderService"/>-->
+                <!--<ref local="verifyOrderService"/>-->
+                <!--<ref local="getRebateInfoService"/>-->
+                <!--<ref local="appleInnerPayService"/>-->
+                <!--<ref local="getPayTypeListService"/>-->
+                <!--<ref local="getPropsService"/>-->
+                <!--<ref local="getChargeBackMoneyService"/>-->
+                <!--<ref local="getOrderRecordListService"/>-->
+                <!--<ref local="getVouchersService"/>-->
+                <!--<ref local="getConsumeVoucherService"/>-->
+                <!--<ref local="useRechargeVoucherService"/>-->
+                <!--<ref local="getAliPayNoPwdAuthSignService"/>-->
+                <!--<ref local="checkAliPayNoPwdAuthStatusService"/>-->
+                <!--<ref local="aliNoPwdPayService"/>-->
+                <!--<ref local="getFitVoucherService"/>-->
+                <!--
+                <ref local="getVoucherTotalCountService"/>
+                <ref local="getConsumeOrderService"/>
+                -->
+            </list>
+        </property>
+    </bean>
+
+</beans>

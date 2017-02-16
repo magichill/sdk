@@ -12,10 +12,10 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class FocusRequest extends BaseRequest {
 
     @SerializedName("user_id")
-    private int userId;
+    private String userId;
 
-    @SerializedName("follow_id")
-    private int followId;
+    @SerializedName("target_id")
+    private String followId;
 
     @Override
     protected String getLoggerName() {
@@ -30,19 +30,19 @@ public class FocusRequest extends BaseRequest {
         return request;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public int getFollowId() {
+    public String getFollowId() {
         return followId;
     }
 
-    public void setFollowId(int followId) {
+    public void setFollowId(String followId) {
         this.followId = followId;
     }
 

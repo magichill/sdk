@@ -6,7 +6,8 @@ package com.bingdou.core.helper;
 public enum ReturnCode {
 
     SUCCESS("1000"), ILLEGAL_REQUEST("1001"), SERVER_ERROR("1002"),
-    TOKEN_EXPIRED("1003"), VOUCHER_EXPIRED("1004"), GUEST_LOGIN_UPDATED("1005");
+    TOKEN_EXPIRED("1003"), VOUCHER_EXPIRED("1004"), GUEST_LOGIN_UPDATED("1005"),
+    ORDER_PAY_IN_PROCESS("1010"), ALI_PAY_NO_PWD_UN_SIGN("1011");
 
     private String index;
 

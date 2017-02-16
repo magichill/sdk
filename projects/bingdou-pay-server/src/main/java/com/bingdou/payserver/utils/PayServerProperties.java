@@ -1,4 +1,4 @@
-package com.bingdou.payserver.util;
+package com.bingdou.payserver.utils;
 
 import com.bingdou.tools.LogContext;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -10,7 +10,7 @@ import java.util.Properties;
  */
 public class PayServerProperties {
 
-    public static final String APPLE_INNER_PAY_URL;
+//    public static final String APPLE_INNER_PAY_URL;
 
     private PayServerProperties() {
     }
@@ -22,6 +22,6 @@ public class PayServerProperties {
         } catch (Exception e) {
             LogContext.instance().error(e, "读取支付中心常量类错误");
         }
-        APPLE_INNER_PAY_URL = prop.getProperty("apple.inner.pay.url");
+//        APPLE_INNER_PAY_URL = prop.getProperty("apple.inner.pay.url");
     }
 }
