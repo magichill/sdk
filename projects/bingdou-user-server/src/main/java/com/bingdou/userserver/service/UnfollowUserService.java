@@ -11,6 +11,7 @@ import com.bingdou.tools.LogContext;
 import com.bingdou.userserver.request.FocusRequest;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Created by gaoshan on 17/2/13.
  */
+@Service
 public class UnfollowUserService extends BaseService implements IMethodService {
 
     @Autowired

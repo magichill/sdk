@@ -21,9 +21,9 @@ public abstract class LiveBaseService extends BaseService {
         return liveDao.getLiveById(liveId);
     }
 
-    public List<Live> getLiveList(int start,int limit){
+    public List<Live> getLiveList(int status,String userId,int start,int limit){
         LogContext.instance().info("获取直播列表数据");
-        return liveDao.getLiveList(start,limit);
+        return liveDao.getLiveList(status,userId,start,limit);
     }
 
     public boolean createLive(Live live){

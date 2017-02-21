@@ -59,7 +59,7 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
 
     private ServiceResult dealCreateLive(CreateLiveRequest createLiveRequest, HttpServletRequest request,
                                          String uid, String ua) throws Exception {
-        LogContext.instance().info("创建直播成功");
+        LogContext.instance().info("创建 直播成功");
         return ServiceResultUtil.success();
     }
 }

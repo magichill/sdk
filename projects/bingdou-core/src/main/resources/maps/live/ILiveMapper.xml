@@ -31,9 +31,18 @@
     </insert>
 
     <select id="getLiveList" parameterType="java.util.Map" resultMap="liveDetail">
-        <![CDATA[
-        SELECT id,live_pic FROM ${liveDB}.lc_live_index WHERE status=1 order by update_time limit #{start},#{limit}
-        ]]>
+        SELECT li.id,li.live_pic,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.mid,
+        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid
+        FROM ${liveDB}.lc_live_index li
+        JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
+        WHERE 1=1
+        <if test="status != null">
+          AND li.status=#{status}
+        </if>
+        <if test="userId != null">
+          AND ll.mid = #{userId}
+        </if>
+        order by update_time limit #{start},#{limit}
     </select>
 
     <select id="getOnlineLiveList" parameterType="java.util.Map" resultMap="liveDetail">
@@ -66,10 +75,17 @@
         <result property="liveTitle" column="live_title"/>
         <result property="livePicture" column="live_picture"/>
         <result property="status" column="status"/>
-        <result property="mid" column="mid"/>
         <result property="pushStream" column="push_stream"/>
         <result property="pullStream" column="pull_stream"/>
         <result property="replayUrl" column="replay_url"/>
+        <association property="user" javaType="com.bingdou.core.model.User">
+            <id property="id" column="mid"/>
+            <result property="gender" column="gender"/>
+            <result property="nickName" column="nickname"/>
+            <result property="avatar" column="avatar"/>
+            <result property="signature" column="signature"/>
+            <result property="cpId" column="cpid"/>
+        </association>
     </resultMap>
 
 </mapper>

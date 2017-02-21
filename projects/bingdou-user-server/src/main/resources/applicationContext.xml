@@ -26,6 +26,11 @@
                 <ref local="phoneLoginService"/>
                 <ref local="updateNicknameService"/>
                 <ref local="certificateService" />
+                <ref local="followUserService" />
+                <ref local="unfollowUserService" />
+                <ref local="userStatDataService" />
+                <ref local="getFollowerService" />
+                <ref local="getFollowingService" />
             </list>
         </property>
     </bean>

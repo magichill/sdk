@@ -6,6 +6,8 @@ import com.bingdou.tools.LogContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by gaoshan on 17/2/14.
  */
@@ -66,5 +68,15 @@ public class FocusService {
     public int getFansCount(int userId){
         LogContext.instance().info("查询用户粉丝数量");
         return focusDao.getFansCount(userId);
+    }
+
+    public List<User> getFollower(int userId){
+        LogContext.instance().info("查询用户粉丝列表");
+        return focusDao.getFollower(userId);
+    }
+
+    public List<User> getFollowing(int userId){
+        LogContext.instance().info("查询用户关注列表");
+        return focusDao.getFollowing(userId);
     }
 }

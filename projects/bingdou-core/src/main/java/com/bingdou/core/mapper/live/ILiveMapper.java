@@ -18,7 +18,7 @@ public interface ILiveMapper {
 
     Live getLiveById(@Param("liveId") int liveId);
 
-    List<Live> getLiveList(@Param("start") int start, @Param("limit") int limit);
+    List<Live> getLiveList(@Param("status") int status,@Param("userId") String userId,@Param("start") int start, @Param("limit") int limit);
     List<Live> getOnlineLiveList(@Param("start") int start, @Param("limit") int limit);
     List<Live> getRecordLiveList(@Param("start") int start, @Param("limit") int limit);
 

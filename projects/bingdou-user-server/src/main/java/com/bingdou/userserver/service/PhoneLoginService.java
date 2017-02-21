@@ -3,12 +3,10 @@ package com.bingdou.userserver.service;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
-import com.bingdou.core.model.Os;
-import com.bingdou.core.model.SendCodeType;
-import com.bingdou.core.model.User;
-import com.bingdou.core.model.ValidateCode;
+import com.bingdou.core.model.*;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.core.service.pay.VipGradeService;
 import com.bingdou.core.service.user.DeviceService;
 import com.bingdou.core.service.user.LoginBaseService;
 import com.bingdou.core.service.user.ValidateCodeService;
@@ -43,6 +41,9 @@ public class PhoneLoginService extends BaseService implements IMethodService {
 
     @Autowired
     private ValidateCodeService validateCodeService;
+
+    @Autowired
+    private VipGradeService vipGradeService;
 
     @Override
     public BaseRequest getBaseRequest(HttpServletRequest request) throws Exception {
@@ -127,12 +128,13 @@ public class PhoneLoginService extends BaseService implements IMethodService {
             isNewDevice = deviceService.isNewDevice(phoneLoginRequest.getDeviceInfo());
             LogContext.instance().info("是否是新设备:" + isNewDevice);
         }
+        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
         loginBaseService.setLastLoginInfo(user.getId(), clientIp, oldUid, oldUa);
         boolean updateTokenResult = userBaseService.updateToken(user, tokenDevice, getSafeInfo(request), false);
         LogContext.instance().info("更新token结果:" + updateTokenResult);
         DataLogUtils.recordHadoopLog(HadoopLogAction.LOGIN,
                 phoneLoginRequest, user, clientIp, "", "", isNewDevice);
-        loginResponse.parseFromUser(user, null, isSupportVirtualMoney, isSigned, 0);
+        loginResponse.parseFromUser(user, userVipGrade, isSupportVirtualMoney, isSigned, 0);
         JsonElement result = JsonUtil.bean2JsonTree(loginResponse);
         LogContext.instance().info("登录成功");
         return ServiceResultUtil.success(result);

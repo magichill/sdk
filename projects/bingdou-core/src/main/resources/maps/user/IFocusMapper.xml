@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bingdou.core.mapper.user.IFocusMapper">
 
-    <select id="getFollowerCount" parameterType="java.lang.String"
+    <select id="getFollowerCount" parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         <![CDATA[
         SELECT COUNT(1) FROM ${userDB}.mc_focus_info WHERE mid = #{userId} and status = 1
         ]]>
     </select>
 
-    <select id="getFansCount" parameterType="java.lang.String"
+    <select id="getFansCount" parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         <![CDATA[
         SELECT COUNT(1) FROM ${userDB}.mc_focus_info WHERE follow_id = #{userId} and status = 1
         ]]>
     </select>
 
-    <select id="checkFocusInfo" parameterType="java.lang.String"
+    <select id="checkFocusInfo" parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         <![CDATA[
         SELECT COUNT(1) FROM ${userDB}.mc_focus_info WHERE mid=#{userId} and follow_id = #{followId}
@@ -37,4 +37,30 @@
         ]]>
     </update>
 
+    <select id="getFollowing" parameterType="java.lang.Integer"
+            resultMap="userDetail">
+        <![CDATA[
+        SELECT mmi.id,mmi.nickname,mmi.gender,mmi.avatar,mmi.cpid,mmi.signature FROM ${userDB}.mc_focus_info mfi
+        LEFT JOIN ${userDB}.mc_member_index mmi ON mfi.follow_id = mmi.id
+        WHERE mfi.mid = #{userId} and mfi.status = 1
+        ]]>
+    </select>
+
+    <select id="getFollower" parameterType="java.lang.Integer"
+            resultMap="userDetail">
+        <![CDATA[
+        SELECT mmi.id,mmi.nickname,mmi.gender,mmi.avatar,mmi.cpid,mmi.signature FROM ${userDB}.mc_focus_info mfi
+        LEFT JOIN ${userDB}.mc_member_index mmi ON mfi.mid = mmi.id
+        WHERE mfi.follow_id = #{userId} and mfi.status = 1
+        ]]>
+    </select>
+
+    <resultMap id="userDetail" type="com.bingdou.core.model.User">
+        <result property="id" column="id"/>
+        <result property="gender" column="gender"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="nickName" column="nickname"/>
+        <result property="signature" column="signature"/>
+        <result property="avatar" column="avatar"/>
+    </resultMap>
 </mapper>

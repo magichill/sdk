@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.ICommentMapper">
+
+    <select id="getCommentById" parameterType="java.lang.Integer" resultMap="commentDetail">
+        <![CDATA[
+        SELECT
+          *
+        FROM ${liveDB}.lc_comment comment
+        WHERE comment.id=#{commentId}
+        ]]>
+    </select>
+
+    <insert id="addComment" parameterType="com.bingdou.core.model.live.Comment">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_comment
+          (parent_id,live_id,comment_count,user_id,text,created,status)
+          VALUE(#{parentId},#{liveId},#{commentCount},#{userId},#{text},now(),1);
+        ]]>
+    </insert>
+
+    <select id="getCommentListByLiveId" parameterType="java.util.Map" resultMap="commentDetail">
+        SELECT comment.id,comment.live_id,comment.parent_id,comment.status,comment.user_id,comment.comment_count,
+        comment.text,member.gender,member.nickname,member.avatar,member.signature,member.cpid
+        FROM ${liveDB}.lc_comment comment
+        LEFT JOIN ${userDB}.mc_member_index member ON comment.user_id = member.id
+        WHERE comment.live_id = #{liveId}
+        AND comment.status=1
+        order by comment.vote_up desc limit #{start},#{limit}
+    </select>
+
+    <update id="likeOrNotComment" parameterType="java.util.Map">
+        <![CDATA[
+        update ${liveDB}.lc_comment
+        set vote_up=#{voteUp}
+        where id=#{commentId}
+        ]]>
+    </update>
+
+    <update id="removeComment" parameterType="java.util.Map">
+        <![CDATA[
+        update ${liveDB}.lc_comment
+        set status=0
+        where id=#{commentId}
+        ]]>
+    </update>
+
+    <resultMap id="commentDetail" type="com.bingdou.core.model.live.Comment">
+        <result property="id" column="id"/>
+        <result property="liveId" column="live_id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="status" column="status"/>
+        <result property="userId" column="user_id"/>
+        <result property="commentCount" column="comment_count"/>
+        <result property="text" column="text"/>
+        <association property="user" javaType="com.bingdou.core.model.User">
+            <id property="id" column="user_id"/>
+            <result property="gender" column="gender"/>
+            <result property="nickName" column="nickname"/>
+            <result property="avatar" column="avatar"/>
+            <result property="signature" column="signature"/>
+            <result property="cpId" column="cpid"/>
+        </association>
+    </resultMap>
+
+</mapper>

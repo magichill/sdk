@@ -122,9 +122,9 @@ private ServiceResult deal(HttpServletRequest request, GuestLoginRequest guestLo
             if (isClientRequest && StringUtils.isNotEmpty(userByDevice.getPassword())) {
                 LogContext.instance().info("游客账号已经升级,下发用户名,使用用户名密码登录");
                 GuestLoginResponse guestLoginResponse = new GuestLoginResponse();
-                guestLoginResponse.setLoginName(userByDevice.getLoginName());
-                guestLoginResponse.setEmail(userByDevice.getEmail());
-                guestLoginResponse.setMobile(userByDevice.getMobile());
+//                guestLoginResponse.setLoginName(userByDevice.getLoginName());
+//                guestLoginResponse.setEmail(userByDevice.getEmail());
+//                guestLoginResponse.setMobile(userByDevice.getMobile());
                 DataLogUtils.recordHadoopLog(HadoopLogAction.GUEST_LOGIN_UPDATED, guestLoginRequest, userByDevice,
                         clientIp, "", "", false);
                 JsonElement result = JsonUtil.bean2JsonTree(guestLoginResponse);

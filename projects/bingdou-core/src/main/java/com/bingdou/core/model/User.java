@@ -22,6 +22,11 @@ public class User {
      * 登录名
      */
     private String loginName;
+
+    /**
+     * 性别
+     */
+    private int gender = -1;
     /**
      * 手机号
      */
@@ -468,6 +473,14 @@ public class User {
         if (vipLevel == null)
             return;
         this.vipLevel = vipLevel;
+    }
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
     }
 
     public Integer getVipBlackStatus() {

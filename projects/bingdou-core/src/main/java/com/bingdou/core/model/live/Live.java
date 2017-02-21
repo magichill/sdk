@@ -1,5 +1,6 @@
 package com.bingdou.core.model.live;
 
+import com.bingdou.core.model.User;
 import com.bingdou.tools.IndexUtil;
 
 /**
@@ -20,6 +21,8 @@ public class Live {
 
     private int status;
 
+    private int orientation; //是否横屏 1:是 0:否
+
     private String mid;
 
     private int liveType;
@@ -29,6 +32,8 @@ public class Live {
     private String pullStream;
 
     private String replayUrl;
+
+    private User user;
 
     public int getId() {
         return id;
@@ -108,6 +113,22 @@ public class Live {
 
     public void setStreamName(String streamName) {
         this.streamName = streamName;
+    }
+
+    public int getOrientation() {
+        return orientation;
+    }
+
+    public void setOrientation(int orientation) {
+        this.orientation = orientation;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     /**

@@ -28,8 +28,8 @@ public class LiveDao {
         return liveMapper.getLiveById(liveId);
     }
 
-    public List<Live> getLiveList(int start,int limit){
-        return liveMapper.getLiveList(start,limit);
+    public List<Live> getLiveList(int status,String userId,int start,int limit){
+        return liveMapper.getLiveList(status,userId,start,limit);
     }
 
     public List<Live> getRecordLiveList(int start,int limit){

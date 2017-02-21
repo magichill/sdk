@@ -29,12 +29,6 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class UserInfoService extends BaseService implements IMethodService {
 
-    @Autowired
-    private VipGradeService vipGradeService;
-
-    @Autowired
-    private FocusService focusService;
-
     @Override
     public BaseRequest getBaseRequest(HttpServletRequest request) throws Exception {
         GetUserInfoRequest getUserInfoRequest = new GetUserInfoRequest();
@@ -81,7 +75,7 @@ public class UserInfoService extends BaseService implements IMethodService {
         }
         GetUserInfoResponse getUserInfoResponse = new GetUserInfoResponse();
         //TODO 用户等级
-        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
+//        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
         LogContext.instance().info("获取用户TOKEN对象");
         UserToken userToken = userBaseService.getUserTokenObject(user.getId());
         if (userToken != null) {
@@ -93,13 +87,10 @@ public class UserInfoService extends BaseService implements IMethodService {
         //TODO 用户认证状态
         Integer certificationStatus = userBaseService.getCertificateStatus(user.getId());
 
-        Integer followers = focusService.getFansCount(user.getId());
-        Integer likeCount = focusService.getFollowerCount(user.getId());
-        UserStat userStat = new UserStat();
-        userStat.setLikeCount(likeCount);
-        userStat.setFollowers(followers);
+
 //        getUserInfoResponse.parseFromUser(user, userVipGrade, isSupportVirtualMoney, isSigned, 0);
-        getUserInfoResponse.parseFromUser(user, userVipGrade, certificationStatus, 0,userStat);
+//        getUserInfoResponse.parseFromUser(user, userVipGrade, certificationStatus, 0,userStat);
+        getUserInfoResponse.parseFromUser(user, certificationStatus, 0);
         JsonElement result = JsonUtil.bean2JsonTree(getUserInfoResponse);
         LogContext.instance().info("获取用户信息成功");
         return ServiceResultUtil.success(result);

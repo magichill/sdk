@@ -22,6 +22,8 @@
                 <ref local="streamEndService" />
                 <ref local="streamStartService" />
                 <ref local="updateLiveService" />
+                <ref local="homePageService" />
+                <ref local="getLiveCommentsService" />
             </list>
         </property>
     </bean>
