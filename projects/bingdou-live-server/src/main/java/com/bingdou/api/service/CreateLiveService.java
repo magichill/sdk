@@ -5,6 +5,7 @@ import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
+import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
 import com.bingdou.tools.LogContext;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,12 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
 
     private ServiceResult dealCreateLive(CreateLiveRequest createLiveRequest, HttpServletRequest request,
                                          String uid, String ua) throws Exception {
-        LogContext.instance().info("创建 直播成功");
+
+        LogContext.instance().info("开始创建直播");
+        Live live = new Live();
+
+        createLive(live);
+        LogContext.instance().info("创建直播成功");
         return ServiceResultUtil.success();
     }
 }

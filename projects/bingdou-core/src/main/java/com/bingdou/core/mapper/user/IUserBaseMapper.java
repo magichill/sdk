@@ -49,8 +49,8 @@ public interface IUserBaseMapper {
 
     int updateCpIdById(User user);
 
-    void addUser(@Param("userId") Integer userId, @Param("loginName") String loginName,
-                 @Param("wxOpenId") String wxOpenId, @Param("password") String password,
+    void addUser(@Param("userId") Integer userId, @Param("loginName") String loginName,@Param("nickname") String nickName,
+                 @Param("wxOpenId") String wxOpenId, @Param("gender") int gender,@Param("password") String password,
                  @Param("salt") String salt, @Param("appId") String appId, @Param("cpId") String cpId,
                  @Param("mobile") String mobile,@Param("avatar") String avatar,
                  @Param("signature") String signature);

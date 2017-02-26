@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.user.IThirdFastLoginMapper">
+
+    <insert id="insertLoginInfo" parameterType="com.bingdou.core.model.ThirdFastLogin">
+      INSERT INTO ${userDB}.mc_third_fast_login_record(open_id,open_type,mid,auth_token,remark)
+      VALUE (#{openId},#{openType},#{userId},#{authToken},#{remark})
+    </insert>
+
+    <select id="getLoginAuthCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${userDB}.mc_third_fast_login_auth_record
+        WHERE device=#{device}
+    </select>
+
+    <select id="getBingDouUserIdByOpenId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT mid FROM ${userDB}.mc_third_fast_login_record
+        WHERE open_id=#{openId} AND open_type=#{openType}
+    </select>
+
+    <update id="updateAuthToken" parameterType="java.util.Map">
+        UPDATE ${userDB}.mc_third_fast_login_record SET auth_token=#{authToken}
+        WHERE open_id=#{openId} AND open_type=#{openType}
+    </update>
+
+    <insert id="insertLoginAuth" parameterType="java.util.Map">
+        INSERT INTO ${userDB}.mc_third_fast_login_auth_record(device,target_id)
+        VALUE(#{device},#{targetId})
+    </insert>
+
+    <update id="updateLoginAuth" parameterType="java.util.Map">
+        UPDATE ${userDB}.mc_third_fast_login_auth_record SET target_id = #{targetId}
+        WHERE device=#{device}
+    </update>
+
+    <select id="getTargetId" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT target_id FROM ${userDB}.mc_third_fast_login_auth_record
+        WHERE device = #{device}
+    </select>
+
+</mapper>

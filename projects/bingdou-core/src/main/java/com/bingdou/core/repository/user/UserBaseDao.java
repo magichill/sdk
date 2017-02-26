@@ -114,7 +114,7 @@ public class UserBaseDao {
     }
 
     public void addUser(User user, String appId) {
-        userBaseMapper.addUser(user.getId(), user.getLoginName(), user.getWxOpenId(), user.getPassword(),
+        userBaseMapper.addUser(user.getId(), user.getLoginName(),user.getNickName(), user.getWxOpenId(),user.getGender(), user.getPassword(),
                 user.getSalt(), appId, user.getCpId(), user.getMobile(),user.getAvatar(),user.getSignature());
     }
 

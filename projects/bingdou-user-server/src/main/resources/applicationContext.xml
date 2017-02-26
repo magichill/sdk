@@ -31,6 +31,7 @@
                 <ref local="userStatDataService" />
                 <ref local="getFollowerService" />
                 <ref local="getFollowingService" />
+                <ref local="thirdFastLoginService" />
             </list>
         </property>
     </bean>

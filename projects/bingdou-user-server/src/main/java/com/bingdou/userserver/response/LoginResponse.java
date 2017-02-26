@@ -76,6 +76,7 @@ public class LoginResponse {
         userProfileResponse.setCpIdOrId(user.getReturnUserId());
         userProfileResponse.setLevel(user.getVipLevel());
         userProfileResponse.setGender(user.getGender());
+        userProfileResponse.setAvatar(user.getAvatar());
 
         userProfileResponse.setMobile(user.getMobile());
 
@@ -95,8 +96,13 @@ public class LoginResponse {
             statsDataResponse.setVipUpNeedMoney(0f);
         }
         userProfileResponse.setCertificationStatus(certificationStatus);
-        statsDataResponse.setLikeCount(userStat.getLikeCount());
-        statsDataResponse.setFollowers(userStat.getFollowers());
+        if(userStat != null) {
+            statsDataResponse.setLikeCount(userStat.getLikeCount());
+            statsDataResponse.setFollowers(userStat.getFollowers());
+        }else{
+            statsDataResponse.setLikeCount(0);
+            statsDataResponse.setFollowers(0);
+        }
         setUserProfileResponse(userProfileResponse);
         setUserStatsDataResponse(statsDataResponse);
     }
