@@ -1,6 +1,7 @@
 package com.bingdou.core.service.live;
 
 
+import com.bingdou.core.model.live.Live;
 import com.bingdou.core.repository.live.LiveDao;
 import com.bingdou.core.service.live.callback.NotifyLiveStatus;
 import com.bingdou.tools.HttpClientUtil;
@@ -37,6 +38,20 @@ public class RecordCallbackService {
         return isExist;
     }
 
+    public Live getLiveInfo(String streamName){
+        LogContext.instance().info("检查直播流是否存在");
+        return liveDao.getLiveInfoByStreamName(streamName);
+    }
+
+    public boolean updateLiveStatus(int liveId,boolean isOpen){
+        LogContext.instance().info("更新直播流状态");
+        int status = 1;
+        if(!isOpen) {
+            status = 2;
+        }
+        liveDao.updateLiveStatus(liveId,status);
+        return true;
+    }
     //TODO 通知直播聊天室直播流状态
     /**
      *

@@ -23,7 +23,7 @@ public class Live {
 
     private int orientation; //是否横屏 1:是 0:否
 
-    private String mid;
+    private Integer mid;
 
     private int liveType;
 
@@ -34,6 +34,14 @@ public class Live {
     private String replayUrl;
 
     private User user;
+
+    private String tags;
+
+    private String password;
+
+    private int price;
+
+    private int rewardPercent;
 
     public int getId() {
         return id;
@@ -67,11 +75,11 @@ public class Live {
         this.status = status;
     }
 
-    public String getMid() {
+    public Integer getMid() {
         return mid;
     }
 
-    public void setMid(String mid) {
+    public void setMid(Integer mid) {
         this.mid = mid;
     }
 
@@ -129,6 +137,38 @@ public class Live {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getRewardPercent() {
+        return rewardPercent;
+    }
+
+    public void setRewardPercent(int rewardPercent) {
+        this.rewardPercent = rewardPercent;
     }
 
     /**

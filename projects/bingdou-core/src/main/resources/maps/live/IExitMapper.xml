@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.IExitMapper">
+
+    <select id="getExitByUserIdAndLiveId" parameterType="java.util.Map" resultMap="exitDetail">
+        <![CDATA[
+        SELECT
+            id,message_count,present_count
+        FROM ${liveDB}.lc_report_exit
+        WHERE user_id=#{userId} and live_id=#{liveId}
+        ]]>
+    </select>
+
+    <insert id="addExit" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_report_exit
+          (user_id,live_id,message_count,present_count)
+          VALUE(#{userId},#{liveId},#{messageCount},#{presentCount})
+        ]]>
+    </insert>
+
+    <update id="updateExit" parameterType="java.util.Map">
+        <![CDATA[
+        update ${liveDB}.lc_report_exit
+        set message_count=#{messageCount},present_count=#{presentCount}
+        where id=#{id}
+        ]]>
+    </update>
+    <resultMap id="exitDetail" type="com.bingdou.core.model.live.ExitRoom">
+        <result property="id" column="id"/>
+        <result property="liveId" column="live_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="messageCount" column="message_count"/>
+        <result property="presentCount" column="present_count"/>
+    </resultMap>
+
+</mapper>

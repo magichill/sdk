@@ -42,4 +42,13 @@ public class LiveDao {
     public Integer getLiveByStreamName(String streamName){
         return liveMapper.getLiveByStreamName(streamName);
     }
+
+    public Live getLiveInfoByStreamName(String streamName){
+        return liveMapper.getLiveInfoByStreamName(streamName);
+    }
+
+    public void updateLiveStatus(int liveId,int status){
+        liveMapper.updateLive(liveId,status);
+    }
+
 }

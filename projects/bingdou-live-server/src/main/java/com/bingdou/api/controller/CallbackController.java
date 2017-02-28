@@ -1,5 +1,6 @@
 package com.bingdou.api.controller;
 
+import com.bingdou.core.model.live.Live;
 import com.bingdou.core.model.live.RecordType;
 import com.bingdou.core.service.live.IRecordCallTypeService;
 import com.bingdou.core.service.live.RecordCallTypeFactory;
@@ -43,8 +44,9 @@ public class CallbackController {
             LogContext.instance().info("网宿开启推流回调开始");
             if(liveStatusRequest != null) {
                 LogContext.instance().info("网宿开启推流回调参数：" + liveStatusRequest.toString());
-                if(recordCallbackService.checkLiveExist(liveStatusRequest.getStreamName())){
-                    isSuccess = recordCallbackService.notifyAppServer(liveStatusRequest.getStreamName(),true,"");
+                Live live = recordCallbackService.getLiveInfo(liveStatusRequest.getStreamName());
+                if(live != null){
+                    isSuccess = recordCallbackService.updateLiveStatus(live.getId(),true);
                 }
 
             }
@@ -68,8 +70,9 @@ public class CallbackController {
             CncLiveStatusRequest liveStatusRequest = getCncLiveStatusParam(request);
             if(liveStatusRequest != null) {
                 LogContext.instance().info("网宿关闭推流回调参数：" + liveStatusRequest.toString());
-                if(recordCallbackService.checkLiveExist(liveStatusRequest.getStreamName())){
-                    isSuccess = recordCallbackService.notifyAppServer(liveStatusRequest.getStreamName(),false,"");
+                Live live = recordCallbackService.getLiveInfo(liveStatusRequest.getStreamName());
+                if(live != null){
+                    isSuccess = recordCallbackService.updateLiveStatus(live.getId(),false);
                 }
             }
         } catch (Exception e) {

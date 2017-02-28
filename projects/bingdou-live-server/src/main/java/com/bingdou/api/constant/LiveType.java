@@ -6,7 +6,8 @@ package com.bingdou.api.constant;
  */
 public enum LiveType {
 
-    LIVE("live",1),RECORD("record",2),APPOINT("appoint",3);
+    //视频的类型 1（免费）；2（加密）；3（普通付费）；4（分销付费）
+    FREE("free",1),ENCODE("encode",2),PAY("pay",3),CHANNEL_PAY("channel_pay",4);
 
     private int index;
     private String name;

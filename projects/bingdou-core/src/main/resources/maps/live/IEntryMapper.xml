@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.IEntryMapper">
+
+    <select id="getEntryByUserIdAndLiveId" parameterType="java.util.Map" resultMap="entryDetail">
+        <![CDATA[
+        SELECT
+            id,enter_count
+        FROM ${liveDB}.lc_report_entry
+        WHERE user_id=#{userId} and live_id=#{liveId}
+        ]]>
+    </select>
+
+    <insert id="addEntry" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_report_entry
+          (user_id,live_id,enter_count)
+          VALUE(#{userId},#{liveId},1)
+        ]]>
+    </insert>
+
+    <update id="updateEntry" parameterType="java.util.Map">
+        <![CDATA[
+        update ${liveDB}.lc_report_entry
+        set enter_count=#{enterCount}
+        where id=#{id}
+        ]]>
+    </update>
+    <resultMap id="entryDetail" type="com.bingdou.core.model.live.EntryRoom">
+        <result property="id" column="id"/>
+        <result property="liveId" column="live_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="enterCount" column="enter_count"/>
+    </resultMap>
+
+</mapper>

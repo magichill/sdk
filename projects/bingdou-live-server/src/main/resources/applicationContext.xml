@@ -10,6 +10,16 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
 
+    <bean id="cdnServiceFactory" class="com.bingdou.api.service.CdnServiceFactory">
+        <property name="cdnServiceList">
+            <list>
+                <ref local="upYunService" />
+                <ref local="chinaNetService" />
+                <ref local="ccService" />
+            </list>
+        </property>
+    </bean>
+
     <bean id="methodServiceFactory" class="com.bingdou.core.service.MethodServiceFactory">
         <property name="methodServiceList">
             <list>
@@ -24,6 +34,8 @@
                 <ref local="updateLiveService" />
                 <ref local="homePageService" />
                 <ref local="getLiveCommentsService" />
+                <ref local="entryService" />
+                <ref local="exitService" />
             </list>
         </property>
     </bean>

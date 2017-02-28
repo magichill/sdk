@@ -1,13 +1,20 @@
 package com.bingdou.api.service;
 
+import com.bingdou.api.constant.CdnType;
 import com.bingdou.api.request.CreateLiveRequest;
+import com.bingdou.api.response.CreateLiveResponse;
+import com.bingdou.core.cache.ICdnConfigManager;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
+import com.google.gson.JsonElement;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class CreateLiveService extends LiveBaseService implements IMethodService {
 
+    @Autowired
+    private CdnServiceFactory cdnServiceFactory;
+
+    @Autowired
+    private ICdnConfigManager cdnConfigManager;
+
     @Override
     public String getMethodName() {
         return "create_live";
@@ -29,7 +42,7 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
     public ServiceResult execute4Server(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         CreateLiveRequest registerRequest = (CreateLiveRequest) baseRequest;
 //        Application application = appBaseService.getAppByAppId(registerRequest.getAppId());
-        return dealCreateLive(registerRequest, request, "", "");
+        return dealCreateLive(registerRequest, request,user);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -37,7 +50,7 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         CreateLiveRequest registerRequest = (CreateLiveRequest) baseRequest;
 //        Application application = appBaseService.getAppByAppId(registerRequest.getAppId());
-        return dealCreateLive(registerRequest, request, "", "");
+        return dealCreateLive(registerRequest, request,user);
     }
 
     @Override
@@ -58,14 +71,29 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
         return userBaseService.getDetailByIdOrCpIdOrLoginName(String.valueOf(createLiveRequest.getUserId()));
     }
 
-    private ServiceResult dealCreateLive(CreateLiveRequest createLiveRequest, HttpServletRequest request,
-                                         String uid, String ua) throws Exception {
-
+    private ServiceResult dealCreateLive(CreateLiveRequest createLiveRequest, HttpServletRequest request,User user) throws Exception {
         LogContext.instance().info("开始创建直播");
-        Live live = new Live();
+        if(!createLiveRequest.checkValid()){
+            return ServiceResultUtil.illegal("创建直播参数不合法");
+        }
+        String method = cdnConfigManager.getCdnConfig();
+        if(StringUtils.isBlank(method)){
+            method = CdnType.CHINANET.getName();
+            cdnConfigManager.setCdnConfig(method);
+        }
+        ICdnService cdnService = cdnServiceFactory.getCdnServiceMap().get(method);
+        boolean createSuccess = cdnService.createLive(createLiveRequest,user);
+        if(createSuccess) {
+            LogContext.instance().info("创建直播成功");
+            Live live = getLiveInfoByStreamName(createLiveRequest.getStreamId());
+            CreateLiveResponse response = new CreateLiveResponse();
+            response.parseFromLive(live);
+            JsonElement result = JsonUtil.bean2JsonTree(response);
+            return ServiceResultUtil.success(result);
+        }else {
+            return ServiceResultUtil.illegal("创建直播失败");
+        }
 
-        createLive(live);
-        LogContext.instance().info("创建直播成功");
-        return ServiceResultUtil.success();
     }
+
 }
