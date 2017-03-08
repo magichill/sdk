@@ -24,7 +24,7 @@ public class CreateOrderUtils {
                                                      CreateOrderRequest createOrderRequest, float payedMoney,
                                                      boolean isRechargeOrder) throws Exception {
         if (payTypeService == null) {
-            LogContext.instance().info("payTypeServiceŒ™ø’");
+            LogContext.instance().info("payTypeService‰∏∫Á©∫");
             return null;
         }
 
@@ -35,8 +35,9 @@ public class CreateOrderUtils {
         request.setOrderId(orderId);
         request.setMoney(payedMoney);
         request.setReturnUrl(createOrderRequest.getReturnUrl());
+        request.setOpenId(createOrderRequest.getOpenId());
         if (isRechargeOrder) {
-            request.setOrderDesc("±˘∂π±“≥‰÷µ");
+            request.setOrderDesc("ÂÜ∞Ë±ÜÂ∏ÅÂÖÖÂÄº");
         } else {
             request.setOrderDesc(createOrderRequest.getGoodsName());
         }
@@ -62,7 +63,7 @@ public class CreateOrderUtils {
         rechargeOrder.setOrderId(orderId);
         rechargeOrder.setUserId(userId);
         rechargeOrder.setAppMemberId(application.getAppMemberId());
-        rechargeOrder.setGoodsName("±˘∂π±“");
+        rechargeOrder.setGoodsName("ÂÜ∞Ë±ÜÂ∏Å");
         rechargeOrder.setQuantity(request.getMoney());
         rechargeOrder.setOrderMoney(NumberUtil.convertFenFromYuan(request.getMoney()));
         rechargeOrder.setOrderTime(now);
@@ -77,7 +78,7 @@ public class CreateOrderUtils {
         String channel = "";
         String sdkVersion = "";
         String appId = application.getAppId();
-        String osName = Os.getOsNameByIndex(application.getOs());
+//        String osName = Os.getOsNameByIndex(application.getOs());
         if (isFromClient) {
             channel = request.getOtherInfo().getChannel();
             sdkVersion = request.getOtherInfo().getSdkVersion();
@@ -87,7 +88,7 @@ public class CreateOrderUtils {
         rechargeOrder.setUnionPayOrderId(unionPayOrderId);
         rechargeOrder.setUserOrderId(StringUtils.isEmpty(userOrderId) ? "" : userOrderId);
         rechargeOrder.setAppId(appId);
-        rechargeOrder.setOsName(osName);
+        rechargeOrder.setOsName("");
         rechargeOrder.setActivityType(request.getActivityType());
         rechargeOrder.setClientScene(request.getClientScene());
         return rechargeOrder;

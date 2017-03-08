@@ -23,9 +23,9 @@
                 <!--<ref local="transferMoneyService"/>-->
                 <!--<ref local="search4TransferOrderService"/>-->
                 <!--<ref local="search4MerchantMoneyService"/>-->
-                <!--<ref local="createRechargeOrderService"/>-->
-                <!--<ref local="createConsumeOrderService"/>-->
-                <!--<ref local="verifyOrderService"/>-->
+                <ref local="createRechargeOrderService"/>
+                <ref local="createConsumeOrderService"/>
+                <ref local="verifyOrderService"/>
                 <!--<ref local="getRebateInfoService"/>-->
                 <!--<ref local="appleInnerPayService"/>-->
                 <!--<ref local="getPayTypeListService"/>-->
@@ -40,9 +40,9 @@
                 <!--<ref local="aliNoPwdPayService"/>-->
                 <!--<ref local="getFitVoucherService"/>-->
                 <!--
-                <ref local="getVoucherTotalCountService"/>
+                <ref local="getVoucherTotalCountService"/>-->
                 <ref local="getConsumeOrderService"/>
-                -->
+
             </list>
         </property>
     </bean>

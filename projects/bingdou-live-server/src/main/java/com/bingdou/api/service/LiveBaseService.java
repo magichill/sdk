@@ -61,7 +61,7 @@ public abstract class LiveBaseService extends BaseService {
         live.setLiveType(LiveType.LIVE.getIndex());
         live.setPushStream(response.getPushUrl());
         live.setPullStream(response.getPlayUrl());
-        live.setReplayUrl(response.getH5Url());
+        live.setH5Url(response.getH5Url());
         live.setLivePicture(createLiveRequest.getLivePic());
         live.setLiveType(createLiveRequest.getVideoType());
         live.setStatus(createLiveRequest.getStatus());

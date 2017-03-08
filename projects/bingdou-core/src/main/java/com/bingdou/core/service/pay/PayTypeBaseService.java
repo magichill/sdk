@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Ö§¸¶»ù´¡·şÎñÀà
+ * æ”¯ä»˜åŸºç¡€æœåŠ¡ç±»
  */
 @Service
 public class PayTypeBaseService {
@@ -23,7 +23,7 @@ public class PayTypeBaseService {
     private PayTypeDao payTypeDao;
 
     /**
-     * ÑéÖ¤Ö§¸¶·½Ê½ÊÇ·ñ¿ªÆô
+     * éªŒè¯æ”¯ä»˜æ–¹å¼æ˜¯å¦å¼€å¯
      */
     public boolean valid(PayType payType, Os os, String sdkVersion, float money) {
         if (payType == null || os == null || money <= 0)
@@ -33,63 +33,63 @@ public class PayTypeBaseService {
     }
 
     /**
-     * ¼ÇÂ¼PPÇ®°ü»Øµ÷½á¹û
+     * è®°å½•PPé’±åŒ…å›è°ƒç»“æœ
      */
 //    public void addPPOrderDetail(Map<String, String> map) {
 //        payTypeDao.insertPPOrderDetail(map);
 //    }
 
     /**
-     * ¼ÇÂ¼»ãÔªÎ¢ĞÅ»Øµ÷½á¹û
+     * è®°å½•æ±‡å…ƒå¾®ä¿¡å›è°ƒç»“æœ
      */
 //    public void addHeepyWxOrderDetail(Map<String, String> map) {
 //        payTypeDao.insertHeepayWxOrderDetail(map);
 //    }
 
     /**
-     * ¼ÇÂ¼Ö§¸¶±¦»Øµ÷½á¹û
+     * è®°å½•æ”¯ä»˜å®å›è°ƒç»“æœ
      */
     public void addAliOrderDetail(Map<String, String> map) {
         payTypeDao.insertAliOrderDetail(map);
     }
 
     /**
-     * ¼ÇÂ¼CHINA PAY»Øµ÷½á¹û
+     * è®°å½•CHINA PAYå›è°ƒç»“æœ
      */
 //    public void addChinaPayOrderDetail(Map<String, String> map) {
 //        payTypeDao.insetChinaPayUnionOrderDetail(map);
 //    }
 
     /**
-     * ¼ÇÂ¼¹Ù·½Î¢ĞÅ»Øµ÷½á¹û
+     * è®°å½•å®˜æ–¹å¾®ä¿¡å›è°ƒç»“æœ
      */
     public void addWeixinOrderDetail(Map<String, String> map) {
         payTypeDao.insertWeixinOrderDetail(map);
     }
 
     /**
-     * ¼ÇÂ¼UPMP»Øµ÷½á¹û
+     * è®°å½•UPMPå›è°ƒç»“æœ
      */
 //    public void addUpmpOrderDetail(Map<String, String> map) {
 //        payTypeDao.insertUpmpOrderDetail(map);
 //    }
 
     /**
-     * ¼ÇÂ¼19PAY»Øµ÷½á¹û
+     * è®°å½•19PAYå›è°ƒç»“æœ
      */
 //    public void insert19PayOrderDetail(Map<String, String> map) {
 //        payTypeDao.insert19PayOrderDetail(map);
 //    }
 
     /**
-     * »ñÈ¡Ö§¸¶ÁĞ±í(·şÎñÆ÷)
+     * è·å–æ”¯ä»˜åˆ—è¡¨(æœåŠ¡å™¨)
      */
     public List<PayTypeModel> getPayTypeList4Server() {
         return getPayTypeList(Os.SERVER, "");
     }
 
     /**
-     * »ñÈ¡Ö§¸¶ÁĞ±í(¿Í»§¶Ë)
+     * è·å–æ”¯ä»˜åˆ—è¡¨(å®¢æˆ·ç«¯)
      */
     public List<PayTypeModel> getPayTypeList4Client(Os os, String sdkVersion, boolean isPad) {
         if (StringUtils.isEmpty(sdkVersion))
@@ -97,7 +97,7 @@ public class PayTypeBaseService {
         List<PayTypeModel> payTypeModelList = getPayTypeList(os, sdkVersion);
         if ((os == Os.IOS && "1.6.0".compareTo(sdkVersion) > 0)
                 || (os == Os.ANDROID && "1.3.0".compareTo(sdkVersion) > 0)) {
-            //ÎªÁË¼æÈİÀÏ°æ±¾,IOSĞ¡ÓÚ1.6.0°æ±¾,ANDROIDĞ¡ÓÚ1.3.0°æ±¾
+            //ä¸ºäº†å…¼å®¹è€ç‰ˆæœ¬,IOSå°äº1.6.0ç‰ˆæœ¬,ANDROIDå°äº1.3.0ç‰ˆæœ¬
             for (PayTypeModel model : payTypeModelList) {
                 if (model.getId() == PayType.ALI_NO_PWD.getIndex()) {
                     model.setDisplay(3);
@@ -122,15 +122,15 @@ public class PayTypeBaseService {
     }
 
     private List<PayTypeModel> getPayTypeList(Os os, String sdkVersion) {
-        LogContext.instance().info("»ñÈ¡Ö§¸¶ÁĞ±í");
+        LogContext.instance().info("è·å–æ”¯ä»˜åˆ—è¡¨");
         if (os == null)
             return new ArrayList<PayTypeModel>();
         List<PayTypeModel> payTypeList = payTypeDao.getPayTypeList(os.getIndex(), sdkVersion);
         if (payTypeList == null || payTypeList.isEmpty()) {
-            LogContext.instance().error("Î´»ñÈ¡µ½ÈÎºÎÖ§¸¶·½Ê½ĞÅÏ¢");
+            LogContext.instance().error("æœªè·å–åˆ°ä»»ä½•æ”¯ä»˜æ–¹å¼ä¿¡æ¯");
             return new ArrayList<PayTypeModel>();
         }
-        LogContext.instance().info("DB¶ÁÈ¡µ½µÄÖ§¸¶ÁĞ±í");
+        LogContext.instance().info("DBè¯»å–åˆ°çš„æ”¯ä»˜åˆ—è¡¨");
         return payTypeList;
     }
 

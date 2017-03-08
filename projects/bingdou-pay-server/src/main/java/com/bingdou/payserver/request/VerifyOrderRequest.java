@@ -5,7 +5,7 @@ import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.tools.JsonUtil;
 
 /**
- * 验证订单请求
+ * 楠岃瘉璁㈠崟璇锋眰
  * Created by gaoshan on 17/11/25.
  */
 public class VerifyOrderRequest extends BaseRequest {

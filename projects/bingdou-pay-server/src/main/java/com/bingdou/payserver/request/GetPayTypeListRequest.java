@@ -4,7 +4,7 @@ import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.tools.JsonUtil;
 
 /**
- * 获取支付列表请求
+ * 鑾峰彇鏀粯鍒楄〃璇锋眰
  */
 public class GetPayTypeListRequest extends BaseRequest {
 

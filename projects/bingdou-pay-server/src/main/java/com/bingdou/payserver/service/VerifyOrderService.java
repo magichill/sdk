@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ÑéÖ¤¶©µ¥·şÎñÀà
+ * éªŒè¯è®¢å•æœåŠ¡ç±»
  * Created by gaoshan on 16/12/25.
  */
 @Service
@@ -78,14 +78,14 @@ public class VerifyOrderService extends BaseService implements IMethodService {
                                      HttpServletRequest request, Application application) throws Exception {
         VerifyOrderRequest verifyOrderRequest = (VerifyOrderRequest) baseRequest;
         if (StringUtils.isEmpty(verifyOrderRequest.getOrderId())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         if (verifyOrderRequest.getOrderType() == OrderType.RECHARGE.getIndex()) {
             return deal(request, verifyOrderRequest, user, application, true);
         } else if (verifyOrderRequest.getOrderType() == OrderType.CONSUME.getIndex()) {
             return deal(request, verifyOrderRequest, user, application, false);
         } else {
-            return ServiceResultUtil.illegal("´íÎóµÄÑéÖ¤¶©µ¥ÀàĞÍ");
+            return ServiceResultUtil.illegal("é”™è¯¯çš„éªŒè¯è®¢å•ç±»å‹");
         }
     }
 
@@ -120,7 +120,7 @@ public class VerifyOrderService extends BaseService implements IMethodService {
         if (verifyResult == OrderStatus.PAYED.getIndex()) {
             int virtualMoney = getVirtualMoneyFen4Show(user.getId(), application.getOs(), sdkVersion,
                     application.getAppId(), channel, false);
-            LogContext.instance().info("¶©µ¥ÒÑ¾­Ö§¸¶³É¹¦,²éÑ¯ÓÃ»§ĞÅÏ¢²¢·µ»Ø");
+            LogContext.instance().info("è®¢å•å·²ç»æ”¯ä»˜æˆåŠŸ,æŸ¥è¯¢ç”¨æˆ·ä¿¡æ¯å¹¶è¿”å›");
             UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
             response.setCpIdOrId(user.getReturnUserId());
             if (user.getMoney() != null)

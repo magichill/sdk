@@ -3,7 +3,7 @@ package com.bingdou.payserver.response;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * ²éÑ¯Ïû·Ñ¶©µ¥ÏìÓ¦Àà
+ * æŸ¥è¯¢æ¶ˆè´¹è®¢å•å“åº”ç±»
  * Created by gaoshan on 17/1/4.
  */
 public class GetConsumeOrderResponse {

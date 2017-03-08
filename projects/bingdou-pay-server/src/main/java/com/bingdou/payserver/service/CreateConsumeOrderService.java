@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ´´½¨Ïû·Ñ¶©µ¥(Ö±³äÖ±Ïû)
+ * åˆ›å»ºæ¶ˆè´¹è®¢å•(ç›´å……ç›´æ¶ˆ)
  * Created by gaoshan on 16/01/03.
  */
 @Service
@@ -68,7 +68,7 @@ public class CreateConsumeOrderService extends BaseService implements IMethodSer
         CreateConsumeOrderRequest createConsumeOrderRequest = (CreateConsumeOrderRequest) baseRequest;
         if (createConsumeOrderRequest.getMoney() <= 0
                 || StringUtils.isEmpty(createConsumeOrderRequest.getUserOrderId())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         Application application = appBaseService.getAppByAppId(createConsumeOrderRequest.getAppId());
         return deal(createConsumeOrderRequest, user, application,
@@ -81,7 +81,7 @@ public class CreateConsumeOrderService extends BaseService implements IMethodSer
         CreateConsumeOrderRequest createConsumeOrderRequest = (CreateConsumeOrderRequest) baseRequest;
         if (createConsumeOrderRequest.getMoney() <= 0
                 || StringUtils.isEmpty(createConsumeOrderRequest.getUserOrderId())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         Application application = getValidApplication4Client(createConsumeOrderRequest);
         return deal(createConsumeOrderRequest, user, application,
@@ -107,47 +107,47 @@ public class CreateConsumeOrderService extends BaseService implements IMethodSer
         }
         PayType payType = PayType.getByIndex(createConsumeOrderRequest.getPayType());
         if (payType == null)
-            return ServiceResultUtil.illegal("·Ç·¨Ö§¸¶ÀàĞÍ");
+            return ServiceResultUtil.illegal("éæ³•æ”¯ä»˜ç±»å‹");
         if (!payTypeBaseService.valid(payType, os, sdkVersion, createConsumeOrderRequest.getMoney())) {
-            LogContext.instance().warn(payType + "," + os + "Ö§¸¶¹Ø±Õ");
-            return ServiceResultUtil.illegal("´ËÖ§¸¶·½Ê½ÔİÊ±¹Ø±Õ»ò³¬¹ıÏŞ¶î");
+            LogContext.instance().warn(payType + "," + os + "æ”¯ä»˜å…³é—­");
+            return ServiceResultUtil.illegal("æ­¤æ”¯ä»˜æ–¹å¼æš‚æ—¶å…³é—­æˆ–è¶…è¿‡é™é¢");
         }
 //        if (isContainUserMoney && !switchRuleService.isSupportHaimaCoin(application.getAppId(),
 //                application.getOs(), channel))
         if (isContainUserMoney){
-            return ServiceResultUtil.illegal("´ËÓÎÏ·Ôİ²»Ö§³Ö±ù¶¹±ÒÖ§¸¶");
+            return ServiceResultUtil.illegal("æ­¤æ¸¸æˆæš‚ä¸æ”¯æŒå†°è±†å¸æ”¯ä»˜");
         }
         if (consumeOrderService.existByUserOrderIdAndAppId(
                 createConsumeOrderRequest.getUserOrderId(), application.getAppId()))
-            return ServiceResultUtil.illegal("¿ª·¢Õß¶©µ¥ºÅÖØ¸´,´´½¨¶©µ¥Ê§°Ü");
+            return ServiceResultUtil.illegal("å¼€å‘è€…è®¢å•å·é‡å¤,åˆ›å»ºè®¢å•å¤±è´¥");
         int virtualMoneyFen = getVirtualMoneyFen4Use(user.getId(), application.getOs(),
                 application.getAppId(), channel);
         int userTotalMoneyFen = virtualMoneyFen + user.getMoney();
         int orderMoneyFen = NumberUtil.convertFenFromYuan(createConsumeOrderRequest.getMoney());
         if (isContainUserMoney && userTotalMoneyFen >= orderMoneyFen)
-            return ServiceResultUtil.illegal("ÓÃ»§Óà¶î´óÓÚµÈÓÚÖ§¸¶½ğ¶î,ÇëÊ¹ÓÃ±ù¶¹±ÒÖ§¸¶");
+            return ServiceResultUtil.illegal("ç”¨æˆ·ä½™é¢å¤§äºç­‰äºæ”¯ä»˜é‡‘é¢,è¯·ä½¿ç”¨å†°è±†å¸æ”¯ä»˜");
         if (isContainUserMoney && userTotalMoneyFen == 0)
-            return ServiceResultUtil.illegal("ÓÃ»§Ã»ÓĞÓà¶î");
+            return ServiceResultUtil.illegal("ç”¨æˆ·æ²¡æœ‰ä½™é¢");
 //        Voucher voucher = null;
         int voucherAmountFen = 0;
 //        if (isUseConsumeVoucher) {
-//            LogContext.instance().info("Ïû·Ñ´ú½ğÈ¯Ô¤Ê¹ÓÃÂß¼­");
+//            LogContext.instance().info("æ¶ˆè´¹ä»£é‡‘åˆ¸é¢„ä½¿ç”¨é€»è¾‘");
 //            voucher = voucherService.getValidVoucher4UseConsumeVoucher(createConsumeOrderRequest.getVoucherId(),
 //                    application.getAppId(), user.getId());
 //            if (voucher == null)
-//                return ServiceResultUtil.illegal("·Ç·¨´ú½ğÈ¯");
+//                return ServiceResultUtil.illegal("éæ³•ä»£é‡‘åˆ¸");
 //            voucherAmountFen = NumberUtil.convertFenFromYuan(voucher.getAmount());
 //            if (isContainUserMoney && userTotalMoneyFen + voucherAmountFen >= orderMoneyFen)
-//                return ServiceResultUtil.illegal("ÓÃ»§Óà¶î+´ú½ğÈ¯½ğ¶î´óÓÚµÈÓÚÖ§¸¶½ğ¶î,ÇëÊ¹ÓÃ±ù¶¹±ÒÖ§¸¶");
+//                return ServiceResultUtil.illegal("ç”¨æˆ·ä½™é¢+ä»£é‡‘åˆ¸é‡‘é¢å¤§äºç­‰äºæ”¯ä»˜é‡‘é¢,è¯·ä½¿ç”¨å†°è±†å¸æ”¯ä»˜");
 //        }
         String consumeOrderId;
         int payedMoneyFen;
         if (isContainUserMoney) {
-            LogContext.instance().info("ÏÖ½ğ+Óà¶î×éºÏ¶©µ¥");
+            LogContext.instance().info("ç°é‡‘+ä½™é¢ç»„åˆè®¢å•");
             consumeOrderId = PayUtils.generateMixConsumeOrderId();
             payedMoneyFen = orderMoneyFen - userTotalMoneyFen - voucherAmountFen;
         } else {
-            LogContext.instance().info("ÏÖ½ğ¶©µ¥");
+            LogContext.instance().info("ç°é‡‘è®¢å•");
             consumeOrderId = PayUtils.generateConsumeOrderIdByPayType(payType);
             payedMoneyFen = orderMoneyFen - voucherAmountFen;
         }
@@ -156,12 +156,12 @@ public class CreateConsumeOrderService extends BaseService implements IMethodSer
         PayTypeResponse payTypeResponse = CreateOrderUtils.dealPayTypeRequest(consumeOrderId,
                 user.getId(), clientIp, payTypeService, createConsumeOrderRequest, payedMoney, false);
         if (payTypeResponse == null) {
-            LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½»ñÈ¡½á¹ûÎª¿Õ");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼è·å–ç»“æœä¸ºç©º");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         if (!payTypeResponse.isSuccess()) {
-            LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½´íÎó:" + payTypeResponse.getResultMessage());
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼é”™è¯¯:" + payTypeResponse.getResultMessage());
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         String rechargeOrderId = PayUtils.generateRechargeOrderId();
         RechargeOrder rechargeOrder = buildRechargeOrder(user.getId(), application,
@@ -169,15 +169,15 @@ public class CreateConsumeOrderService extends BaseService implements IMethodSer
                 isFromClient);
         boolean createRechargeSuccess = createRechargeOrder(rechargeOrder);
         if (!createRechargeSuccess) {
-            LogContext.instance().error("´´½¨Ö±³ä³äÖµ¶©µ¥Ê§°Ü");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("åˆ›å»ºç›´å……å……å€¼è®¢å•å¤±è´¥");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         ConsumeOrder consumeOrder = buildConsumeOrder(user.getId(), application, rechargeOrderId, consumeOrderId,
                 payType, payTypeResponse, createConsumeOrderRequest, isFromClient);
         boolean createConsumeSuccess = createConsumeOrder(consumeOrder);
         if (!createConsumeSuccess) {
-            LogContext.instance().error("´´½¨Ö±³äÏû·Ñ¶©µ¥Ê§°Ü");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("åˆ›å»ºç›´å……æ¶ˆè´¹è®¢å•å¤±è´¥");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         if (isContainUserMoney)
             insertUserMoneyAndOrder(user, virtualMoneyFen, consumeOrderId);
@@ -230,12 +230,12 @@ public class CreateConsumeOrderService extends BaseService implements IMethodSer
     }
 
     private boolean createRechargeOrder(RechargeOrder rechargeOrder) throws Exception {
-        LogContext.instance().info("´´½¨³äÖµ¶©µ¥");
+        LogContext.instance().info("åˆ›å»ºå……å€¼è®¢å•");
         return rechargeOrderService.addRechargeOrder(rechargeOrder);
     }
 
     private boolean createConsumeOrder(ConsumeOrder consumeOrder) {
-        LogContext.instance().info("´´½¨Ïû·Ñ¶©µ¥");
+        LogContext.instance().info("åˆ›å»ºæ¶ˆè´¹è®¢å•");
         return consumeOrderService.addConsumeOrder(consumeOrder);
     }
 
@@ -278,13 +278,13 @@ public class CreateConsumeOrderService extends BaseService implements IMethodSer
 //        boolean voucherUseSuccess = voucherService.useVoucher(voucherId, VoucherType.CONSUME.getIndex(),
 //                appId, channel, consumeOrderId, userId, VoucherUseStatus.PRE_USE);
 //        if (!voucherUseSuccess)
-//            throw new Exception("Ïû·Ñ´ú½ğÈ¯Ô¤Ê¹ÓÃÊ§°Ü");
+//            throw new Exception("æ¶ˆè´¹ä»£é‡‘åˆ¸é¢„ä½¿ç”¨å¤±è´¥");
 //    }
 
     private void insertUserMoneyAndOrder(User user, int virtualMoneyFen,
                                          String consumeOrderId) throws Exception {
-        LogContext.instance().info("ĞèÒªÏûºÄµÄ±ù¶¹±Ò(·Ö):" + user.getMoney());
-        LogContext.instance().info("ĞèÒªÏûºÄµÄÓÎÏ·±Ò(·Ö):" + virtualMoneyFen);
+        LogContext.instance().info("éœ€è¦æ¶ˆè€—çš„å†°è±†å¸(åˆ†):" + user.getMoney());
+        LogContext.instance().info("éœ€è¦æ¶ˆè€—çš„æ¸¸æˆå¸(åˆ†):" + virtualMoneyFen);
         consumeOrderService.insertUserMoneyOrderCreate(user.getId(), consumeOrderId,
                 user.getMoney(), virtualMoneyFen);
     }

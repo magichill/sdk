@@ -8,7 +8,7 @@ import org.aspectj.lang.Signature;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 记录请求时间
+ * 璁板綍璇锋眰鏃堕棿
  */
 @SuppressWarnings("Duplicates")
 public class TimerCalculator {

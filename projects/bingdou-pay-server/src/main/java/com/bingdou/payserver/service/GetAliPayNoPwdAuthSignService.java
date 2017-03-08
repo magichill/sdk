@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 获取支付宝免密授权签约信息服务类
+ * 鑾峰彇鏀粯瀹濆厤瀵嗘巿鏉冪绾︿俊鎭湇鍔＄被
  */
 @Service
 public class GetAliPayNoPwdAuthSignService extends BaseService implements IMethodService {
@@ -60,7 +60,7 @@ public class GetAliPayNoPwdAuthSignService extends BaseService implements IMetho
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         GetAliPayNoPwdAuthSignRequest authSignRequest = (GetAliPayNoPwdAuthSignRequest) baseRequest;
         if (StringUtils.isEmpty(authSignRequest.getReturnUrl())) {
-            return ServiceResultUtil.illegal("参数错误");
+            return ServiceResultUtil.illegal("鍙傛暟閿欒");
         }
         String url = aliPayNoPwdAuthService.getAuthSignUrl(user.getId(), authSignRequest.getReturnUrl());
         GetAliPayNoPwdAuthSignResponse response = new GetAliPayNoPwdAuthSignResponse();

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 
 /**
- * Ö§¸¶±¦¿ì½İÖ§¸¶
+ * æ”¯ä»˜å®å¿«æ·æ”¯ä»˜
  * Created by gaoshan on 16/11/12.
  */
 @Service

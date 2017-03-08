@@ -15,8 +15,8 @@
     <insert id="addLive" parameterType="java.util.Map">
         <![CDATA[
           INSERT INTO ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
-          (live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,create_time,update_time)
-          VALUE(#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},now(),now())
+          (live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,replay_url,h5_url,create_time,update_time)
+          VALUE(#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},#{replayUrl},#{h5Url},now(),now())
         ]]>
     </insert>
 
@@ -26,8 +26,8 @@
         </selectKey>
         <![CDATA[
           INSERT INTO ${liveDB}.lc_live_index(id,live_title,live_picture,push_stream,status,pull_stream,
-          replay_url,stream_name,mid,tags,password,price,reward_percent,orientation)
-          VALUE(#{id},#{liveTitle},#{livePicture},#{pushStream},#{status},#{pullStream},#{replayUrl},
+          replay_url,h5_url,stream_name,mid,tags,password,price,reward_percent,orientation)
+          VALUE(#{id},#{liveTitle},#{livePicture},#{pushStream},#{status},#{pullStream},#{replayUrl},#{h5Url},
           #{streamName},#{mid},#{tags},#{password},#{price},#{rewardPercent},#{orientation})
         ]]>
     </insert>
@@ -75,12 +75,23 @@
     </select>
 
     <update id="updateLive" parameterType="java.util.Map">
-        <![CDATA[
         update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
         set status=#{status}
         where lid=#{liveId}
-        ]]>
     </update>
+
+    <update id="updateStartLive" parameterType="java.util.Map">
+        update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
+        set status=#{status},start_time=now()
+        where lid=#{liveId}
+    </update>
+
+    <update id="updateEndLive" parameterType="java.util.Map">
+        update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
+        set status=#{status},replay_url=#{replayUrl},endTime=now()
+        where lid=#{liveId}
+    </update>
+
     <resultMap id="liveDetail" type="com.bingdou.core.model.live.Live">
         <result property="id" column="id"/>
         <result property="liveTitle" column="live_title"/>

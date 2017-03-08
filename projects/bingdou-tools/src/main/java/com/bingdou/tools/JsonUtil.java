@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+import java.lang.reflect.Type;
 
 /**
  * JSON工具类
@@ -27,6 +28,10 @@ public class JsonUtil {
 
     public static String bean2JsonStr(Object bean) {
         return gson.toJson(bean);
+    }
+
+    public static String toJson(Object obj, Type type) {
+        return gson.toJson(obj, type);
     }
 
     public static String formatJsonStr(String jsonStr) {

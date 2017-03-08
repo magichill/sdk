@@ -8,6 +8,7 @@ import com.bingdou.core.model.User;
 import com.bingdou.core.model.UserToken;
 import com.bingdou.core.repository.pay.MoneyLogDao;
 import com.bingdou.core.repository.user.CertificateDao;
+import com.bingdou.core.repository.user.CloudTokenDao;
 import com.bingdou.core.repository.user.UserBaseDao;
 import com.bingdou.tools.DateUtil;
 import com.bingdou.tools.LogContext;
@@ -34,6 +35,8 @@ public class UserBaseService {
     private IUserCacheManager userCacheManager;
     @Autowired
     private CertificateDao certificateDao;
+    @Autowired
+    private CloudTokenDao cloudTokenDao;
 
     /**
      * 通过手机号获取用户详细信息

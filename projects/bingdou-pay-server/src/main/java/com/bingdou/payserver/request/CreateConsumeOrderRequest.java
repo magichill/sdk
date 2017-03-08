@@ -5,7 +5,7 @@ import com.bingdou.tools.JsonUtil;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * 创建消费订单请求(直充直消)
+ * 鍒涘缓娑堣垂璁㈠崟璇锋眰(鐩村厖鐩存秷)
  * Created by gaoshan on 16/12/3.
  */
 public class CreateConsumeOrderRequest extends CreateOrderRequest {

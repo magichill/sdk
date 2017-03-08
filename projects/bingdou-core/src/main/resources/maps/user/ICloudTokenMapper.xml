@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.user.ICloudTokenMapper">
+
+    <select id="getCloudToken" parameterType="java.util.Map" resultMap="cloudToken">
+        <![CDATA[
+            SELECT token,device,request_source,create_time
+            FROM ${userDB}.mc_user_cloud_token WHERE mid=#{userId}
+            ]]>
+    </select>
+
+    <select id="existCloudToken" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    <![CDATA[
+            SELECT COUNT(token) FROM ${userDB}.mc_user_cloud_token WHERE mid=#{userId}
+            ]]>
+    </select>
+
+    <insert id="insertCloudToken" parameterType="java.util.Map">
+    <![CDATA[
+              INSERT INTO ${userDB}.mc_user_cloud_token(mid,token,token_update_time,device,request_source)
+              VALUE(#{userId},#{token},UNIX_TIMESTAMP(),#{device},#{requestSource})
+            ]]>
+    </insert>
+
+    <resultMap id="cloudToken" type="com.bingdou.core.model.CloudToken">
+        <result property="token" column="token"/>
+        <result property="requestSource" column="request_source"/>
+        <result property="createTime" column="create_time"/>
+        <result property="device" column="device"/>
+    </resultMap>
+</mapper>

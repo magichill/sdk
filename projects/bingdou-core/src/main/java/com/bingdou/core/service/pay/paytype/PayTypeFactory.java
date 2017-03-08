@@ -9,6 +9,9 @@ public class PayTypeFactory {
 
     @Autowired
     private WxPayTypeService wxPayTypeService;
+
+    @Autowired
+    private WxPublicPayTypeService wxPublicPayTypeService;
 //    @Autowired
 //    private PPPayTypeService ppPayTypeService;
 //    @Autowired
@@ -54,7 +57,9 @@ public class PayTypeFactory {
 
         if (PayType.WEIXIN.equals(payType)){
             return wxPayTypeService;
-        } else if (PayType.ALI_MOBILE.equals(payType)){
+        } else if( PayType.PUBLIC_WEIXIN.equals(payType)){
+            return wxPublicPayTypeService;
+        }else if (PayType.ALI_MOBILE.equals(payType)){
             return aliMobilePayTypeService;
         } else if(PayType.ALI_SCAN.equals(payType)){
             return aliPayScanPayTypeService;

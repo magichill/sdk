@@ -5,18 +5,18 @@ import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.tools.JsonUtil;
 
 /**
- * Ïû·Ñ¶©µ¥²éÑ¯ÇëÇóÀà
+ * æ¶ˆè´¹è®¢å•æŸ¥è¯¢è¯·æ±‚ç±»
  * Created by gaoshan on 16/12/4.
  */
 public class GetConsumeOrderRequest extends BaseRequest {
 
     /**
-     * CP¶©µ¥ºÅ
+     * CPè®¢å•å·
      */
     @SerializedName("user_order_id")
     private String userOrderId;
     /**
-     * µÇÂ¼Ãû»òcpId
+     * ç™»å½•åæˆ–cpId
      */
     @SerializedName("account")
     private String account;

@@ -23,7 +23,7 @@ public class AliNoPwdPayTypeService implements IPayTypeService {
     @Override
     public PayTypeResponse callPayType(PayTypeRequest payTypeRequest) throws Exception {
         AliNoPwdPayReturnCode aliNoPwdPayReturnCode = requestAliNoPwdPay(payTypeRequest);
-        LogContext.instance().info("Ö§¸¶±¦ÃâÃÜÖ§¸¶½á¹û(Í¬²½):" + aliNoPwdPayReturnCode);
+        LogContext.instance().info("æ”¯ä»˜å®å…å¯†æ”¯ä»˜ç»“æœ(åŒæ­¥):" + aliNoPwdPayReturnCode);
         PayTypeResponse response = new PayTypeResponse();
         response.setAliNoPwdPayReturnCode(aliNoPwdPayReturnCode);
         return response;
@@ -41,7 +41,7 @@ public class AliNoPwdPayTypeService implements IPayTypeService {
         paramMap.put("sign", PayUtils.getSign4Ali(paramMap));
         String result = HttpClientUtil.doGetHttpClient("ali-no-pwd-pay", PayTypeData.PAY_TYPE_ALI_GATE_WAY,
                 paramMap, null, PayTypeData.PAY_TYPE_ALI_TIMEOUT, PayTypeData.PAY_TYPE_ALI_TIMEOUT);
-        LogContext.instance().info("Ö§¸¶±¦ÃâÃÜÊÚÈ¨½á¹û:" + result);
+        LogContext.instance().info("æ”¯ä»˜å®å…å¯†æˆæƒç»“æœ:" + result);
         if (StringUtils.isEmpty(result)) {
             return AliNoPwdPayReturnCode.REQUEST_FAIL;
         }

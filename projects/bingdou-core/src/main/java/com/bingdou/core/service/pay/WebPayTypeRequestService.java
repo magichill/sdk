@@ -16,14 +16,14 @@ public class WebPayTypeRequestService {
     private WebPayTypeRequestDao webPayTypeRequestDao;
 
     public void addRequest(WebPayTypeRequest webPayTypeRequest, KeyGroup keyGroup) throws Exception {
-        LogContext.instance().info("新增网页支付方式请求记录");
+        LogContext.instance().info("鏂板缃戦〉鏀粯鏂瑰紡璇锋眰璁板綍");
         if (webPayTypeRequest == null || keyGroup == null) {
-            throw new Exception("新增网页支付方式请求记录失败");
+            throw new Exception("鏂板缃戦〉鏀粯鏂瑰紡璇锋眰璁板綍澶辫触");
         }
         String paySign = getPaySign(webPayTypeRequest.getOrderId(),
                 webPayTypeRequest.getRequestSourceIndex(), keyGroup);
         if (StringUtils.isEmpty(paySign)) {
-            throw new Exception("新增网页支付方式请求记录失败");
+            throw new Exception("鏂板缃戦〉鏀粯鏂瑰紡璇锋眰璁板綍澶辫触");
         }
         webPayTypeRequest.setPaySign(paySign);
         webPayTypeRequestDao.addRequest(webPayTypeRequest);
@@ -44,7 +44,7 @@ public class WebPayTypeRequestService {
             String data = orderId + requestSourceIndex;
             sign = CodecUtils.getMySign(data, keyGroup);
         } catch (Exception e) {
-            LogContext.instance().error(e, "产生支付签名失败");
+            LogContext.instance().error(e, "浜х敓鏀粯绛惧悕澶辫触");
         }
         return sign;
     }

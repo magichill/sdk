@@ -4,7 +4,7 @@ import com.bingdou.core.helper.BaseRequest;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * 创建订单请求父类
+ * 鍒涘缓璁㈠崟璇锋眰鐖剁被
  * Created by gaoshan on 16/3/9.
  */
 public abstract class CreateOrderRequest extends BaseRequest {
@@ -15,6 +15,8 @@ public abstract class CreateOrderRequest extends BaseRequest {
     protected float money;
     @SerializedName("pay_type")
     protected int payType;
+    @SerializedName("open_id")
+    protected String openId;
     @SerializedName("goods_name")
     protected String goodsName;
     @SerializedName("goods_desc")
@@ -78,5 +80,13 @@ public abstract class CreateOrderRequest extends BaseRequest {
 
     public void setReturnUrl(String returnUrl) {
         this.returnUrl = returnUrl;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

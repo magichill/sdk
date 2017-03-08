@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * ´´½¨³äÖµ¶©µ¥
+ * åˆ›å»ºå……å€¼è®¢å•
  * Created by gaoshan on 17/1/10.
  */
 @Service
@@ -62,14 +62,14 @@ public class CreateRechargeOrderService extends BaseService implements IMethodSe
     public ServiceResult execute4Server(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         CreateRechargeOrderRequest createRechargeOrderRequest = (CreateRechargeOrderRequest) baseRequest;
         if (StringUtils.isEmpty(createRechargeOrderRequest.getAccount())) {
-            return ServiceResultUtil.illegal("ÕË»§ĞÅÏ¢Îª¿Õ");
+            return ServiceResultUtil.illegal("è´¦æˆ·ä¿¡æ¯ä¸ºç©º");
         }
         if (createRechargeOrderRequest.getMoney() < 1) {
-            return ServiceResultUtil.illegal("³äÖµ½ğ¶î±ØĞë´óÓÚ1Ôª");
+            return ServiceResultUtil.illegal("å……å€¼é‡‘é¢å¿…é¡»å¤§äº1å…ƒ");
         }
         PayType payType = PayType.getByIndex(createRechargeOrderRequest.getPayType());
         if (payType == null) {
-            return ServiceResultUtil.illegal("·Ç·¨Ö§¸¶ÀàĞÍ");
+            return ServiceResultUtil.illegal("éæ³•æ”¯ä»˜ç±»å‹");
         }
         Application application = appBaseService.getAppByAppId(createRechargeOrderRequest.getAppId());
         return deal(createRechargeOrderRequest, user, application, payType,
@@ -81,19 +81,19 @@ public class CreateRechargeOrderService extends BaseService implements IMethodSe
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         CreateRechargeOrderRequest createRechargeOrderRequest = (CreateRechargeOrderRequest) baseRequest;
         if (StringUtils.isEmpty(createRechargeOrderRequest.getAccount())) {
-            return ServiceResultUtil.illegal("ÕË»§ĞÅÏ¢Îª¿Õ");
+            return ServiceResultUtil.illegal("è´¦æˆ·ä¿¡æ¯ä¸ºç©º");
         }
         if (createRechargeOrderRequest.getMoney() < 1) {
-            return ServiceResultUtil.illegal("³äÖµ½ğ¶î±ØĞë´óÓÚ1Ôª");
+            return ServiceResultUtil.illegal("å……å€¼é‡‘é¢å¿…é¡»å¤§äº1å…ƒ");
         }
         PayType payType = PayType.getByIndex(createRechargeOrderRequest.getPayType());
         if (payType == null) {
-            return ServiceResultUtil.illegal("·Ç·¨Ö§¸¶ÀàĞÍ");
+            return ServiceResultUtil.illegal("éæ³•æ”¯ä»˜ç±»å‹");
         }
 //        boolean isSupportHaimaCoin = switchRuleService.isSupportHaimaCoin(baseRequest.getOtherInfo().getAppId(),
 //                baseRequest.getDeviceInfo().getOs(), baseRequest.getOtherInfo().getChannel());
 //        if (!isSupportHaimaCoin) {
-//            return ServiceResultUtil.illegal("´ËÓ¦ÓÃÔİ²»Ö§³Ö³äÖµ±ù¶¹±Ò");
+//            return ServiceResultUtil.illegal("æ­¤åº”ç”¨æš‚ä¸æ”¯æŒå……å€¼å†°è±†å¸");
 //        }
         Application application = getValidApplication4Client(createRechargeOrderRequest);
         return deal(createRechargeOrderRequest, user, application, payType,
@@ -113,8 +113,8 @@ public class CreateRechargeOrderService extends BaseService implements IMethodSe
             os = Os.SERVER;
         }
         if (!payTypeBaseService.valid(payType, os, sdkVersion, createRechargeOrderRequest.getMoney())) {
-            LogContext.instance().warn(payType + "," + os + "Ö§¸¶¹Ø±Õ");
-            return ServiceResultUtil.illegal("´ËÖ§¸¶·½Ê½ÔİÊ±¹Ø±Õ»ò³¬¹ıÏŞ¶î");
+            LogContext.instance().warn(payType + "," + os + "æ”¯ä»˜å…³é—­");
+            return ServiceResultUtil.illegal("æ­¤æ”¯ä»˜æ–¹å¼æš‚æ—¶å…³é—­æˆ–è¶…è¿‡é™é¢");
         }
         String rechargeOrderId = PayUtils.generateRechargeOrderId();
         IPayTypeService payTypeService = payTypeFactory.getPayTypeService(payType);
@@ -122,32 +122,32 @@ public class CreateRechargeOrderService extends BaseService implements IMethodSe
                 user.getId(), clientIp, payTypeService, createRechargeOrderRequest,
                 createRechargeOrderRequest.getMoney(), true);
         if (payTypeResponse == null) {
-            LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½»ñÈ¡½á¹ûÎª¿Õ");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼è·å–ç»“æœä¸ºç©º");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         if (!payTypeResponse.isSuccess()) {
-            LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½´íÎó:" + payTypeResponse.getResultMessage());
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼é”™è¯¯:" + payTypeResponse.getResultMessage());
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
-        LogContext.instance().info("´´½¨³äÖµ¶©µ¥");
+        LogContext.instance().info("åˆ›å»ºå……å€¼è®¢å•");
         RechargeOrder rechargeOrder = CreateOrderUtils.buildRechargeOrder(rechargeOrderId, user.getId(),
                 application, createRechargeOrderRequest,
                 PayUtils.getUnionPayOrderId(payType, payTypeResponse), "", isFromClient);
         boolean unUsedPropId = false;
 //        if (createRechargeOrderRequest.getActivityType() == ActivityType.CARD.getIndex()
 //                && createRechargeOrderRequest.getRechargeCardId() > 0) {
-//            LogContext.instance().info("Ñ¡ÔñÁË³ä·µ¿¨»î¶¯,¼ì²é³ä·µ¿¨ÊÇ·ñ¿ÉÓÃ");
+//            LogContext.instance().info("é€‰æ‹©äº†å……è¿”å¡æ´»åŠ¨,æ£€æŸ¥å……è¿”å¡æ˜¯å¦å¯ç”¨");
 //            unUsedPropId = chargeBackService.validPropId(user.getId(),
 //                    createRechargeOrderRequest.getRechargeCardId());
 //            if (unUsedPropId) {
-//                LogContext.instance().info("³ä·µ¿¨¿ÉÓÃ");
+//                LogContext.instance().info("å……è¿”å¡å¯ç”¨");
 //                rechargeOrder.setPropId(createRechargeOrderRequest.getRechargeCardId());
 //            } else {
-//                LogContext.instance().info("³ä·µ¿¨²»¿ÉÓÃ");
+//                LogContext.instance().info("å……è¿”å¡ä¸å¯ç”¨");
 //            }
 //        }
         boolean createSuccess = rechargeOrderService.addRechargeOrder(rechargeOrder);
-        LogContext.instance().info("´´½¨³äÖµ¶©µ¥½á¹û:" + createSuccess);
+        LogContext.instance().info("åˆ›å»ºå……å€¼è®¢å•ç»“æœ:" + createSuccess);
         if (createSuccess) {
             DataLogUtils.recordHadoopLog(HadoopLogAction.CREATE_RECHARGE_ORDER, createRechargeOrderRequest,
                     user, clientIp, rechargeOrder.getPropId() + "", rechargeOrder, true, false);
@@ -155,7 +155,7 @@ public class CreateRechargeOrderService extends BaseService implements IMethodSe
                     payTypeResponse);
             return ServiceResultUtil.success(response);
         } else {
-            return ServiceResultUtil.illegal("´´½¨³äÖµ¶©µ¥Ê§°Ü");
+            return ServiceResultUtil.illegal("åˆ›å»ºå……å€¼è®¢å•å¤±è´¥");
         }
     }
 
@@ -169,7 +169,7 @@ public class CreateRechargeOrderService extends BaseService implements IMethodSe
         if (payTypeResponse != null) {
             if (PayType.ALI_MOBILE.equals(payType)) {
                 response.setPayRequestUrl(payTypeResponse.getRequestParam());
-            } else if (PayType.WEIXIN.equals(payType)) {
+            } else if (PayType.WEIXIN.equals(payType) || PayType.PUBLIC_WEIXIN.equals(payType)) {
                 response.setWxResponse(payTypeResponse.getWxResponse());
             } else if (PayType.HEEPAY_WEIXIN_SCAN_CODE.equals(payType)
                     || PayType.ALI_SCAN.equals(payType)) {

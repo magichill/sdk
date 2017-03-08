@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * SDKÖ§¸¶ÖĞĞÄ·şÎñAPI(Ìá¹©¸ø¿Í»§¶ËµÄµ÷ÓÃ)
+ * SDKæ”¯ä»˜ä¸­å¿ƒæœåŠ¡API(æä¾›ç»™å®¢æˆ·ç«¯çš„è°ƒç”¨)
  * Created by gaoshan on 17/1/10.
  */
 @RequestMapping("client")

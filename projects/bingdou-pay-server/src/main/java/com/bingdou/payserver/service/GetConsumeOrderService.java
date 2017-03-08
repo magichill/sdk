@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * »ñÈ¡Ïû·Ñ¶©µ¥·şÎñÀà
+ * è·å–æ¶ˆè´¹è®¢å•æœåŠ¡ç±»
  * Created by gaoshan on 17/1/4.
  */
 @Service
@@ -74,13 +74,13 @@ public class GetConsumeOrderService extends BaseService implements IMethodServic
         GetConsumeOrderRequest getConsumeOrderRequest = (GetConsumeOrderRequest) baseRequest;
         if (StringUtils.isEmpty(getConsumeOrderRequest.getAccount())
                 || StringUtils.isEmpty(getConsumeOrderRequest.getUserOrderId())) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         GetConsumeOrderResponse response = new GetConsumeOrderResponse();
         ConsumeOrder order = consumeOrderService.getOrderByUserOrderIdAndAppId(getConsumeOrderRequest.getUserOrderId(),
                 getConsumeOrderRequest.getOtherInfo().getAppId());
         if (order == null) {
-            LogContext.instance().warn("¶©µ¥²»´æÔÚ : " + getConsumeOrderRequest.getUserOrderId());
+            LogContext.instance().warn("è®¢å•ä¸å­˜åœ¨ : " + getConsumeOrderRequest.getUserOrderId());
             response.setStatus(OrderStatus.NOT_EXISTS.getIndex());
             return ServiceResultUtil.success(response);
         }

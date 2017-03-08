@@ -52,11 +52,11 @@ public class WebPayTypeService {
                         ? webPayTypeRequest.getReturnUrl() + "?order_id=" + outTradeNo + "&is_success=1"
                         : webPayTypeRequest.getReturnUrl() + "?order_id=" + outTradeNo + "&is_success=0";
             } else {
-                LogContext.instance().error("ÑéÖ¤Ç©ÃûÊ§°Ü");
+                LogContext.instance().error("éªŒè¯ç­¾åå¤±è´¥");
                 returnUrl = webPayTypeRequest.getReturnUrl() + "?order_id=" + outTradeNo + "&is_success=0";
             }
         } else {
-            LogContext.instance().error("²»´æÔÚ" + outTradeNo + "µÄ¶©µ¥");
+            LogContext.instance().error("ä¸å­˜åœ¨" + outTradeNo + "çš„è®¢å•");
         }
         return returnUrl;
     }
@@ -68,7 +68,7 @@ public class WebPayTypeService {
                 html = getAliScanHtml(webPayTypeRequest, isMobile);
             }
         } catch (Exception e) {
-            LogContext.instance().error(e, "»ñÈ¡HTML´íÎó");
+            LogContext.instance().error(e, "è·å–HTMLé”™è¯¯");
         }
         return html;
     }
@@ -77,30 +77,30 @@ public class WebPayTypeService {
                                              WebPayTypeRequest webPayTypeRequest,
                                              KeyGroup keyGroup) {
         if (webPayTypeRequest == null) {
-            return "Î´»ñÈ¡µ½¶©µ¥ĞÅÏ¢";
+            return "æœªè·å–åˆ°è®¢å•ä¿¡æ¯";
         }
         if (webPayTypeRequest.getPayType() != payType) {
-            return "Ö§¸¶·½Ê½´íÎó";
+            return "æ”¯ä»˜æ–¹å¼é”™è¯¯";
         }
         boolean isNoPayOrder;
         if (webPayTypeRequest.getOrderType() == 1) {
-            LogContext.instance().info("³äÖµ¶©µ¥");
+            LogContext.instance().info("å……å€¼è®¢å•");
             isNoPayOrder = rechargeOrderService.isNoPayOrder(orderId);
         } else {
-            LogContext.instance().info("Ö±³ä¶©µ¥");
+            LogContext.instance().info("ç›´å……è®¢å•");
             isNoPayOrder = consumeOrderService.isNoPayOrder(orderId);
         }
         if (!isNoPayOrder) {
-            return "¶©µ¥ÒÑ¾­Ö§¸¶";
+            return "è®¢å•å·²ç»æ”¯ä»˜";
         }
         if (DateUtil.getCurrentTimeSeconds() - webPayTypeRequest.getCreateTime()
                 > PayConstants.WEB_PAY_TYPE_TIME_OUT_SECONDS) {
-            return "ÄúµÄ¶©µ¥³¬¹ı30·ÖÖÓÎ´´¦Àí,ÒÑ¾­¹ıÆÚ,ÇëÖØĞÂ´´½¨¶©µ¥";
+            return "æ‚¨çš„è®¢å•è¶…è¿‡30åˆ†é’Ÿæœªå¤„ç†,å·²ç»è¿‡æœŸ,è¯·é‡æ–°åˆ›å»ºè®¢å•";
         }
         String myPaySign = webPayTypeRequestService.getPaySign(webPayTypeRequest.getOrderId(),
                 webPayTypeRequest.getRequestSourceIndex(), keyGroup);
         if (!myPaySign.equals(paySign)) {
-            return "Ç©Ãû´íÎó";
+            return "ç­¾åé”™è¯¯";
         }
         return "";
     }
@@ -178,7 +178,7 @@ public class WebPayTypeService {
             htmlContent.append("<input type=\"hidden\" name=\"").append(key)
                     .append("\" value=\"").append(value).append("\"/>");
         }
-        htmlContent.append("<input type=\"submit\" value=\"È·ÈÏ\" style=\"display:none;\"></form>");
+        htmlContent.append("<input type=\"submit\" value=\"ç¡®è®¤\" style=\"display:none;\"></form>");
         htmlContent.append("<script>document.forms['" + formId + "'].submit();</script>");
         String html = htmlContent.toString();
         LogContext.instance().info("HTML:" + html);

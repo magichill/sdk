@@ -12,6 +12,7 @@ public class PayTypeRequest {
     private String orderId;
     private String orderDesc;
     private int userId;
+    private String openId;
     private float money;
     private String clientIP;
     private int pay19Type;
@@ -131,5 +132,13 @@ public class PayTypeRequest {
 
     public void setAliAgreementNo(String aliAgreementNo) {
         this.aliAgreementNo = aliAgreementNo;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

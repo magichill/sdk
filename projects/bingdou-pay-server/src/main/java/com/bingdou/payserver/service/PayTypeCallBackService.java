@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Ö§¸¶·½Ê½»Øµ÷·şÎñÀà
+ * æ”¯ä»˜æ–¹å¼å›è°ƒæœåŠ¡ç±»
  * Created by gaoshan on 16/3/11.
  */
 @Service
@@ -58,10 +58,10 @@ public class PayTypeCallBackService {
 
     private boolean dealCommon(PayTypeCallBackResponse response, boolean isRecharge) throws Exception {
         if (response == null) {
-            LogContext.instance().error("Ö§¸¶»Øµ÷¶ÔÏóÎª¿Õ");
+            LogContext.instance().error("æ”¯ä»˜å›è°ƒå¯¹è±¡ä¸ºç©º");
             return false;
         }
-        LogContext.instance().info("»Øµ÷¶ÔÏó:" + response);
+        LogContext.instance().info("å›è°ƒå¯¹è±¡:" + response);
         RechargeOrder rechargeOrder = getRechargeOrder(isRecharge, response.getUserId(),
                 response.getBingdouOrderId());
         boolean valid = validateRechargeOrder(response, rechargeOrder);
@@ -70,27 +70,27 @@ public class PayTypeCallBackService {
         addDetailByPayType(response);
         User user = getUser(response, rechargeOrder);
         if (user == null) {
-            LogContext.instance().error("ÓÃ»§²»´æÔÚ");
+            LogContext.instance().error("ç”¨æˆ·ä¸å­˜åœ¨");
             return false;
         }
-        LogContext.instance().info("»ñÈ¡ÓÃ»§ID(" + user.getId() + ")µÄVIPĞÅÏ¢");
+        LogContext.instance().info("è·å–ç”¨æˆ·ID(" + user.getId() + ")çš„VIPä¿¡æ¯");
         UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
         int backMoney = 0;
         if (isRecharge) {
-            LogContext.instance().info("³äÖµ»Øµ÷Âß¼­");
+            LogContext.instance().info("å……å€¼å›è°ƒé€»è¾‘");
             updateUserMoney(response, user.getMoney(), user.getId());
-            if (PayUtils.isSpecialActivity(rechargeOrder.getAppId(), rechargeOrder.getChannel())) {
-                LogContext.instance().info("ÌØÊâ³ä·µ»î¶¯");
-                backMoney = rechargeOrder.getOrderMoney();
-            } else {
+//            if (PayUtils.isSpecialActivity(rechargeOrder.getAppId(), rechargeOrder.getChannel())) {
+//                LogContext.instance().info("ç‰¹æ®Šå……è¿”æ´»åŠ¨");
+//                backMoney = rechargeOrder.getOrderMoney();
+//            } else {
 //                backMoney = chargeBackService.calculateBackMoneyFen4CallBack(rechargeOrder.getActivityType(),
 //                        user.getId(), response.getAmount(), rechargeOrder.getPropId(), rechargeOrder.getAppId(),
 //                        userVipGrade.isInBlackList(), rechargeOrder.getOrderId());
-            }
-            addBackMoney(backMoney, response, rechargeOrder);
+//            }
+//            addBackMoney(backMoney, response, rechargeOrder);
         } else {
-            LogContext.instance().info("Ö±³ä»Øµ÷Âß¼­");
-            LogContext.instance().info("´¦Àí×éºÏÏû·ÑÂß¼­");
+            LogContext.instance().info("ç›´å……å›è°ƒé€»è¾‘");
+            LogContext.instance().info("å¤„ç†ç»„åˆæ¶ˆè´¹é€»è¾‘");
             List<UserMoneyOrder> userMoneyOrderList = consumeOrderService.getUnDoneUserMoneyOrderList(user.getId(),
                     response.getBingdouOrderId());
             boolean isContainUserMoney = userMoneyOrderList != null && !userMoneyOrderList.isEmpty();
@@ -121,58 +121,58 @@ public class PayTypeCallBackService {
     private boolean validateRechargeOrder(PayTypeCallBackResponse response, RechargeOrder rechargeOrder)
             throws Exception {
         if (rechargeOrder == null) {
-            LogContext.instance().error("²»´æÔÚ´Ë¶©µ¥");
+            LogContext.instance().error("ä¸å­˜åœ¨æ­¤è®¢å•");
             return false;
         }
         if (rechargeOrder.getPayType() != response.getPayType().getIndex()) {
-            LogContext.instance().error("Ö§¸¶·½Ê½´íÎó");
+            LogContext.instance().error("æ”¯ä»˜æ–¹å¼é”™è¯¯");
             return false;
         }
-        //TODO Î¢ĞÅ»ãÔ´ÓĞ¿ÉÄÜ»á½ğ¶î²»Ò»ÖÂ
+        //TODO å¾®ä¿¡æ±‡æºæœ‰å¯èƒ½ä¼šé‡‘é¢ä¸ä¸€è‡´
         if (rechargeOrder.getOrderMoney() != response.getAmount()) {
-            LogContext.instance().error("´Ë¶©µ¥½ğ¶îºÍ»Øµ÷½ğ¶î²»Ò»ÖÂ");
+            LogContext.instance().error("æ­¤è®¢å•é‡‘é¢å’Œå›è°ƒé‡‘é¢ä¸ä¸€è‡´");
             return false;
         }
         if (rechargeOrder.getStatus() == OrderStatus.PAYED.getIndex()) {
-            LogContext.instance().error("´Ë¶©µ¥ÒÑ¾­Íê³É,²»ĞèÒª»Øµ÷");
+            LogContext.instance().error("æ­¤è®¢å•å·²ç»å®Œæˆ,ä¸éœ€è¦å›è°ƒ");
             return true;
         }
         return true;
     }
 
     private void addDetailByPayType(PayTypeCallBackResponse response) throws Exception {
-        LogContext.instance().info("¼ÇÂ¼Ö§¸¶·½Ê½¶©µ¥ÏêÇé");
+        LogContext.instance().info("è®°å½•æ”¯ä»˜æ–¹å¼è®¢å•è¯¦æƒ…");
         if (PayType.ALI_SCAN.equals(response.getPayType())
                 || PayType.ALI_MOBILE.equals(response.getPayType())
                 || PayType.ALI_NO_PWD.equals(response.getPayType())) {
             payTypeBaseService.addAliOrderDetail(response.getParamMap());
-        } else if (PayType.WEIXIN.equals(response.getPayType())) {
+        } else if (PayType.WEIXIN.equals(response.getPayType()) || PayType.PUBLIC_WEIXIN.equals(response.getPayType())) {
             payTypeBaseService.addWeixinOrderDetail(response.getParamMap());
         } else {
-            throw new Exception("Î´ÖªÖ§¸¶·½Ê½");
+            throw new Exception("æœªçŸ¥æ”¯ä»˜æ–¹å¼");
         }
     }
 
     private void updateRechargeOrder2Success(int moneyFen, int backMoneyFen, String orderId, int activityType) throws Exception {
-        LogContext.instance().info("¸üĞÂ³äÖµ¶©µ¥");
+        LogContext.instance().info("æ›´æ–°å……å€¼è®¢å•");
         rechargeOrderService.updateRechargeOrder(moneyFen, backMoneyFen, orderId, activityType);
     }
 
     private void updateConsumeOrder2Success(int moneyFen, String orderId) throws Exception {
-        LogContext.instance().info("¸üĞÂÏû·Ñ¶©µ¥");
+        LogContext.instance().info("æ›´æ–°æ¶ˆè´¹è®¢å•");
         consumeOrderService.updateConsumeOrder(moneyFen, orderId);
     }
 
     private void updateUserMoney(PayTypeCallBackResponse response, int userMoneyFen, int userId)
             throws Exception {
-        LogContext.instance().info("¸üĞÂÓÃ»§º£Âí±ÒÕË»§¼°×Ê½ğ±ä¶¯ÈÕÖ¾");
+        LogContext.instance().info("æ›´æ–°ç”¨æˆ·å†°è±†å¸è´¦æˆ·åŠèµ„é‡‘å˜åŠ¨æ—¥å¿—");
         MoneyLog rechargeMoneyLog = PayUtils.buildRechargeMoneyLog(response.getBingdouOrderId(),
                 response.getPayType(), userId, response.getAmount(), userMoneyFen);
         userBaseService.updateMoneyById(userId, userMoneyFen, rechargeMoneyLog);
     }
 
     private void recordRechargeServerLog(User user, String orderId) {
-        LogContext.instance().info("¼ÇÂ¼³äÖµ¶©µ¥Íê³ÉµÄ·şÎñÆ÷Í³¼ÆÈÕÖ¾");
+        LogContext.instance().info("è®°å½•å……å€¼è®¢å•å®Œæˆçš„æœåŠ¡å™¨ç»Ÿè®¡æ—¥å¿—");
         RechargeOrder rechargeOrder = rechargeOrderService.getByOrderId(orderId);
         BaseRequest baseRequest = new CreateRechargeOrderRequest();
         baseRequest.setAppId(rechargeOrder.getAppId());
@@ -182,7 +182,7 @@ public class PayTypeCallBackService {
     }
 
     private void recordConsumeServerLog(User user, int voucherId, ConsumeOrder consumeOrder) {
-        LogContext.instance().info("¼ÇÂ¼Ïû·Ñ¶©µ¥Íê³ÉµÄ·şÎñÆ÷Í³¼ÆÈÕÖ¾");
+        LogContext.instance().info("è®°å½•æ¶ˆè´¹è®¢å•å®Œæˆçš„æœåŠ¡å™¨ç»Ÿè®¡æ—¥å¿—");
         BaseRequest baseRequest = new CreateConsumeOrderRequest();
         baseRequest.setAppId(consumeOrder.getAppId());
         baseRequest.setChannel(consumeOrder.getChannel());
@@ -217,7 +217,7 @@ public class PayTypeCallBackService {
 
     private void addBackMoney(int backMoneyFen, PayTypeCallBackResponse response,
                               RechargeOrder rechargeOrder) throws Exception {
-        LogContext.instance().info("Ìí¼ÓÓÎÏ·±Ò·µÀû½ğ¶î");
+        LogContext.instance().info("æ·»åŠ æ¸¸æˆå¸è¿”åˆ©é‡‘é¢");
         int osIndex = Os.getIndexByOsName(rechargeOrder.getOsName());
         int userVirtualMoneyFen = getVirtualMoneyFen(rechargeOrder, osIndex);
         MoneyLog rechargeMoneyLog = PayUtils.buildRechargeBackMoneyLog(response.getBingdouOrderId(),
@@ -227,20 +227,20 @@ public class PayTypeCallBackService {
     }
 
     private int getVirtualMoneyFen(Order order, int osIndex) {
-        LogContext.instance().info("»ñÈ¡ÓÎÏ·±Ò½ğ¶î");
+        LogContext.instance().info("è·å–æ¸¸æˆå¸é‡‘é¢");
         return userBaseService.getVirtualMoney(order.getUserId(), osIndex, false);
     }
 
     private int dealVoucher(String consumeOrderId) {
 //        Voucher voucher = voucherService.getVoucherUserOrderByOrderId(consumeOrderId);
 //        if (voucher == null) {
-//            LogContext.instance().error(consumeOrderId + "¶©µ¥µÄÏû·Ñ´ú½ğÈ¯Îª¿Õ");
+//            LogContext.instance().error(consumeOrderId + "è®¢å•çš„æ¶ˆè´¹ä»£é‡‘åˆ¸ä¸ºç©º");
 //        } else {
 //            boolean convertPre2UsedResult = voucherService.convertPre2Used(voucher.getId());
 //            if (convertPre2UsedResult) {
-//                LogContext.instance().info("Ïû·Ñ´ú½ğÈ¯(" + voucher.getId() + ")¸Ä±ä×´Ì¬³É¹¦");
+//                LogContext.instance().info("æ¶ˆè´¹ä»£é‡‘åˆ¸(" + voucher.getId() + ")æ”¹å˜çŠ¶æ€æˆåŠŸ");
 //            } else {
-//                LogContext.instance().error("Ïû·Ñ´ú½ğÈ¯(" + voucher.getId() + ")¸Ä±ä×´Ì¬Ê§°Ü");
+//                LogContext.instance().error("æ¶ˆè´¹ä»£é‡‘åˆ¸(" + voucher.getId() + ")æ”¹å˜çŠ¶æ€å¤±è´¥");
 //            }
 //        }
         int voucherId = -1;
@@ -259,7 +259,7 @@ public class PayTypeCallBackService {
         for (UserMoneyOrder userMoneyOrder : userMoneyOrderList) {
             if (MoneyType.BINGDOU_MONEY.getIndex() == userMoneyOrder.getMoneyType()) {
                 if (userMoneyOrder.getMoneyFen() > user.getMoney()) {
-                    LogContext.instance().info("ÓÃ»§Óà¶î²»×ã");
+                    LogContext.instance().info("ç”¨æˆ·ä½™é¢ä¸è¶³");
                     isNotEnough = true;
                     break;
                 }
@@ -267,7 +267,7 @@ public class PayTypeCallBackService {
             }
             if (MoneyType.VIRTUAL_MONEY.getIndex() == userMoneyOrder.getMoneyType()) {
                 if (userMoneyOrder.getMoneyFen() > virtualMoneyFen) {
-                    LogContext.instance().info("ÓÃ»§ÓÎÏ·±Ò²»×ã");
+                    LogContext.instance().info("ç”¨æˆ·æ¸¸æˆå¸ä¸è¶³");
                     isNotEnough = true;
                     break;
                 }
@@ -275,14 +275,14 @@ public class PayTypeCallBackService {
             }
         }
         if (isNotEnough) {
-            LogContext.instance().error("ÓÃ»§Óà¶î²»×ã,²»ÏÂ·¢CPµÀ¾ß,½«°ÑÏÖ½ğ²¿·Ö¼ÓÈëµ½º£Âí±ÒÓà¶îÖĞ");
+            LogContext.instance().error("ç”¨æˆ·ä½™é¢ä¸è¶³,ä¸ä¸‹å‘CPé“å…·,å°†æŠŠç°é‡‘éƒ¨åˆ†åŠ å…¥åˆ°æµ·é©¬å¸ä½™é¢ä¸­");
             userBaseService.updateMoneyById(user.getId(), user.getMoney(),
                     PayUtils.buildRechargeMoneyLog(rechargeOrder.getOrderId(),
                             PayType.getByIndex(rechargeOrder.getPayType()), user.getId(),
                             rechargeOrder.getOrderMoney(), user.getMoney()));
             return false;
         } else {
-            LogContext.instance().info("ÓÃ»§Óà¶î³ä×ã,½«¿Û³ıÏàÓ¦±ÒÖÖ½ğ¶î");
+            LogContext.instance().info("ç”¨æˆ·ä½™é¢å……è¶³,å°†æ‰£é™¤ç›¸åº”å¸ç§é‡‘é¢");
             userBaseService.updateMoneyById(user.getId(), user.getMoney(),
                     PayUtils.buildConsumeMoneyLog(user.getId(), consumeOrderId,
                             needReduceUserMoneyFen, user.getMoney() - needReduceUserMoneyFen, true));
@@ -291,7 +291,7 @@ public class PayTypeCallBackService {
                             needReduceVirtualMoneyFen, virtualMoneyFen - needReduceVirtualMoneyFen, false));
             boolean result = consumeOrderService.setUserMoneyOrder2Done(consumeOrderId);
             if (!result)
-                throw new Exception("¸üĞÂÓÃ»§Óà¶î¶©µ¥Ê§°Ü");
+                throw new Exception("æ›´æ–°ç”¨æˆ·ä½™é¢è®¢å•å¤±è´¥");
             return true;
         }
     }

@@ -53,6 +53,8 @@ public class PayUtils {
             prefix = "UP";
         } else if (PayType.WEIXIN.equals(payType)) {
             prefix = "WX";
+        } else if (PayType.PUBLIC_WEIXIN.equals(payType)) {
+            prefix = "PUBLICWX";
         } else if (PayType.PP.equals(payType)) {
             prefix = "PP";
         } else if (PayType.BINGDOU_COIN.equals(payType)) {
@@ -66,7 +68,7 @@ public class PayUtils {
         } else if (PayType.CHINA_PAY_UNION.equals(payType)) {
             prefix = "CHUN";
         } else {
-            throw new Exception("·Ç·¨Ö§¸¶·½Ê½,Éú³ÉÏû·Ñ¶©µ¥ºÅÊ§°Ü");
+            throw new Exception("éæ³•æ”¯ä»˜æ–¹å¼,ç”Ÿæˆæ¶ˆè´¹è®¢å•å·å¤±è´¥");
         }
         return prefix + dateStr + randomNum;
     }
@@ -200,7 +202,7 @@ public class PayUtils {
         moneyLog.setItem(rechargeOrderId);
         moneyLog.setMoney(voucherAmount);
         moneyLog.setMoneyBalance(remainBalanceFen);
-        moneyLog.setReason("³äÖµ´ú½ğÈ¯");
+        moneyLog.setReason("å……å€¼ä»£é‡‘åˆ¸");
         moneyLog.setType(MoneyLogType.RECHARGE_VOUCHER.getIndex());
         return moneyLog;
     }
@@ -213,10 +215,10 @@ public class PayUtils {
         moneyLog.setMoney(-consumeMoney);
         moneyLog.setMoneyBalance(remainBalanceFen);
         if (isBingdouCoin) {
-            moneyLog.setReason("Ïû·Ñ±ù¶¹±ÒÓà¶î");
+            moneyLog.setReason("æ¶ˆè´¹å†°è±†å¸ä½™é¢");
             moneyLog.setType(MoneyLogType.CONSUME_BINGDOU_COIN.getIndex());
         } else {
-            moneyLog.setReason("Ïû·ÑÓÎÏ·±ÒÓà¶î");
+            moneyLog.setReason("æ¶ˆè´¹æ¸¸æˆå¸ä½™é¢");
             moneyLog.setType(MoneyLogType.CONSUME_VIRTUAL_MONEY.getIndex());
         }
         return moneyLog;
@@ -229,7 +231,7 @@ public class PayUtils {
         moneyLog.setItem(rechargeOrderId);
         moneyLog.setMoney(backMoneyFen);
         moneyLog.setMoneyBalance(userVirtualMoneyFen + backMoneyFen);
-        moneyLog.setReason(payType.getName() + "³äÖµ·µÀû");
+        moneyLog.setReason(payType.getName() + "å……å€¼è¿”åˆ©");
         moneyLog.setType(MoneyLogType.BACK.getIndex());
         return moneyLog;
     }
@@ -241,7 +243,7 @@ public class PayUtils {
         moneyLog.setItem(rechargeOrderId);
         moneyLog.setMoney(amount);
         moneyLog.setMoneyBalance(userMoney + amount);
-        moneyLog.setReason(payType.getName() + "³äÖµ");
+        moneyLog.setReason(payType.getName() + "å……å€¼");
         moneyLog.setType(MoneyLogType.RECHARGE.getIndex());
         return moneyLog;
     }
@@ -250,7 +252,7 @@ public class PayUtils {
                                                         int remainVirtualMoney, boolean isAddMoney) {
         MoneyLog merchantLog = new MoneyLog();
         merchantLog.setUserId(userId);
-        merchantLog.setReason("±ù¶¹ÕË»§×ªÕË");
+        merchantLog.setReason("å†°è±†è´¦æˆ·è½¬è´¦");
         merchantLog.setItem(orderId);
         if (isAddMoney)
             merchantLog.setMoney(transferMoneyFen);
@@ -315,7 +317,7 @@ public class PayUtils {
             }
             result = isSign && responseTxt.equals("true");
         } catch (Exception e) {
-            LogContext.instance().error(e, "ÑéÖ¤Ö§¸¶±¦½á¹ûÊ§°Ü");
+            LogContext.instance().error(e, "éªŒè¯æ”¯ä»˜å®ç»“æœå¤±è´¥");
         }
         return result;
     }
@@ -327,7 +329,7 @@ public class PayUtils {
 //        secssUtil.init();
 //        secssUtil.verify(params);
 //        if (!"00".equals(secssUtil.getErrCode())) {
-//            LogContext.instance().error("CHINA PAYÑéÖ¤Ç©Ãû´íÎó:" + secssUtil.getErrCode() + " "
+//            LogContext.instance().error("CHINA PAYéªŒè¯ç­¾åé”™è¯¯:" + secssUtil.getErrCode() + " "
 //                    + secssUtil.getErrMsg());
 //            return false;
 //        }
@@ -355,9 +357,9 @@ public class PayUtils {
             }
         } catch (Exception e) {
             params = null;
-            LogContext.instance().error(e, "´ÓREQUEST MAP½âÎö´íÎó");
+            LogContext.instance().error(e, "ä»REQUEST MAPè§£æé”™è¯¯");
         }
-        LogContext.instance().info("²ÎÊı:" + paramStr);
+        LogContext.instance().info("å‚æ•°:" + paramStr);
         return params;
     }
 
@@ -376,7 +378,7 @@ public class PayUtils {
         HttpServletRequest request = payTypeRequest.getBaseRequest().getRequest();
         Object object = request.getAttribute(Constants.REQUEST_SAFE_INFO_NAME);
         if (object == null) {
-            LogContext.instance().error("°²È«¼Ó¹Ì¶ÔÏóÎª¿Õ");
+            LogContext.instance().error("å®‰å…¨åŠ å›ºå¯¹è±¡ä¸ºç©º");
             return null;
         }
         SafeInfo safeInfo = (SafeInfo) object;
@@ -395,7 +397,7 @@ public class PayUtils {
 //        secssUtil.init();
 //        secssUtil.sign(params);
 //        if (!"00".equals(secssUtil.getErrCode())) {
-//            LogContext.instance().error("CHINA PAYÇ©Ãû´íÎó:" + secssUtil.getErrCode() + " "
+//            LogContext.instance().error("CHINA PAYç­¾åé”™è¯¯:" + secssUtil.getErrCode() + " "
 //                    + secssUtil.getErrMsg());
 //            return "";
 //        }
@@ -410,7 +412,7 @@ public class PayUtils {
             result = PayConstants.ALI_CALL_RESULT_FINISHED_CODE.equals(tradeStatus)
                     || PayConstants.ALI_CALL_RESULT_SUCCESS_CODE.equals(tradeStatus);
         } else {
-            LogContext.instance().error("ÑéÖ¤Ê§°Ü");
+            LogContext.instance().error("éªŒè¯å¤±è´¥");
         }
         return result;
     }
@@ -433,16 +435,16 @@ public class PayUtils {
                                                                       PayType payType) {
         Map<String, String> callResultMap = PayUtils.getResultMapFromRequestMap(request.getParameterMap(), false);
         if (callResultMap == null || callResultMap.isEmpty()) {
-            LogContext.instance().error("½âÎöÏìÓ¦½á¹ûÎª¿Õ");
+            LogContext.instance().error("è§£æå“åº”ç»“æœä¸ºç©º");
             return null;
         }
-        LogContext.instance().info("ÏìÓ¦:" + callResultMap);
+        LogContext.instance().info("å“åº”:" + callResultMap);
         if (PayConstants.ALI_CALL_RESULT_WAIT_CODE.equals(callResultMap.get("trade_status"))) {
-            LogContext.instance().info("µÈ´ıÖ§¸¶×´Ì¬,Ö±½Ó·µ»Ø");
+            LogContext.instance().info("ç­‰å¾…æ”¯ä»˜çŠ¶æ€,ç›´æ¥è¿”å›");
             return null;
         }
         if (!PayUtils.isValid(callResultMap)) {
-            LogContext.instance().error("»Øµ÷ÑéÖ¤Ê§°Ü");
+            LogContext.instance().error("å›è°ƒéªŒè¯å¤±è´¥");
             return null;
         }
         PayTypeCallBackResponse callBackResponse = new PayTypeCallBackResponse();
@@ -501,7 +503,7 @@ public class PayUtils {
             result = HttpClientUtil.doGetHttpClient("ali_verify", url, PayTypeData.PAY_TYPE_ALI_TIMEOUT,
                     PayTypeData.PAY_TYPE_ALI_TIMEOUT);
         } catch (Exception e) {
-            LogContext.instance().error(e, "µ÷ÓÃÖ§¸¶±¦ÑéÖ¤½Ó¿ÚÊ§°Ü");
+            LogContext.instance().error(e, "è°ƒç”¨æ”¯ä»˜å®éªŒè¯æ¥å£å¤±è´¥");
         }
         return result;
     }

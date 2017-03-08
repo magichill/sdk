@@ -5,7 +5,7 @@ import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.tools.JsonUtil;
 
 /**
- * ³äÖµ/Ïû·Ñ¼ÇÂ¼²éÑ¯(·µ»ØÈı¸öÔÂÄÚµÄ¼ÇÂ¼)
+ * å……å€¼/æ¶ˆè´¹è®°å½•æŸ¥è¯¢(è¿”å›ä¸‰ä¸ªæœˆå†…çš„è®°å½•)
  */
 public class GetOrderRecordListRequest extends BaseRequest {
 

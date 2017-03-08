@@ -7,33 +7,33 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.util.Map;
 
 /**
- * Ö§¸¶·½Ê½»Øµ÷½á¹ûÀà
+ * æ”¯ä»˜æ–¹å¼å›è°ƒç»“æœç±»
  * Created by gaoshan on 16/12/27.
  */
 public class PayTypeCallBackResponse {
 
     /**
-     * ±ù¶¹¶©µ¥ID
+     * å†°è±†è®¢å•ID
      */
     private String bingdouOrderId;
     /**
-     * Ö§¸¶·½Ê½¶©µ¥ID
+     * æ”¯ä»˜æ–¹å¼è®¢å•ID
      */
     private String orderId;
     /**
-     * Ö§¸¶½ğ¶î(·Ö)
+     * æ”¯ä»˜é‡‘é¢(åˆ†)
      */
     private int amount;
     /**
-     * ±ù¶¹ÓÃ»§ID
+     * å†°è±†ç”¨æˆ·ID
      */
     private int userId;
     /**
-     * Ö§¸¶·½Ê½
+     * æ”¯ä»˜æ–¹å¼
      */
     private PayType payType;
     /**
-     * »Øµ÷µÄ·µ»ØMAP
+     * å›è°ƒçš„è¿”å›MAP
      */
     private Map<String, String> paramMap;
 

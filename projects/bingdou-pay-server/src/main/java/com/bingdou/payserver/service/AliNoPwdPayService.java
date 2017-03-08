@@ -32,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Ö§¸¶±¦ÃâÃÜÖ§¸¶
+ * æ”¯ä»˜å®å…å¯†æ”¯ä»˜
  */
 @Service
 public class AliNoPwdPayService extends BaseService implements IMethodService {
@@ -80,13 +80,13 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         AliNoPwdPayRequest aliNoPwdPayRequest = (AliNoPwdPayRequest) baseRequest;
         if (aliNoPwdPayRequest.getMoney() <= 0) {
-            return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+            return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
         }
         Os os = getClientOsByRequest(aliNoPwdPayRequest);
         String sdkVersion = aliNoPwdPayRequest.getOtherInfo().getSdkVersion();
         if (!payTypeBaseService.valid(PayType.ALI_NO_PWD, os, sdkVersion, aliNoPwdPayRequest.getMoney())) {
-            LogContext.instance().warn(PayType.ALI_NO_PWD + "," + os + "Ö§¸¶¹Ø±Õ");
-            return ServiceResultUtil.illegal("´ËÖ§¸¶·½Ê½ÔİÊ±¹Ø±Õ»ò³¬¹ıÏŞ¶î");
+            LogContext.instance().warn(PayType.ALI_NO_PWD + "," + os + "æ”¯ä»˜å…³é—­");
+            return ServiceResultUtil.illegal("æ­¤æ”¯ä»˜æ–¹å¼æš‚æ—¶å…³é—­æˆ–è¶…è¿‡é™é¢");
         }
         boolean isSign = aliPayNoPwdAuthService.isSignFromAliServer(user.getId());
         if (!isSign) {
@@ -96,11 +96,11 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
         String clientIp = RequestUtil.getClientIp(request);
         if (aliNoPwdPayRequest.getIsRecharge() == 1) {
             if (aliNoPwdPayRequest.getAliNoPwdPayRecharge() == null)
-                return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+                return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
             return recharge(aliNoPwdPayRequest, user, application, clientIp);
         } else {
             if (aliNoPwdPayRequest.getAliNoPwdPayConsume() == null)
-                return ServiceResultUtil.illegal("ÇëÇó²ÎÊı´íÎó");
+                return ServiceResultUtil.illegal("è¯·æ±‚å‚æ•°é”™è¯¯");
             return consume(aliNoPwdPayRequest, user, application, clientIp);
         }
     }
@@ -109,56 +109,56 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
                                    String clientIp)
             throws Exception {
         if (aliNoPwdPayRequest.getMoney() < 1) {
-            return ServiceResultUtil.illegal("³äÖµ½ğ¶î±ØĞë´óÓÚ1Ôª");
+            return ServiceResultUtil.illegal("å……å€¼é‡‘é¢å¿…é¡»å¤§äº1å…ƒ");
         }
 //        boolean isSupportHaimaCoin = switchRuleService.isSupportHaimaCoin(aliNoPwdPayRequest.getOtherInfo().getAppId(),
 //                aliNoPwdPayRequest.getDeviceInfo().getOs(), aliNoPwdPayRequest.getOtherInfo().getChannel());
 //        if (!isSupportHaimaCoin) {
-//            return ServiceResultUtil.illegal("´ËÓ¦ÓÃÔİ²»Ö§³Ö³äÖµ±ù¶¹±Ò");
+//            return ServiceResultUtil.illegal("æ­¤åº”ç”¨æš‚ä¸æ”¯æŒå……å€¼å†°è±†å¸");
 //        }
-        LogContext.instance().info("´´½¨³äÖµ¶©µ¥");
+        LogContext.instance().info("åˆ›å»ºå……å€¼è®¢å•");
         RechargeOrder rechargeOrder = createRechargeOrder4Recharge(aliNoPwdPayRequest, user.getId(), application);
 //        if (aliNoPwdPayRequest.getAliNoPwdPayRecharge().getActivityType() == ActivityType.CARD.getIndex()
 //                && aliNoPwdPayRequest.getAliNoPwdPayRecharge().getRechargeCardId() > 0) {
-//            LogContext.instance().info("Ñ¡ÔñÁË³ä·µ¿¨»î¶¯,¼ì²é³ä·µ¿¨ÊÇ·ñ¿ÉÓÃ");
+//            LogContext.instance().info("é€‰æ‹©äº†å……è¿”å¡æ´»åŠ¨,æ£€æŸ¥å……è¿”å¡æ˜¯å¦å¯ç”¨");
 //            boolean unUsedPropId = chargeBackService.validPropId(user.getId(),
 //                    aliNoPwdPayRequest.getAliNoPwdPayRecharge().getRechargeCardId());
 //            if (unUsedPropId) {
-//                LogContext.instance().info("³ä·µ¿¨¿ÉÓÃ");
+//                LogContext.instance().info("å……è¿”å¡å¯ç”¨");
 //                rechargeOrder.setPropId(aliNoPwdPayRequest.getAliNoPwdPayRecharge().getRechargeCardId());
 //            } else {
-//                LogContext.instance().info("³ä·µ¿¨²»¿ÉÓÃ");
+//                LogContext.instance().info("å……è¿”å¡ä¸å¯ç”¨");
 //            }
 //        }
         boolean createSuccess = rechargeOrderService.addRechargeOrder(rechargeOrder);
-        LogContext.instance().info("´´½¨³äÖµ¶©µ¥½á¹û:" + createSuccess);
+        LogContext.instance().info("åˆ›å»ºå……å€¼è®¢å•ç»“æœ:" + createSuccess);
         if (createSuccess) {
             AliPayNoPwdAuth auth = aliPayNoPwdAuthService.getAuthInfo(user.getId());
             if (auth == null)
                 return ServiceResultUtil.aliPayNoPwdUnSign();
             IPayTypeService payTypeService = payTypeFactory.getPayTypeService(PayType.ALI_NO_PWD);
             if (payTypeService == null) {
-                LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½»ñÈ¡½á¹ûÎª¿Õ");
-                return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+                LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼è·å–ç»“æœä¸ºç©º");
+                return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
             }
             PayTypeResponse payTypeResponse = payTypeService.callPayType(buildPayTypeRequest(aliNoPwdPayRequest,
                     rechargeOrder.getOrderId(), user.getId(), clientIp, auth.getAgreementNo()));
             if (payTypeResponse == null) {
-                LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½»ñÈ¡½á¹ûÎª¿Õ");
-                return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+                LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼è·å–ç»“æœä¸ºç©º");
+                return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
             }
             DataLogUtils.recordHadoopLog(HadoopLogAction.CREATE_RECHARGE_ORDER, aliNoPwdPayRequest,
                     user, clientIp, rechargeOrder.getPropId() + "", rechargeOrder, true, false);
             return buildServiceResult(rechargeOrder.getOrderId(), payTypeResponse.getAliNoPwdPayReturnCode());
         } else {
-            return ServiceResultUtil.illegal("´´½¨³äÖµ¶©µ¥Ê§°Ü");
+            return ServiceResultUtil.illegal("åˆ›å»ºå……å€¼è®¢å•å¤±è´¥");
         }
     }
 
     private ServiceResult consume(AliNoPwdPayRequest aliNoPwdPayRequest, User user, Application application,
                                   String clientIp) throws Exception {
         if (StringUtils.isEmpty(aliNoPwdPayRequest.getAliNoPwdPayConsume().getUserOrderId())) {
-            return ServiceResultUtil.illegal("¿ª·¢Õß¶©µ¥ºÅ²»ÄÜÎª¿Õ");
+            return ServiceResultUtil.illegal("å¼€å‘è€…è®¢å•å·ä¸èƒ½ä¸ºç©º");
         }
         boolean isContainUserMoney = aliNoPwdPayRequest.getAliNoPwdPayConsume().getIsContainUserMoney() == 1;
         String channel = aliNoPwdPayRequest.getOtherInfo().getChannel();
@@ -166,40 +166,40 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
 //        if (isContainUserMoney && !switchRuleService.isSupportHaimaCoin(application.getAppId(),
 //                application.getOs(), channel))
         if (isContainUserMoney) {
-            return ServiceResultUtil.illegal("´ËÓ¦ÓÃÔİ²»Ö§³Ö±ù¶¹±ÒÖ§¸¶");
+            return ServiceResultUtil.illegal("æ­¤åº”ç”¨æš‚ä¸æ”¯æŒå†°è±†å¸æ”¯ä»˜");
         }
         if (consumeOrderService.existByUserOrderIdAndAppId(
                 aliNoPwdPayRequest.getAliNoPwdPayConsume().getUserOrderId(), application.getAppId()))
-            return ServiceResultUtil.illegal("¿ª·¢Õß¶©µ¥ºÅÖØ¸´,´´½¨¶©µ¥Ê§°Ü");
+            return ServiceResultUtil.illegal("å¼€å‘è€…è®¢å•å·é‡å¤,åˆ›å»ºè®¢å•å¤±è´¥");
         int virtualMoneyFen = getVirtualMoneyFen4Use(user.getId(), application.getOs(),
                 application.getAppId(), channel);
         int userTotalMoneyFen = virtualMoneyFen + user.getMoney();
         int orderMoneyFen = NumberUtil.convertFenFromYuan(aliNoPwdPayRequest.getMoney());
         if (isContainUserMoney && userTotalMoneyFen >= orderMoneyFen)
-            return ServiceResultUtil.illegal("ÓÃ»§Óà¶î´óÓÚµÈÓÚÖ§¸¶½ğ¶î,ÇëÊ¹ÓÃ±ù¶¹±ÒÖ§¸¶");
+            return ServiceResultUtil.illegal("ç”¨æˆ·ä½™é¢å¤§äºç­‰äºæ”¯ä»˜é‡‘é¢,è¯·ä½¿ç”¨å†°è±†å¸æ”¯ä»˜");
         if (isContainUserMoney && userTotalMoneyFen == 0)
-            return ServiceResultUtil.illegal("ÓÃ»§Ã»ÓĞÓà¶î");
+            return ServiceResultUtil.illegal("ç”¨æˆ·æ²¡æœ‰ä½™é¢");
 //        Voucher voucher = null;
         int voucherAmountFen = 0;
 //        if (isUseConsumeVoucher) {
-//            LogContext.instance().info("Ïû·Ñ´ú½ğÈ¯Ô¤Ê¹ÓÃÂß¼­");
+//            LogContext.instance().info("æ¶ˆè´¹ä»£é‡‘åˆ¸é¢„ä½¿ç”¨é€»è¾‘");
 //            voucher = voucherService.getValidVoucher4UseConsumeVoucher(aliNoPwdPayRequest.getAliNoPwdPayConsume()
 //                            .getVoucherId(),
 //                    application.getAppId(), user.getId());
 //            if (voucher == null)
-//                return ServiceResultUtil.illegal("·Ç·¨´ú½ğÈ¯");
+//                return ServiceResultUtil.illegal("éæ³•ä»£é‡‘åˆ¸");
 //            voucherAmountFen = NumberUtil.convertFenFromYuan(voucher.getAmount());
 //            if (isContainUserMoney && userTotalMoneyFen + voucherAmountFen >= orderMoneyFen)
-//                return ServiceResultUtil.illegal("ÓÃ»§Óà¶î+´ú½ğÈ¯½ğ¶î´óÓÚµÈÓÚÖ§¸¶½ğ¶î,ÇëÊ¹ÓÃ±ù¶¹±ÒÖ§¸¶");
+//                return ServiceResultUtil.illegal("ç”¨æˆ·ä½™é¢+ä»£é‡‘åˆ¸é‡‘é¢å¤§äºç­‰äºæ”¯ä»˜é‡‘é¢,è¯·ä½¿ç”¨å†°è±†å¸æ”¯ä»˜");
 //        }
         String consumeOrderId;
         int payedMoneyFen;
         if (isContainUserMoney) {
-            LogContext.instance().info("ÏÖ½ğ+Óà¶î×éºÏ¶©µ¥");
+            LogContext.instance().info("ç°é‡‘+ä½™é¢ç»„åˆè®¢å•");
             consumeOrderId = PayUtils.generateMixConsumeOrderId();
             payedMoneyFen = orderMoneyFen - userTotalMoneyFen - voucherAmountFen;
         } else {
-            LogContext.instance().info("ÏÖ½ğ¶©µ¥");
+            LogContext.instance().info("ç°é‡‘è®¢å•");
             consumeOrderId = PayUtils.generateConsumeOrderIdByPayType(PayType.ALI_NO_PWD);
             payedMoneyFen = orderMoneyFen - voucherAmountFen;
         }
@@ -208,20 +208,20 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
                 application);
         boolean createRechargeSuccess = rechargeOrderService.addRechargeOrder(rechargeOrder);
         if (!createRechargeSuccess) {
-            LogContext.instance().error("´´½¨Ö±³ä³äÖµ¶©µ¥Ê§°Ü");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("åˆ›å»ºç›´å……å……å€¼è®¢å•å¤±è´¥");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         ConsumeOrder consumeOrder = buildConsumeOrder(user.getId(), application, rechargeOrder.getOrderId(),
                 consumeOrderId, aliNoPwdPayRequest);
         boolean createConsumeSuccess = consumeOrderService.addConsumeOrder(consumeOrder);
         if (!createConsumeSuccess) {
-            LogContext.instance().error("´´½¨Ö±³äÏû·Ñ¶©µ¥Ê§°Ü");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("åˆ›å»ºç›´å……æ¶ˆè´¹è®¢å•å¤±è´¥");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         IPayTypeService payTypeService = payTypeFactory.getPayTypeService(PayType.ALI_NO_PWD);
         if (payTypeService == null) {
-            LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½»ñÈ¡½á¹ûÎª¿Õ");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼è·å–ç»“æœä¸ºç©º");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         AliPayNoPwdAuth auth = aliPayNoPwdAuthService.getAuthInfo(user.getId());
         if (auth == null)
@@ -229,12 +229,12 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
         PayTypeResponse payTypeResponse = payTypeService.callPayType(buildPayTypeRequest(aliNoPwdPayRequest,
                 consumeOrderId, user.getId(), clientIp, auth.getAgreementNo()));
         if (payTypeResponse == null) {
-            LogContext.instance().error("µ÷ÓÃÖ§¸¶·½Ê½»ñÈ¡½á¹ûÎª¿Õ");
-            return ServiceResultUtil.illegal("´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("è°ƒç”¨æ”¯ä»˜æ–¹å¼è·å–ç»“æœä¸ºç©º");
+            return ServiceResultUtil.illegal("åˆ›å»ºè®¢å•å¤±è´¥");
         }
         if (isContainUserMoney) {
-            LogContext.instance().info("ĞèÒªÏûºÄµÄ±ù¶¹±Ò(·Ö):" + user.getMoney());
-            LogContext.instance().info("ĞèÒªÏûºÄµÄÓÎÏ·±Ò(·Ö):" + virtualMoneyFen);
+            LogContext.instance().info("éœ€è¦æ¶ˆè€—çš„å†°è±†å¸(åˆ†):" + user.getMoney());
+            LogContext.instance().info("éœ€è¦æ¶ˆè€—çš„æ¸¸æˆå¸(åˆ†):" + virtualMoneyFen);
             consumeOrderService.insertUserMoneyOrderCreate(user.getId(), consumeOrderId,
                     user.getMoney(), virtualMoneyFen);
         }
@@ -288,7 +288,7 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
         payTypeRequest.setOrderId(orderId);
         payTypeRequest.setMoney(aliNoPwdPayRequest.getMoney());
         if (aliNoPwdPayRequest.getIsRecharge() == 1) {
-            payTypeRequest.setOrderDesc("±ù¶¹±Ò³äÖµ");
+            payTypeRequest.setOrderDesc("å†°è±†å¸å……å€¼");
         } else {
             payTypeRequest.setOrderDesc(aliNoPwdPayRequest.getAliNoPwdPayConsume().getGoodsName());
         }
@@ -333,7 +333,7 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
 //        boolean voucherUseSuccess = voucherService.useVoucher(voucherId, VoucherType.CONSUME.getIndex(),
 //                appId, channel, consumeOrderId, userId, VoucherUseStatus.PRE_USE);
 //        if (!voucherUseSuccess)
-//            throw new Exception("Ïû·Ñ´ú½ğÈ¯Ô¤Ê¹ÓÃÊ§°Ü");
+//            throw new Exception("æ¶ˆè´¹ä»£é‡‘åˆ¸é¢„ä½¿ç”¨å¤±è´¥");
 //    }
 
     private ServiceResult buildServiceResult(String orderId, AliNoPwdPayReturnCode aliNoPwdPayReturnCode) {
@@ -344,7 +344,7 @@ public class AliNoPwdPayService extends BaseService implements IMethodService {
         } else if (aliNoPwdPayReturnCode.equals(AliNoPwdPayReturnCode.ORDER_SUCCESS_PAY_INPROCESS)) {
             return ServiceResultUtil.aliPayNoPwdInProcess();
         } else {
-            return ServiceResultUtil.illegal("Ö§¸¶±¦ÃâÃÜÖ§¸¶Ê§°Ü");
+            return ServiceResultUtil.illegal("æ”¯ä»˜å®å…å¯†æ”¯ä»˜å¤±è´¥");
         }
     }
 

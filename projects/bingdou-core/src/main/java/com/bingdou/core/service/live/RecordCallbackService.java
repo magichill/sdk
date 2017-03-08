@@ -63,28 +63,42 @@ public class RecordCallbackService {
         NotifyLiveStatus notifyLiveStatus = new NotifyLiveStatus();
         notifyLiveStatus.setId(Long.valueOf(streamName));
         NotifyLiveStatus.Data data = new NotifyLiveStatus().new Data();
-        if(status) {
-            data.setLive_status("1");
-            data.setStart_time(String.valueOf(new Date().getTime()));
-            data.setOnline_status("0");
-        }else{
-            data.setLive_status("2");
-            data.setEnd_time(String.valueOf(new Date().getTime()));
-            data.setOnline_status("1");
-        }
-        if(StringUtils.isNotBlank(playUrl)) {
-            data.setH5_play_url(playUrl);
-            data.setEnd_time(null);
-        }
-        notifyLiveStatus.setData(data);
-        String param = JsonUtil.bean2JsonStr(notifyLiveStatus);
-        try {
-            HttpClientUtil.doPostJsonOrXmlHttpClient("直播状态通知请求",UPDATE_STATUS_URL,param,false,3000,3000);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(StringUtils.isEmpty(streamName)){
+            LogContext.instance().info("通知流状态参数不正确");
             return false;
         }
+        Live live = liveDao.getLiveInfoByStreamName(streamName);
+        try {
+            if (status) {
+//            data.setLive_status("1");
+//            data.setStart_time(String.valueOf(new Date().getTime()));
+//            data.setOnline_status("0");
+                liveDao.updateStartLive(live.getId(), 1);
+            } else {
+//            data.setLive_status("2");
+//            data.setEnd_time(String.valueOf(new Date().getTime()));
+//            data.setOnline_status("1");
+                liveDao.updateEndLive(live.getId(), 2, playUrl);
+            }
+            return true;
+        }catch (Exception e){
+            LogContext.instance().error("回调更新失败");
+            return false;
+        }
+
+//        if(StringUtils.isNotBlank(playUrl)) {
+//            data.setH5_play_url(playUrl);
+//            data.setEnd_time(null);
+//        }
+//        notifyLiveStatus.setData(data);
+//        String param = JsonUtil.bean2JsonStr(notifyLiveStatus);
+//        try {
+//            HttpClientUtil.doPostJsonOrXmlHttpClient("直播状态通知请求",UPDATE_STATUS_URL,param,false,3000,3000);
+//            return true;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return false;
+//        }
     }
 
 }

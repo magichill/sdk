@@ -5,7 +5,7 @@ import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.tools.JsonUtil;
 
 /**
- * ´´½¨³äÖµ¶©µ¥ÇëÇó
+ * åˆ›å»ºå……å€¼è®¢å•è¯·æ±‚
  * Created by gaoshan on 17/02/03.
  */
 public class CreateRechargeOrderRequest extends CreateOrderRequest {
@@ -38,6 +38,7 @@ public class CreateRechargeOrderRequest extends CreateOrderRequest {
         this.clientScene = request.getClientScene();
         this.cardPay = request.getCardPay();
         this.returnUrl = request.getReturnUrl();
+        this.openId = request.getOpenId();
         return request;
     }
 

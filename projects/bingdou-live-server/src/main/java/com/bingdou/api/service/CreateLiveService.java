@@ -1,6 +1,10 @@
 package com.bingdou.api.service;
 
+import com.bingdou.api.chatroom.RongCloud;
+import com.bingdou.api.chatroom.model.ChatRoomInfo;
+import com.bingdou.api.chatroom.model.CodeSuccessReslut;
 import com.bingdou.api.constant.CdnType;
+import com.bingdou.api.constant.ChatConstant;
 import com.bingdou.api.request.CreateLiveRequest;
 import com.bingdou.api.response.CreateLiveResponse;
 import com.bingdou.core.cache.ICdnConfigManager;
@@ -85,7 +89,18 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
         boolean createSuccess = cdnService.createLive(createLiveRequest,user);
         if(createSuccess) {
             LogContext.instance().info("创建直播成功");
+            LogContext.instance().info("创建融云聊天室");
+            RongCloud rongCloud = RongCloud.getInstance(ChatConstant.APP_KEY, ChatConstant.APP_SECRET);
+
             Live live = getLiveInfoByStreamName(createLiveRequest.getStreamId());
+            ChatRoomInfo[] chatroomCreateChatRoomInfo = {new ChatRoomInfo("chatroom"+live.getId(),live.getLiveTitle() ), new ChatRoomInfo("chatroomId2","chatroomName2" ), new ChatRoomInfo("chatroomId3","chatroomName3" )};
+            CodeSuccessReslut chatroomCreateResult = rongCloud.chatroom.create(chatroomCreateChatRoomInfo);
+            if(chatroomCreateResult.getCode() == 200){
+                LogContext.instance().info("创建融云聊天室成功");
+            }else{
+                LogContext.instance().info("创建融云聊天室失败："+chatroomCreateResult.toString());
+                throw new Exception("聊天室创建失败");
+            }
             CreateLiveResponse response = new CreateLiveResponse();
             response.parseFromLive(live);
             JsonElement result = JsonUtil.bean2JsonTree(response);

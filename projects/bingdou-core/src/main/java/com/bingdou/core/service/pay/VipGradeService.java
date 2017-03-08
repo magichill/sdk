@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * VIPµÈ¼¶·şÎñÀà
+ * VIPç­‰çº§æœåŠ¡ç±»
  * Created by gaoshan on 17/1/14.
  */
 @Service
@@ -39,19 +39,19 @@ public class VipGradeService {
 
     public UserVipGrade getUserVipGradeInfo(int userId) throws Exception {
         if (userId <= 0) {
-            throw new Exception("·Ç·¨ÓÃ»§ID");
+            throw new Exception("éæ³•ç”¨æˆ·ID");
         }
-        //ÓÃ»§µÈ¼¶Âß¼­£¬²éÑ¯vipºÚÃûµ¥
+        //ç”¨æˆ·ç­‰çº§é€»è¾‘ï¼ŒæŸ¥è¯¢vipé»‘åå•
         if (safeService.isInVipBlackList(userId)) {
-            LogContext.instance().warn("ÓÃ»§ÔÚVIPºÚÃûµ¥ÁĞ±íÖĞ,²»»ñÈ¡Êµ¼ÊVIPµÈ¼¶");
+            LogContext.instance().warn("ç”¨æˆ·åœ¨VIPé»‘åå•åˆ—è¡¨ä¸­,ä¸è·å–å®é™…VIPç­‰çº§");
             UserVipGrade userVipGrade = new UserVipGrade();
             userVipGrade.setInBlackList(true);
             return userVipGrade;
         }
-        //ÔÚuser_vip±íÀï²éÑ¯¸ÃÓÃ»§µÄvipĞÅÏ¢£¬ÓÃ»§Îª¿Õ£¬·µ»ØVIPµÄ³äÖµĞÅÏ¢
+        //åœ¨user_vipè¡¨é‡ŒæŸ¥è¯¢è¯¥ç”¨æˆ·çš„vipä¿¡æ¯ï¼Œç”¨æˆ·ä¸ºç©ºï¼Œè¿”å›VIPçš„å……å€¼ä¿¡æ¯
         UserVipGrade userVipGrade = vipGradeDao.getUserVipGradeInfo(userId);
         if (userVipGrade == null) {
-            LogContext.instance().info("ÓÃ»§»¹²»ÊÇVIP,·µ»ØVIP1Éı¼¶ĞÅÏ¢");
+            LogContext.instance().info("ç”¨æˆ·è¿˜ä¸æ˜¯VIP,è¿”å›VIP1å‡çº§ä¿¡æ¯");
             userVipGrade = new UserVipGrade();
             float level1RechargeAmount = getVipRechargeAmountByLevelId(1);
             userVipGrade.setNewVipUser(true);
@@ -60,8 +60,8 @@ public class VipGradeService {
             userVipGrade.setNextLevelRechargeAmount(level1RechargeAmount);
             return userVipGrade;
         }
-        LogContext.instance().info("ÓÃ»§VIPµÈ¼¶:" + userVipGrade);
-        //ÅĞ¶ÏÊÇ·ñÒÔ´ïµ½×î´óµÈ¼¶£¬Èç¹ûÃ»´ïµ½£¬¼ÆËãÏÂÒ»¼¶±ğµÄ³äÖµ½ğ¶î
+        LogContext.instance().info("ç”¨æˆ·VIPç­‰çº§:" + userVipGrade);
+        //åˆ¤æ–­æ˜¯å¦ä»¥è¾¾åˆ°æœ€å¤§ç­‰çº§ï¼Œå¦‚æœæ²¡è¾¾åˆ°ï¼Œè®¡ç®—ä¸‹ä¸€çº§åˆ«çš„å……å€¼é‡‘é¢
         if (userVipGrade.getUserLevelId() >= UserConstants.TOP_VIP_LEVEL_ID) {
             userVipGrade.setNextLevelNeedRechargeAmount(0f);
             userVipGrade.setNextLevelRechargeAmount(0f);
@@ -79,41 +79,41 @@ public class VipGradeService {
     }
 
     public void dealVip(int payAmount, int userId, UserVipGrade userVipGrade) throws Exception {
-        LogContext.instance().info("´¦ÀíÓÃ»§VIPĞÅÏ¢");
+        LogContext.instance().info("å¤„ç†ç”¨æˆ·VIPä¿¡æ¯");
         if (userVipGrade.isInBlackList()) {
-            LogContext.instance().warn("ÓÃ»§ÔÚVIPºÚÃûµ¥ÖĞ,Ö±½Ó½áÊø");
+            LogContext.instance().warn("ç”¨æˆ·åœ¨VIPé»‘åå•ä¸­,ç›´æ¥ç»“æŸ");
             return;
         }
         int vipLevelId;
         boolean isLevelUp = false;
         float amountYuan;
         if (userVipGrade.isNewVipUser()) {
-            LogContext.instance().info("ÓÃ»§ÊÇĞÂVIPÓÃ»§,²åÈëĞÂ¼ÇÂ¼");
+            LogContext.instance().info("ç”¨æˆ·æ˜¯æ–°VIPç”¨æˆ·,æ’å…¥æ–°è®°å½•");
             amountYuan = NumberUtil.convertYuanFromFen(payAmount);
-            LogContext.instance().info("³äÖµ½ğ¶î(Ôª):" + amountYuan, "³äÖµ½ğ¶î(·Ö):" + payAmount);
+            LogContext.instance().info("å……å€¼é‡‘é¢(å…ƒ):" + amountYuan, "å……å€¼é‡‘é¢(åˆ†):" + payAmount);
             vipLevelId = getVipLevelByRechargeAmount(amountYuan);
             if (vipLevelId > 0) {
-                LogContext.instance().info("VIPµÈ¼¶ÉÏÉı(0-" + vipLevelId + "),ÔùËÍ³ä·µ¿¨");
+                LogContext.instance().info("VIPç­‰çº§ä¸Šå‡(0-" + vipLevelId + "),èµ é€å……è¿”å¡");
                 isLevelUp = true;
 //                chargeBackService.giveProps(0, vipLevelId, userId);
             }
         } else {
-            LogContext.instance().info("ÓÃ»§²»ÊÇĞÂVIPÓÃ»§,¸üĞÂ¼ÇÂ¼");
+            LogContext.instance().info("ç”¨æˆ·ä¸æ˜¯æ–°VIPç”¨æˆ·,æ›´æ–°è®°å½•");
             amountYuan = userVipGrade.getMoney() + NumberUtil.convertYuanFromFen(payAmount);
-            LogContext.instance().info("³äÖµ½ğ¶î(Ôª):" + amountYuan, "³äÖµ½ğ¶î(·Ö):" + payAmount);
+            LogContext.instance().info("å……å€¼é‡‘é¢(å…ƒ):" + amountYuan, "å……å€¼é‡‘é¢(åˆ†):" + payAmount);
             vipLevelId = getVipLevelByRechargeAmount(amountYuan);
             if (vipLevelId > userVipGrade.getUserLevelId()) {
-                LogContext.instance().info("VIPµÈ¼¶ÉÏÉı(" + userVipGrade.getUserLevelId()
-                        + "-" + vipLevelId + "),ÔùËÍ³ä·µ¿¨");
+                LogContext.instance().info("VIPç­‰çº§ä¸Šå‡(" + userVipGrade.getUserLevelId()
+                        + "-" + vipLevelId + "),èµ é€å……è¿”å¡");
                 isLevelUp = true;
 //                chargeBackService.giveProps(userVipGrade.getUserLevelId(), vipLevelId, userId);
             }
         }
         boolean updateVipResult = insertOrUpdateUserVipInfo(isLevelUp, userVipGrade.isNewVipUser(),
                 amountYuan, userId, vipLevelId);
-        LogContext.instance().info("¸üĞÂ(²åÈë)VIPĞÅÏ¢½á¹û:" + updateVipResult);
+        LogContext.instance().info("æ›´æ–°(æ’å…¥)VIPä¿¡æ¯ç»“æœ:" + updateVipResult);
         if (!updateVipResult)
-            LogContext.instance().error("¸üĞÂ(²åÈë)VIPĞÅÏ¢´íÎó");
+            LogContext.instance().error("æ›´æ–°(æ’å…¥)VIPä¿¡æ¯é”™è¯¯");
     }
 
     private float getVipRechargeAmountByLevelId(int levelId) {

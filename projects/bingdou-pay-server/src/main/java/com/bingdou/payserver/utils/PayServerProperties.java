@@ -6,7 +6,7 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import java.util.Properties;
 
 /**
- * Ö§¸¶ÖĞĞÄproperty³£Á¿Àà
+ * æ”¯ä»˜ä¸­å¿ƒpropertyå¸¸é‡ç±»
  */
 public class PayServerProperties {
 
@@ -20,7 +20,7 @@ public class PayServerProperties {
         try {
             prop = PropertiesLoaderUtils.loadAllProperties("pay-server.properties");
         } catch (Exception e) {
-            LogContext.instance().error(e, "¶ÁÈ¡Ö§¸¶ÖĞĞÄ³£Á¿Àà´íÎó");
+            LogContext.instance().error(e, "è¯»å–æ”¯ä»˜ä¸­å¿ƒå¸¸é‡ç±»é”™è¯¯");
         }
 //        APPLE_INNER_PAY_URL = prop.getProperty("apple.inner.pay.url");
     }

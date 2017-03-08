@@ -13,89 +13,89 @@ import java.util.Map;
 public abstract class BasePayTypeService {
 
     /**
-     * ³É¹¦code
+     * æˆåŠŸcode
      */
     protected abstract String successCode();
 
     /**
-     * Ö§¸¶·½Ê½
+     * æ”¯ä»˜æ–¹å¼
      */
     protected abstract PayType getPayType();
 
     /**
-     * ÇëÇóÖ§¸¶·½Ê½´´½¨¶©µ¥²ÎÊı
+     * è¯·æ±‚æ”¯ä»˜æ–¹å¼åˆ›å»ºè®¢å•å‚æ•°
      */
     protected abstract Object getRequestOrderParams(PayTypeRequest payTypeRequest);
 
     /**
-     * ÇëÇóÖ§¸¶·½Ê½´´½¨¶©µ¥ÏìÓ¦
+     * è¯·æ±‚æ”¯ä»˜æ–¹å¼åˆ›å»ºè®¢å•å“åº”
      */
     protected abstract String getRequestOrderResult(Object param) throws Exception;
 
     /**
-     * ÇëÇóÖ§¸¶·½Ê½´´½¨¶©µ¥½á¹û½âÎö
+     * è¯·æ±‚æ”¯ä»˜æ–¹å¼åˆ›å»ºè®¢å•ç»“æœè§£æ
      */
     protected abstract PayTypeResponse getRequestOrderResponse(String payTypeResult);
 
     /**
-     * ÉèÖÃÇëÇóÖ§¸¶·½Ê½´´½¨¶©µ¥×îÖÕ·µ»Ø½á¹û
+     * è®¾ç½®è¯·æ±‚æ”¯ä»˜æ–¹å¼åˆ›å»ºè®¢å•æœ€ç»ˆè¿”å›ç»“æœ
      */
     protected abstract void setRequestOrderResponse(PayTypeResponse response);
 
     /**
-     * »ñÈ¡»Øµ÷½á¹ûMAP
+     * è·å–å›è°ƒç»“æœMAP
      */
     protected abstract Map<String, String> getCallBackResponseMap(HttpServletRequest request);
 
     /**
-     * ÑéÖ¤»Øµ÷½á¹ûÊÇ·ñºÏ·¨
+     * éªŒè¯å›è°ƒç»“æœæ˜¯å¦åˆæ³•
      */
     protected abstract boolean isValidCallBackResponse(Map<String, String> map);
 
     /**
-     * »ñÈ¡»Øµ÷×îÖÕ½á¹û
+     * è·å–å›è°ƒæœ€ç»ˆç»“æœ
      */
     protected abstract PayTypeCallBackResponse getCallBackResponse(Map<String, String> map);
 
     /**
-     * ÇëÇóÖ§¸¶·½Ê½´´½¨¶©µ¥
+     * è¯·æ±‚æ”¯ä»˜æ–¹å¼åˆ›å»ºè®¢å•
      */
     protected PayTypeResponse requestOrder(PayTypeRequest payTypeRequest) throws Exception {
-        LogContext.instance().info("ÇëÇóÖ§¸¶·½Ê½´´½¨¶©µ¥(" + getPayType() + ")");
+        LogContext.instance().info("è¯·æ±‚æ”¯ä»˜æ–¹å¼åˆ›å»ºè®¢å•(" + getPayType() + ")");
         Object param = getRequestOrderParams(payTypeRequest);
-        LogContext.instance().info("ÇëÇó²ÎÊı:" + param);
+        LogContext.instance().info("è¯·æ±‚å‚æ•°:" + param);
         String payTypeResult = getRequestOrderResult(param);
-        LogContext.instance().info("Ö§¸¶·½Ê½·µ»Ø½á¹û:" + payTypeResult);
+        LogContext.instance().info("æ”¯ä»˜æ–¹å¼è¿”å›ç»“æœ:" + payTypeResult);
         if (StringUtils.isEmpty(payTypeResult)) {
-            LogContext.instance().error("ÇëÇóÖ§¸¶·½Ê½½á¹ûÎª¿Õ");
+            LogContext.instance().error("è¯·æ±‚æ”¯ä»˜æ–¹å¼ç»“æœä¸ºç©º");
             return null;
         }
         PayTypeResponse response = getRequestOrderResponse(payTypeResult);
         if (response == null) {
-            LogContext.instance().error("ÇëÇóÖ§¸¶·½Ê½½á¹û½âÎöÎª¿Õ");
+            LogContext.instance().error("è¯·æ±‚æ”¯ä»˜æ–¹å¼ç»“æœè§£æä¸ºç©º");
             return null;
         }
         if (successCode().equals(response.getResultCode())) {
             setRequestOrderResponse(response);
             response.setSuccess(true);
         } else {
-            LogContext.instance().error("ÇëÇó´´½¨¶©µ¥Ê§°Ü");
+            LogContext.instance().error("è¯·æ±‚åˆ›å»ºè®¢å•å¤±è´¥");
             response.setSuccess(false);
         }
         return response;
     }
 
     protected PayTypeCallBackResponse callBack(HttpServletRequest request, boolean isRecharge) {
-        LogContext.instance().info(getPayType() + (isRecharge ? "³äÖµ" : "Ö±³ä") + "»Øµ÷");
+        LogContext.instance().info(getPayType() + (isRecharge ? "å……å€¼" : "ç›´å……") + "å›è°ƒ");
         Map<String, String> responseMap = getCallBackResponseMap(request);
         if (responseMap == null || responseMap.isEmpty()) {
-            LogContext.instance().error("½âÎöÏìÓ¦½á¹ûÎª¿Õ");
+            LogContext.instance().error("è§£æå“åº”ç»“æœä¸ºç©º");
             return null;
         }
-        LogContext.instance().info("ÏìÓ¦:" + responseMap);
-        LogContext.instance().info("ÑéÖ¤»Øµ÷½á¹ûÊÇ·ñºÏ·¨");
+        LogContext.instance().info("å“åº”:" + responseMap);
+        LogContext.instance().info("éªŒè¯å›è°ƒç»“æœæ˜¯å¦åˆæ³•");
         if (!isValidCallBackResponse(responseMap)) {
-            LogContext.instance().error("»Øµ÷ÑéÖ¤Ê§°Ü");
+            LogContext.instance().error("å›è°ƒéªŒè¯å¤±è´¥");
             return null;
         }
         return getCallBackResponse(responseMap);

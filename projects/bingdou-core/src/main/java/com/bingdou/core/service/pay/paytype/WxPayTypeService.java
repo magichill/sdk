@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Î¢ĞÅÖ§¸¶ÇëÇó·şÎñÀà
+ * å¾®ä¿¡æ”¯ä»˜è¯·æ±‚æœåŠ¡ç±»
  * Created by gaoshan on 16/12/27.
  */
 @Service
@@ -61,7 +61,7 @@ public class WxPayTypeService extends BasePayTypeService implements IPayTypeServ
     protected PayTypeResponse getRequestOrderResponse(String payTypeResult) {
         Map<String, String> map = XmlUtil.getMapFromXmlStr4OneLevel(payTypeResult);
         if (map == null || map.isEmpty()) {
-            LogContext.instance().error("Î¢ĞÅ¶©µ¥Ô¤´¦Àí½á¹ûÎª¿Õ");
+            LogContext.instance().error("å¾®ä¿¡è®¢å•é¢„å¤„ç†ç»“æœä¸ºç©º");
             return null;
         }
         String wxSign = map.get("sign");
@@ -69,7 +69,7 @@ public class WxPayTypeService extends BasePayTypeService implements IPayTypeServ
         String mySign = getSign(map);
         LogContext.instance().info("MY SIGN:" + mySign);
         if (!mySign.equals(wxSign)) {
-            LogContext.instance().error("Ç©ÃûÑéÖ¤Ê§°Ü");
+            LogContext.instance().error("ç­¾åéªŒè¯å¤±è´¥");
             return null;
         }
         String appId = PayTypeData.PAY_TYPE_WX_APP_ID;
@@ -118,12 +118,12 @@ public class WxPayTypeService extends BasePayTypeService implements IPayTypeServ
         }
         String mySign = getSign(map);
         if (!mySign.equals(sign)) {
-            LogContext.instance().error("»Øµ÷Ç©ÃûÑéÖ¤Ê§°Ü");
+            LogContext.instance().error("å›è°ƒç­¾åéªŒè¯å¤±è´¥");
             return false;
         }
         String resultCode = map.get("result_code");
         if (!successCode().equals(resultCode)) {
-            LogContext.instance().error("»Øµ÷½á¹ûÊ§°Ü");
+            LogContext.instance().error("å›è°ƒç»“æœå¤±è´¥");
             return false;
         }
         return true;

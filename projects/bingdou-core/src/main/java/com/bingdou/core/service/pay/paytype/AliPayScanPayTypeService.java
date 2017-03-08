@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 支付宝扫码支付服务类
+ * 鏀粯瀹濇壂鐮佹敮浠樻湇鍔＄被
  * Created by gaoshan on 16/11/28.
  */
 @Service

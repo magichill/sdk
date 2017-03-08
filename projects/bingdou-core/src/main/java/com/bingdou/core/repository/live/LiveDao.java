@@ -21,7 +21,8 @@ public class LiveDao {
     }
 
     public void addLive(Live live){
-        liveMapper.addLive(live.getId(),live.getLiveTitle(),live.getMid(),live.getLiveType(),live.getLivePicture(),live.getPushStream(),live.getPullStream(),live.getStreamName());
+        liveMapper.addLive(live.getId(),live.getLiveTitle(),live.getMid(),live.getLiveType(),
+                live.getLivePicture(),live.getPushStream(),live.getPullStream(),live.getH5Url(),live.getStreamName());
     }
 
     public Live getLiveById(int liveId){
@@ -49,6 +50,14 @@ public class LiveDao {
 
     public void updateLiveStatus(int liveId,int status){
         liveMapper.updateLive(liveId,status);
+    }
+
+    public void updateStartLive(int liveId,int status){
+        liveMapper.updateStartLive(liveId,status);
+    }
+
+    public void updateEndLive(int liveId,int status,String replayUrl){
+        liveMapper.updateEndLive(liveId, status, replayUrl);
     }
 
 }

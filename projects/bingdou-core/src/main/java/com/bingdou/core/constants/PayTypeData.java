@@ -31,14 +31,23 @@ public class PayTypeData {
     /**
      * ¹Ù·½Î¢ÐÅ
      */
-    public static final String PAY_TYPE_WX_APP_ID = "wx34c4cdd2330fe4c9";
-    public static final String PAY_TYPE_WX_MCH_ID = "1220834001";
+    public static final String PAY_TYPE_WX_APP_ID = "wx5b90f55c6fa86b9d";
+    public static final String PAY_TYPE_WX_APP_ID_H5 = "wx9ccf4d8d561bbd9c";
+    public static final String PAY_TYPE_WX_MCH_ID = "1359273902";
+    public static final String PAY_TYPE_WX_MCH_ID_H5 = "1370845702";
+
     public static final String PAY_TYPE_WX_FEE_TYPE = "CNY";
     public static final String PAY_TYPE_WX_TRADE_TYPE = "APP";
-    public static final String PAY_TYPE_WX_KEY = "2aa91dba61c1bf04ef9341cda3d0ad25";
+    public static final String PAY_TYPE_WX_TRADE_TYPE_H5 = "JSAPI";
+//    public static final String PAY_TYPE_WX_KEY = "3301402a9f9ae2fa28f1e2951e3b69a6";
+    public static final String PAY_TYPE_WX_KEY = "QPalZMwoSKxnEUdjCNryFHvb14982364";
+//    public static final String PAY_TYPE_WX_KEY_H5 = "ccddcebe153419b6d5001ddf0ed090db";
+    public static final String PAY_TYPE_WX_KEY_H5 = "12345678901234567890QPWOEIRUTYqp";
     public static final String PAY_TYPE_WX_PACKAGE = "Sign=WXPay";
     public static final String PAY_TYPE_WX_RECHARGE_NOTIFY_URL;
     public static final String PAY_TYPE_WX_CONSUME_NOTIFY_URL;
+    public static final String PAY_TYPE_WX_PUBLIC_RECHARGE_NOTIFY_URL;
+    public static final String PAY_TYPE_WX_PUBLIC_CONSUME_NOTIFY_URL;
     public static final String PAY_TYPE_WX_URL;
     public static final int PAY_TYPE_WX_TIMEOUT;
 
@@ -151,6 +160,8 @@ public class PayTypeData {
 
         PAY_TYPE_WX_RECHARGE_NOTIFY_URL = prop.getProperty("wx.recharge.notify.url");
         PAY_TYPE_WX_CONSUME_NOTIFY_URL = prop.getProperty("wx.consume.notify.url");
+        PAY_TYPE_WX_PUBLIC_RECHARGE_NOTIFY_URL = prop.getProperty("wx.public.recharge.notify.url");
+        PAY_TYPE_WX_PUBLIC_CONSUME_NOTIFY_URL = prop.getProperty("wx.public.consume.notify.url");
         PAY_TYPE_WX_URL = prop.getProperty("wx.url");
         PAY_TYPE_WX_TIMEOUT = Integer.parseInt(prop.getProperty("wx.timeout"));
 

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Ê×Ò³¿ØÖÆÆ÷
+ * é¦–é¡µæŽ§åˆ¶å™¨
  * Created by gaoshan on 16/11/29.
  */
 @RequestMapping("index")

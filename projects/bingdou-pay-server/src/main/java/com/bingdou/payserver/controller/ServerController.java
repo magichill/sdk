@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * SDK支付中心服务API(提供给服务器端的调用)
+ * SDK鏀粯涓績鏈嶅姟API(鎻愪緵缁欐湇鍔″櫒绔殑璋冪敤)
  */
 @RequestMapping("server")
 @Controller
