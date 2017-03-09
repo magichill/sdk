@@ -32,8 +32,8 @@
 
     <update id="updateFocusInfo" parameterType="java.util.Map">
         <![CDATA[
-          INSERT INTO ${userDB}.mc_focus_info(mid,follow_id,status)
-          VALUE(#{userId},#{followId},#{status})
+          UPDATE ${userDB}.mc_focus_info
+          set mid=#{userId},follow_id=#{followId},status=#{status}
         ]]>
     </update>
 

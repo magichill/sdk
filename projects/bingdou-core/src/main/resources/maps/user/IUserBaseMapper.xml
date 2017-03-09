@@ -125,7 +125,7 @@
 
     <update id="updateCpIdById" parameterType="com.bingdou.core.model.User">
         <![CDATA[
-        UPDATE ${userDB}.mc_member_index SET cpid=#{cpId} WHERE id=#{id}
+        UPDATE ${userDB}.mc_member_index SET cpid=#{cpId},nickname=#{nickName} WHERE id=#{id}
         ]]>
     </update>
 

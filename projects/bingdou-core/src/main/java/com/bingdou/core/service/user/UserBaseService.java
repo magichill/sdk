@@ -303,6 +303,9 @@ public class UserBaseService {
         }
         LogContext.instance().info("插入用户索引记录成功");
         user.setCpId(user.generateCpId());
+        if(StringUtils.isEmpty(user.getNickName())){
+            user.setNickName("冰豆用户"+user.getCpId());
+        }
         LogContext.instance().info("更新用户索引记录");
         int updateCpIdByIdCount = userBaseDao.updateCpIdById(user);
         if (updateCpIdByIdCount < 1) {
