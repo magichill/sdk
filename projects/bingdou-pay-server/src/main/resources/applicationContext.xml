@@ -42,6 +42,7 @@
                 <!--
                 <ref local="getVoucherTotalCountService"/>-->
                 <ref local="getConsumeOrderService"/>
+                <ref local="wechatAuthService"/>
 
             </list>
         </property>

@@ -39,9 +39,9 @@ public class PayTypeData {
     public static final String PAY_TYPE_WX_FEE_TYPE = "CNY";
     public static final String PAY_TYPE_WX_TRADE_TYPE = "APP";
     public static final String PAY_TYPE_WX_TRADE_TYPE_H5 = "JSAPI";
-//    public static final String PAY_TYPE_WX_KEY = "3301402a9f9ae2fa28f1e2951e3b69a6";
+    public static final String PAY_TYPE_WX_SECRET = "3301402a9f9ae2fa28f1e2951e3b69a6";
     public static final String PAY_TYPE_WX_KEY = "QPalZMwoSKxnEUdjCNryFHvb14982364";
-//    public static final String PAY_TYPE_WX_KEY_H5 = "ccddcebe153419b6d5001ddf0ed090db";
+    public static final String PAY_TYPE_WX_SECRET_H5 = "ccddcebe153419b6d5001ddf0ed090db";
     public static final String PAY_TYPE_WX_KEY_H5 = "12345678901234567890QPWOEIRUTYqp";
     public static final String PAY_TYPE_WX_PACKAGE = "Sign=WXPay";
     public static final String PAY_TYPE_WX_RECHARGE_NOTIFY_URL;
