@@ -1,8 +1,5 @@
 package com.bingdou.api.service;
 
-import com.bingdou.api.chatroom.RongCloud;
-import com.bingdou.api.chatroom.model.ChatRoomInfo;
-import com.bingdou.api.chatroom.model.CodeSuccessReslut;
 import com.bingdou.api.constant.CdnType;
 import com.bingdou.api.constant.ChatConstant;
 import com.bingdou.api.request.CreateLiveRequest;
@@ -14,6 +11,9 @@ import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.core.service.user.chatroom.RongCloud;
+import com.bingdou.core.service.user.chatroom.model.ChatRoomInfo;
+import com.bingdou.core.service.user.chatroom.model.CodeSuccessReslut;
 import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
 import com.google.gson.JsonElement;
@@ -93,7 +93,7 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
             RongCloud rongCloud = RongCloud.getInstance(ChatConstant.APP_KEY, ChatConstant.APP_SECRET);
 
             Live live = getLiveInfoByStreamName(createLiveRequest.getStreamId());
-            ChatRoomInfo[] chatroomCreateChatRoomInfo = {new ChatRoomInfo("chatroom"+live.getId(),live.getLiveTitle() ), new ChatRoomInfo("chatroomId2","chatroomName2" ), new ChatRoomInfo("chatroomId3","chatroomName3" )};
+            ChatRoomInfo[] chatroomCreateChatRoomInfo = {new ChatRoomInfo("chatroom"+live.getId(),live.getLiveTitle() )};
             CodeSuccessReslut chatroomCreateResult = rongCloud.chatroom.create(chatroomCreateChatRoomInfo);
             if(chatroomCreateResult.getCode() == 200){
                 LogContext.instance().info("创建融云聊天室成功");

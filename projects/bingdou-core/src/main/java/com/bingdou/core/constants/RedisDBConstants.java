@@ -17,6 +17,10 @@ public class RedisDBConstants {
      */
     public static final int USER_STATISTICS_DB_INDEX = 2;
     /**
+     * 用户融云TOKEN表
+     */
+    public static final int USER_CLOUD_TOKEN_INDEX = 3;
+    /**
      * 支付宝免密授权
      */
     public static final int ALI_NO_PWD_AUTH_DB_INDEX = 4;

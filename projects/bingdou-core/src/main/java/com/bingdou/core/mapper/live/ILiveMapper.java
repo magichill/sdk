@@ -11,6 +11,8 @@ import java.util.List;
 public interface ILiveMapper {
 
     void addLiveIndex(Live live);
+    void updateAccountLive(Live live);
+    void updateAccountLiveIndex(Live live);
 
     void addLive(@Param("liveId") int liveId, @Param("liveTitle") String liveTitle, @Param("mid") Integer mid,
                  @Param("liveType") int liveType,@Param("livePicture") String livePicture, @Param("pushStream") String pushStream,
@@ -18,7 +20,7 @@ public interface ILiveMapper {
 
     Live getLiveById(@Param("liveId") int liveId);
 
-    List<Live> getLiveList(@Param("status") int status,@Param("userId") String userId,@Param("start") int start, @Param("limit") int limit);
+    List<Live> getLiveList(@Param("status") Integer status,@Param("userId") String userId,@Param("start") int start, @Param("limit") int limit);
     List<Live> getOnlineLiveList(@Param("start") int start, @Param("limit") int limit);
     List<Live> getRecordLiveList(@Param("start") int start, @Param("limit") int limit);
 
@@ -26,7 +28,9 @@ public interface ILiveMapper {
 
     Live getLiveInfoByStreamName(@Param("streamName") String streamName);
     void updateLive(@Param("liveId") int liveId,@Param("status") int status);
-
-    void updateStartLive(@Param("liveId") int liveId,@Param("status") int status);
-    void updateEndLive(@Param("liveId") int liveId,@Param("status") int status,@Param("replayUrl") String replayUrl);
+    void updateLiveIndex(@Param("liveId") int liveId,@Param("status") Integer status,
+                         @Param("replayUrl") String replayUrl,@Param("startTime") String startTime,
+                         @Param("endTime") String endTime);
+    void updateStartLive(@Param("liveId") int liveId,@Param("status") Integer status);
+    void updateEndLive(@Param("liveId") int liveId,@Param("status") Integer status,@Param("replayUrl") String replayUrl);
 }

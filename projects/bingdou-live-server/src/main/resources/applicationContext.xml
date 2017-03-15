@@ -37,6 +37,7 @@
                 <ref local="entryService" />
                 <ref local="exitService" />
                 <ref local="getChatTokenService" />
+                <ref local="updateAnnounceService" />
             </list>
         </property>
     </bean>

@@ -15,8 +15,8 @@
     <insert id="addLive" parameterType="java.util.Map">
         <![CDATA[
           INSERT INTO ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
-          (live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,replay_url,h5_url,create_time,update_time)
-          VALUE(#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},#{replayUrl},#{h5Url},now(),now())
+          (live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,h5_url,create_time,update_time)
+          VALUE(#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},#{h5Url},now(),now())
         ]]>
     </insert>
 
@@ -26,25 +26,25 @@
         </selectKey>
         <![CDATA[
           INSERT INTO ${liveDB}.lc_live_index(id,live_title,live_picture,push_stream,status,pull_stream,
-          replay_url,h5_url,stream_name,mid,tags,password,price,reward_percent,orientation)
-          VALUE(#{id},#{liveTitle},#{livePicture},#{pushStream},#{status},#{pullStream},#{replayUrl},#{h5Url},
-          #{streamName},#{mid},#{tags},#{password},#{price},#{rewardPercent},#{orientation})
+          h5_url,stream_name,mid,tags,password,price,reward_percent,orientation,live_type)
+          VALUE(#{id},#{liveTitle},#{livePicture},#{pushStream},#{status},#{pullStream},#{h5Url},
+          #{streamName},#{mid},#{tags},#{password},#{price},#{rewardPercent},#{orientation},#{liveType})
         ]]>
     </insert>
 
     <select id="getLiveList" parameterType="java.util.Map" resultMap="liveDetail">
-        SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.mid,
-        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid
+        SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.h5_url,li.mid,
+        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status
         FROM ${liveDB}.lc_live_index li
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
-        WHERE 1=1
+        WHERE 1=1 AND li.status != -1
         <if test="status != null">
           AND li.status=#{status}
         </if>
         <if test="userId != null">
           AND li.mid = #{userId}
         </if>
-        order by update_time desc limit #{start},#{limit}
+        order by li.status,li.update_time desc limit #{start},#{limit}
     </select>
 
     <select id="getOnlineLiveList" parameterType="java.util.Map" resultMap="liveDetail">
@@ -68,11 +68,26 @@
     <select id="getLiveInfoByStreamName" parameterType="java.util.Map" resultMap="liveDetail">
         <![CDATA[
         SELECT
-          id,live_title,live_picture,status,mid,push_stream,pull_stream
+          id,live_title,live_picture,status,mid,push_stream,pull_stream,h5_url
         FROM ${liveDB}.lc_live_index
         WHERE stream_name=#{streamName}
         ]]>
     </select>
+
+    <update id="updateLiveIndex" parameterType="java.util.Map">
+        update ${liveDB}.lc_live_index
+        set status=#{status}
+        <if test="replayUrl != null">
+            ,replay_url=#{replayUrl}
+        </if>
+        <if test="startTime != null">
+            ,start_time=now()
+        </if>
+        <if test="endTime != null">
+            ,end_time=now()
+        </if>
+        where id=#{liveId}
+    </update>
 
     <update id="updateLive" parameterType="java.util.Map">
         update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
@@ -88,8 +103,22 @@
 
     <update id="updateEndLive" parameterType="java.util.Map">
         update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
-        set status=#{status},replay_url=#{replayUrl},endTime=now()
+        set status=#{status},replay_url=#{replayUrl},end_time=now()
         where lid=#{liveId}
+    </update>
+
+    <update id="updateAnnounceLive" parameterType="com.bingdou.core.model.live.Live">
+        update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
+        set live_title=#{liveTitle},live_picture=#{livePicture},orientation=#{orientation},
+        password=#{password},price=#{price},reward_percent=${rewardPercent}
+        where lid=#{liveId}
+    </update>
+
+    <update id="updateAnnounceLiveIndex" parameterType="com.bingdou.core.model.live.Live">
+        update ${liveDB}.lc_live_index
+        set live_title=#{liveTitle},live_picture=#{livePicture},orientation=#{orientation},
+        password=#{password},price=#{price},reward_percent=${rewardPercent}
+        where id=#{liveId}
     </update>
 
     <resultMap id="liveDetail" type="com.bingdou.core.model.live.Live">
@@ -100,6 +129,7 @@
         <result property="pushStream" column="push_stream"/>
         <result property="pullStream" column="pull_stream"/>
         <result property="replayUrl" column="replay_url"/>
+        <result property="h5Url" column="h5_url"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="mid"/>
             <result property="gender" column="gender"/>

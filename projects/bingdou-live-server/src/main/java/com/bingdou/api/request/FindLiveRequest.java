@@ -15,7 +15,7 @@ public class FindLiveRequest extends BaseRequest{
     private String userId; //传则返回该主播视频，不传则返回所有主播视频
 
     @SerializedName("status")
-    private int status = 1;
+    private Integer status ;
 
     @SerializedName("live_id")
     private Integer liveId;
@@ -71,11 +71,11 @@ public class FindLiveRequest extends BaseRequest{
         this.userId = userId;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

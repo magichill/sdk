@@ -36,6 +36,8 @@ public class HomePageResponse {
             composedLiveResponse.setTitle(live.getLiveTitle());
             composedLiveResponse.setPublishUrl(live.getPushStream());
             composedLiveResponse.setPlaybackUrl(live.getReplayUrl());
+            composedLiveResponse.setH5Url(live.getH5Url());
+            composedLiveResponse.setStatus(live.getStatus());
 
             if(live.getUser()!= null) {
                 User user = live.getUser();

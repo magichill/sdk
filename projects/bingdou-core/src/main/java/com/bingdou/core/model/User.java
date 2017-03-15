@@ -39,7 +39,7 @@ public class User {
     /**
      * 用户头像
      */
-    private String avatar;
+    private String avatar = "http://o8ov5bkvs.bkt.clouddn.com/1159184461660189";
 
     /**
      * 签名

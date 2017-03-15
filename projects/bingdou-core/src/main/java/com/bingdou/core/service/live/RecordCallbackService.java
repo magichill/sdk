@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -59,46 +60,25 @@ public class RecordCallbackService {
      * @param status 流状态 false（关闭）  true（开启）
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public boolean notifyAppServer(String streamName,boolean status,String playUrl){
-        NotifyLiveStatus notifyLiveStatus = new NotifyLiveStatus();
-        notifyLiveStatus.setId(Long.valueOf(streamName));
-        NotifyLiveStatus.Data data = new NotifyLiveStatus().new Data();
         if(StringUtils.isEmpty(streamName)){
             LogContext.instance().info("通知流状态参数不正确");
             return false;
         }
         Live live = liveDao.getLiveInfoByStreamName(streamName);
-        try {
-            if (status) {
-//            data.setLive_status("1");
-//            data.setStart_time(String.valueOf(new Date().getTime()));
-//            data.setOnline_status("0");
-                liveDao.updateStartLive(live.getId(), 1);
-            } else {
-//            data.setLive_status("2");
-//            data.setEnd_time(String.valueOf(new Date().getTime()));
-//            data.setOnline_status("1");
+        if (status) {
+            liveDao.updateLiveIndex(live.getId(),1,null,"startTime",null);
+            liveDao.updateStartLive(live.getId(), 1);
+        } else {
+            if(StringUtils.isBlank(playUrl)){
+                liveDao.updateLiveIndex(live.getId(),2,null,null,"endTime");
+                liveDao.updateEndLive(live.getId(), 2, null);
+            }else {
+                liveDao.updateLiveIndex(live.getId(), 2, playUrl,null,null);
                 liveDao.updateEndLive(live.getId(), 2, playUrl);
             }
-            return true;
-        }catch (Exception e){
-            LogContext.instance().error("回调更新失败");
-            return false;
         }
-
-//        if(StringUtils.isNotBlank(playUrl)) {
-//            data.setH5_play_url(playUrl);
-//            data.setEnd_time(null);
-//        }
-//        notifyLiveStatus.setData(data);
-//        String param = JsonUtil.bean2JsonStr(notifyLiveStatus);
-//        try {
-//            HttpClientUtil.doPostJsonOrXmlHttpClient("直播状态通知请求",UPDATE_STATUS_URL,param,false,3000,3000);
-//            return true;
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        }
+        return true;
     }
-
 }

@@ -31,6 +31,9 @@ public class ComposedLiveResponse {
     @SerializedName("play_url")
     private String playUrl;
 
+    @SerializedName("h5_url")
+    private String h5Url;
+
     @SerializedName("orientation")
     private int orientation;
 
@@ -214,5 +217,13 @@ public class ComposedLiveResponse {
 
     public void setPlaybackDuration(long playbackDuration) {
         this.playbackDuration = playbackDuration;
+    }
+
+    public String getH5Url() {
+        return h5Url;
+    }
+
+    public void setH5Url(String h5Url) {
+        this.h5Url = h5Url;
     }
 }

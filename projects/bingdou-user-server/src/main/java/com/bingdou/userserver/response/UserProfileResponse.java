@@ -20,7 +20,7 @@ public class UserProfileResponse {
     @SerializedName("nick_name")
     private String nickName = "";
     @SerializedName("avatar_url")
-    private String avatar = "http://tva2.sinaimg.cn/crop.3.0.634.634.1024/cd516b22jw8fa4mlfynwzj20hs0hm0tr.jpg";
+    private String avatar = "http://o8ov5bkvs.bkt.clouddn.com/1159184461660189";
     @SerializedName("signature")
     private String signature = "这个人的签名被吃了";
     @SerializedName("certification_status")

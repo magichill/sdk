@@ -1,5 +1,6 @@
 package com.bingdou.userserver.service;
 
+import com.bingdou.core.constants.UserConstants;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
@@ -12,10 +13,7 @@ import com.bingdou.core.service.user.LoginBaseService;
 import com.bingdou.core.service.user.ValidateCodeService;
 import com.bingdou.core.utils.DataLogUtils;
 import com.bingdou.core.utils.UserUtils;
-import com.bingdou.tools.JsonUtil;
-import com.bingdou.tools.LogContext;
-import com.bingdou.tools.RequestUtil;
-import com.bingdou.tools.ValidateUtil;
+import com.bingdou.tools.*;
 import com.bingdou.tools.constants.HadoopLogAction;
 import com.bingdou.userserver.request.PhoneLoginRequest;
 import com.bingdou.userserver.response.LoginResponse;
@@ -96,9 +94,9 @@ public class PhoneLoginService extends BaseService implements IMethodService {
             return ServiceResultUtil.illegal("验证码不能为空");
         }
         User user = userBaseService.getDetailByMobile(phoneLoginRequest.getMobile());
-        if (user == null) {
-            return ServiceResultUtil.illegal("用户不存在！");
-        }
+//        if (user == null) {
+//            return ServiceResultUtil.illegal("用户不存在！");
+//        }
         ValidateCode validateCode = validateCodeService.getValidateCode4Mobile(phoneLoginRequest.getMobile(),
                 SendCodeType.PHONE_LOGIN);
         if (validateCode == null) {
@@ -113,31 +111,52 @@ public class PhoneLoginService extends BaseService implements IMethodService {
         boolean isClientRequest = isClientRequest(request);
         LoginResponse loginResponse = new LoginResponse();
 
-        boolean isNewDevice = false;
-        boolean isSupportVirtualMoney = false;
-        boolean isSigned = false;
-        String tokenDevice = "";
-        String oldUid = "";
-        String oldUa = "";
-        String sdkVersion = "";
-        if (isClientRequest) {
-            LogContext.instance().info("客户端专有逻辑");
-            sdkVersion = phoneLoginRequest.getOtherInfo().getSdkVersion();
-            Os os = getClientOsByRequest(phoneLoginRequest);
-            tokenDevice = getDeviceNo4Client(phoneLoginRequest);
-            isNewDevice = deviceService.isNewDevice(phoneLoginRequest.getDeviceInfo());
-            LogContext.instance().info("是否是新设备:" + isNewDevice);
+        boolean createSuccess = true;
+        if (user == null) {
+            LogContext.instance().info("用户不存在，自动注册为新用户");
+            String loginName = "PR" + phoneLoginRequest.getMobile() + NumberUtil.getRandomNum(1000, 9999);
+            User createUser = new User();
+            createUser.setLoginName(loginName);
+            createUser.setPassword("");
+            createUser.setSalt("");
+            createUser.setDevice("");
+            createUser.setMobile(phoneLoginRequest.getMobile());
+            String appId = isClientRequest ? phoneLoginRequest.getOtherInfo().getAppId()
+                    : phoneLoginRequest.getAppId();
+            createSuccess = userBaseService.createUser(createUser, appId, clientIp, "", "",
+                    UserConstants.SECURE_LEVEL_3);
+            user = userBaseService.getDetailByMobile(phoneLoginRequest.getMobile());
         }
-        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
-        loginBaseService.setLastLoginInfo(user.getId(), clientIp, oldUid, oldUa);
-        boolean updateTokenResult = userBaseService.updateToken(user, tokenDevice, getSafeInfo(request), false);
-        LogContext.instance().info("更新token结果:" + updateTokenResult);
-        DataLogUtils.recordHadoopLog(HadoopLogAction.LOGIN,
-                phoneLoginRequest, user, clientIp, "", "", isNewDevice);
-        loginResponse.parseFromUser(user, userVipGrade, isSupportVirtualMoney, isSigned, 0);
-        JsonElement result = JsonUtil.bean2JsonTree(loginResponse);
-        LogContext.instance().info("登录成功");
-        return ServiceResultUtil.success(result);
+
+        if(createSuccess) {
+            boolean isNewDevice = false;
+            boolean isSupportVirtualMoney = false;
+            boolean isSigned = false;
+            String tokenDevice = "";
+            String oldUid = "";
+            String oldUa = "";
+            String sdkVersion = "";
+            if (isClientRequest) {
+                LogContext.instance().info("客户端专有逻辑");
+                sdkVersion = phoneLoginRequest.getOtherInfo().getSdkVersion();
+                Os os = getClientOsByRequest(phoneLoginRequest);
+                tokenDevice = getDeviceNo4Client(phoneLoginRequest);
+                isNewDevice = deviceService.isNewDevice(phoneLoginRequest.getDeviceInfo());
+                LogContext.instance().info("是否是新设备:" + isNewDevice);
+            }
+            UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
+            loginBaseService.setLastLoginInfo(user.getId(), clientIp, oldUid, oldUa);
+            boolean updateTokenResult = userBaseService.updateToken(user, tokenDevice, getSafeInfo(request), false);
+            LogContext.instance().info("更新token结果:" + updateTokenResult);
+            DataLogUtils.recordHadoopLog(HadoopLogAction.LOGIN,
+                    phoneLoginRequest, user, clientIp, "", "", isNewDevice);
+            loginResponse.parseFromUser(user, userVipGrade, isSupportVirtualMoney, isSigned, 0);
+            JsonElement result = JsonUtil.bean2JsonTree(loginResponse);
+            LogContext.instance().info("登录成功");
+            return ServiceResultUtil.success(result);
+        }else{
+            return ServiceResultUtil.illegal("创建登录用户失败");
+        }
     }
 
 

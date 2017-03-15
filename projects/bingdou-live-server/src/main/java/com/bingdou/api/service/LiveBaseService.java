@@ -1,6 +1,7 @@
 package com.bingdou.api.service;
 
 import com.bingdou.api.request.CreateLiveRequest;
+import com.bingdou.api.request.UpdateAnnouceRequest;
 import com.bingdou.api.response.CreateLiveResponse;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
@@ -9,6 +10,7 @@ import com.bingdou.core.repository.live.LiveDao;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.tools.LogContext;
 import com.bingdou.tools.NumberUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -31,7 +33,7 @@ public abstract class LiveBaseService extends BaseService {
         return liveDao.getLiveInfoByStreamName(streamName);
     }
 
-    public List<Live> getLiveList(int status,String userId,int start,int limit){
+    public List<Live> getLiveList(Integer status,String userId,int start,int limit){
         LogContext.instance().info("获取直播列表数据");
         return liveDao.getLiveList(status,userId,start,limit);
     }
@@ -51,6 +53,40 @@ public abstract class LiveBaseService extends BaseService {
     public boolean createLive(User user, CreateLiveRequest request, CreateLiveResponse response, String streamName){
         Live live = buildLive(user,request,response,streamName);
         return createLive(live);
+    }
+
+    public boolean updateAnnounceLive(User user, UpdateAnnouceRequest request){
+        LogContext.instance().info("更新预告内容");
+        Live live = getLiveInfo(request.getLiveId());
+        if(live == null){
+            LogContext.instance().info("直播不存在");
+            return false;
+        }
+        if(live.getMid() != user.getId()){
+            LogContext.instance().info("无权限修改直播预告");
+            return false;
+        }
+        if(request.getOrientation() != null){
+            live.setOrientation(request.getOrientation());
+        }
+        if(StringUtils.isNotEmpty(request.getCoverUrl())) {
+            live.setLivePicture(request.getCoverUrl());
+        }
+        if(request.getPrice() != null) {
+            live.setPrice(NumberUtil.convertFenFromYuan(request.getPrice()));
+        }
+        if(StringUtils.isNotEmpty(request.getPassword())) {
+            live.setPassword(request.getPassword());
+        }
+        if(request.getPercent() != null) {
+            live.setRewardPercent(request.getPercent());
+        }
+        if(StringUtils.isNotEmpty(request.getTitle())){
+            live.setLiveTitle(request.getTitle());
+        }
+        liveDao.updateAnnounceLiveIndex(live);
+        liveDao.updateAnnounceLive(live);
+        return true;
     }
 
     protected Live buildLive(User user,CreateLiveRequest createLiveRequest, CreateLiveResponse response,String streamName){

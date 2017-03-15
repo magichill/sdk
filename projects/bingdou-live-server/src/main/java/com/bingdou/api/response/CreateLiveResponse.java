@@ -58,13 +58,16 @@ public class CreateLiveResponse {
     private int duration;
 
     @SerializedName("publish_url")
-    private String pushUrl;
+    private String pushUrl = "";
 
     @SerializedName("play_url")
-    private String playUrl;
+    private String playUrl = "";
 
     @SerializedName("h5_url")
-    private String h5Url;
+    private String h5Url = "";
+
+    @SerializedName("replay_url")
+    private String replayUrl = "";
 
     public Integer getId() {
         return id;
@@ -218,6 +221,14 @@ public class CreateLiveResponse {
         this.h5Url = h5Url;
     }
 
+    public String getReplayUrl() {
+        return replayUrl;
+    }
+
+    public void setReplayUrl(String replayUrl) {
+        this.replayUrl = replayUrl;
+    }
+
     public void parseFromLive(Live live){
         if(live == null){
             return ;
@@ -228,7 +239,9 @@ public class CreateLiveResponse {
         setCoverUrl(live.getLivePicture());
         setPushUrl(live.getPushStream());
         setPlayUrl(live.getPullStream());
-        setH5Url(live.getReplayUrl());
+        setH5Url(live.getH5Url());
         setTitle(live.getLiveTitle());
+        setReplayUrl(live.getReplayUrl());
+
     }
 }

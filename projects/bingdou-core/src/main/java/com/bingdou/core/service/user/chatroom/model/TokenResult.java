@@ -17,6 +17,10 @@ public class TokenResult {
     // 错误信息。
     String errorMessage;
 
+    public TokenResult(){
+
+    }
+
     public TokenResult(Integer code, String token, String userId, String errorMessage) {
         this.code = code;
         this.token = token;

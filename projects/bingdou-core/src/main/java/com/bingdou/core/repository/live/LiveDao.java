@@ -29,7 +29,7 @@ public class LiveDao {
         return liveMapper.getLiveById(liveId);
     }
 
-    public List<Live> getLiveList(int status,String userId,int start,int limit){
+    public List<Live> getLiveList(Integer status,String userId,int start,int limit){
         return liveMapper.getLiveList(status,userId,start,limit);
     }
 
@@ -58,6 +58,18 @@ public class LiveDao {
 
     public void updateEndLive(int liveId,int status,String replayUrl){
         liveMapper.updateEndLive(liveId, status, replayUrl);
+    }
+
+    public void updateLiveIndex(int liveId,int status,String replayUrl,String startTime,String endTime){
+        liveMapper.updateLiveIndex(liveId, status, replayUrl,startTime,endTime);
+    }
+
+    public void updateAnnounceLive(Live live){
+        liveMapper.updateAccountLive(live);
+    }
+
+    public void updateAnnounceLiveIndex(Live live){
+        liveMapper.updateAccountLiveIndex(live);
     }
 
 }

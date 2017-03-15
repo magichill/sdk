@@ -16,7 +16,7 @@ public class UserResponse {
     @SerializedName("level")
     private int level;
     @SerializedName("avatarUrl")
-    private String avatarUrl;
+    private String avatarUrl = "http://o8ov5bkvs.bkt.clouddn.com/1159184461660189";
     @SerializedName("short_id")
     private String cpdId;
     @SerializedName("signature")
