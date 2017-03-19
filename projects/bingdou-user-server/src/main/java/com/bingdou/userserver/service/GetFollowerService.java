@@ -57,7 +57,7 @@ public class GetFollowerService extends BaseService implements IMethodService {
 
     @Override
     public boolean checkUser() {
-        return true;
+        return false;
     }
 
     @Override
@@ -73,7 +73,10 @@ public class GetFollowerService extends BaseService implements IMethodService {
         if (StringUtils.isEmpty(getFollowersRequest.getUserId())){
             return ServiceResultUtil.illegal("请求参数错误");
         }
-
+        user = getUser(getFollowersRequest);
+        if(user == null){
+            return ServiceResultUtil.illegal("用户不存在");
+        }
         GetFollowersResponse getFollowersResponse = new GetFollowersResponse();
         List<User> followers = focusService.getFollower(user.getId());
         getFollowersResponse.parseFromUserList(followers);

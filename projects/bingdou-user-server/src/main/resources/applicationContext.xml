@@ -32,6 +32,7 @@
                 <ref local="getFollowerService" />
                 <ref local="getFollowingService" />
                 <ref local="thirdFastLoginService" />
+                <ref local="checkTokenService" />
             </list>
         </property>
     </bean>

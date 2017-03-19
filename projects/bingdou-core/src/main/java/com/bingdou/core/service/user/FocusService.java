@@ -25,9 +25,12 @@ public class FocusService {
      */
     public boolean isFocusInfoExist(User user,User followerUser){
         LogContext.instance().info("检查用户关注信息是否存在");
-        return focusDao.checkFocusInfo(user.getId(),followerUser.getId());
+        return checkFocusInfo(user.getId(),followerUser.getId());
     }
 
+    public boolean checkFocusInfo(int userId,int followerId){
+        return focusDao.checkFocusInfo(userId,followerId);
+    }
 
     /**
      * 更新用户关注状态

@@ -11,7 +11,9 @@
           m.email,
           md.money,
           m.status,
+          mi.avatar,
           md.loginerrortime,
+          mi.signature,
           md.loginerror,
           m.password,
           m.salt,
@@ -28,6 +30,16 @@
 
     <select id="getUserInfoListByIdList" parameterType="java.util.List" resultMap="userDetail">
       ${@com.bingdou.core.model.User@buildGetUserInfoListByIdListSql(idList)}
+    </select>
+
+    <select id="getCertificateUserList" resultMap="userDetail">
+        <![CDATA[
+        SELECT mi.id,mi.signature,mi.gender,mi.avatar,mi.cpid,mi.nickname,uv.level_id AS vip_level_id
+        FROM ${userDB}.mc_member_index mi
+        LEFT JOIN
+        ${payDB}.mc_user_vip uv on mi.id=uv.id
+        LIMIT 5
+        ]]>
     </select>
 
     <select id="getIdsByUserIdList" parameterType="java.util.List" resultType="java.lang.Integer">
@@ -175,12 +187,33 @@
 
     <update id="updateNickname4Member" parameterType="java.util.Map">
         UPDATE ${userDB}.mc_member${@com.bingdou.core.model.User@getTableNumber(userId)}
-        SET nickname=#{nickname} WHERE id=#{userId}
+        SET nickname=#{nickname}
+        <if test="avatar!=null">
+            ,avatar=#{avatar}
+        </if>
+        <if test="gender != null">
+            ,gender=#{gender}
+        </if>
+        <if test="signature!=null">
+            ,signature=#{signature}
+        </if>
+        WHERE id=#{userId}
     </update>
 
     <update id="updateNickname4Index" parameterType="java.util.Map">
         UPDATE ${userDB}.mc_member_index
-        SET nickname=#{nickname} WHERE id=#{userId}
+        SET nickname=#{nickname}
+        <if test="avatar!=null">
+            ,avatar=#{avatar}
+        </if>
+        <if test="gender != null">
+          ,gender=#{gender}
+        </if>
+        <if test="signature!=null">
+            ,signature=#{signature}
+        </if>
+
+        WHERE id=#{userId}
     </update>
 
     <select id="getVirtualMoneyFen" parameterType="java.util.Map" resultType="java.lang.Integer">
@@ -212,7 +245,9 @@
         <result property="mobile" column="mobile"/>
         <result property="email" column="email"/>
         <result property="money" column="money"/>
+        <result property="avatar" column="avatar"/>
         <result property="status" column="status"/>
+        <result property="signature" column="signature"/>
         <result property="loginErrorTime" column="loginerrortime"/>
         <result property="loginError" column="loginerror"/>
         <result property="password" column="password"/>

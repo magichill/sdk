@@ -384,11 +384,11 @@ public class UserBaseService {
         return count > 0;
     }
 
-    public boolean updateNickname(int userId, String nickname) {
+    public boolean updateNickname(int userId, String nickname,Integer gender,String signature,String avatar) {
         if (userId <= 0 || StringUtils.isEmpty(nickname))
             return false;
-        int updateIndexCount = userBaseDao.updateNickname4Index(userId, nickname);
-        int updateMemberCount = userBaseDao.updateNickname4Member(userId, nickname);
+        int updateIndexCount = userBaseDao.updateNickname4Index(userId, nickname,gender,signature,avatar);
+        int updateMemberCount = userBaseDao.updateNickname4Member(userId, nickname,gender,signature,avatar);
         return (updateIndexCount + updateMemberCount) >= 2;
     }
 
@@ -451,6 +451,9 @@ public class UserBaseService {
         return userBaseDao.getIdByCpId(cpId);
     }
 
+    public List<User> getCertificateUsers(){
+        return userBaseDao.getCertificateUserList();
+    }
     public Integer getCertificateStatus(int userId ){
         return certificateDao.getAnchorStatus(userId);
     }

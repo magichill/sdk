@@ -24,12 +24,14 @@ public class GetUserInfoResponse extends UserProfileResponse {
             return;
         setUserPrimaryId(user.getId());
         setNickName(user.getNickName());
+        setGender(user.getGender());
         setLevel(user.getVipLevel());
         setAvatar(user.getAvatar());
         setCpIdOrId(user.getCpId());
         setSignature(user.getSignature());
         setCertificationStatus(certificationStatus);
         setFocusStatus(focusStatus);
+        setSignature(user.getSignature());
         setMobile(user.getMobile());
         setCity("");
         setOpenId("");

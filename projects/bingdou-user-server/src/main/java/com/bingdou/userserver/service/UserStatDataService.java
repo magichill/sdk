@@ -62,7 +62,7 @@ public class UserStatDataService extends BaseService implements IMethodService {
 
     @Override
     public boolean checkUser() {
-        return true;
+        return false;
     }
 
     @Override
@@ -80,6 +80,10 @@ public class UserStatDataService extends BaseService implements IMethodService {
             return ServiceResultUtil.illegal("请求参数错误");
         }
 
+        user = getUser(getUserStatRequest);
+        if(user == null){
+            return ServiceResultUtil.illegal("用户不存在");
+        }
         UserStatsDataResponse userStatsDataResponse = new UserStatsDataResponse();
         UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
         Integer followers = focusService.getFansCount(user.getId());

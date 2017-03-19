@@ -2,6 +2,7 @@ package com.bingdou.api.response;
 
 import com.google.gson.annotations.SerializedName;
 
+
 /**
  * Created by gaoshan on 17/2/18.
  */
@@ -53,10 +54,16 @@ public class ComposedLiveResponse {
     private String tags;
 
     @SerializedName("start_at")
-    private long startAt;
+    private Long startAt;
 
     @SerializedName("end_at")
-    private long endAt;
+    private Long endAt;
+
+    @SerializedName("create_at")
+    private Long createAt;
+
+    @SerializedName("update_at")
+    private Long updateAt;
 
     @SerializedName("preview_created_at")
     private long previewCreatedAt;
@@ -179,22 +186,6 @@ public class ComposedLiveResponse {
         this.tags = tags;
     }
 
-    public long getStartAt() {
-        return startAt;
-    }
-
-    public void setStartAt(long startAt) {
-        this.startAt = startAt;
-    }
-
-    public long getEndAt() {
-        return endAt;
-    }
-
-    public void setEndAt(long endAt) {
-        this.endAt = endAt;
-    }
-
     public long getPreviewCreatedAt() {
         return previewCreatedAt;
     }
@@ -225,5 +216,37 @@ public class ComposedLiveResponse {
 
     public void setH5Url(String h5Url) {
         this.h5Url = h5Url;
+    }
+
+    public Long getStartAt() {
+        return startAt;
+    }
+
+    public void setStartAt(Long startAt) {
+        this.startAt = startAt;
+    }
+
+    public Long getEndAt() {
+        return endAt;
+    }
+
+    public void setEndAt(Long endAt) {
+        this.endAt = endAt;
+    }
+
+    public Long getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Long createAt) {
+        this.createAt = createAt;
+    }
+
+    public Long getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Long updateAt) {
+        this.updateAt = updateAt;
     }
 }

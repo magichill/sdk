@@ -16,10 +16,16 @@ public class UpdateNicknameRequest extends BaseRequest {
     private String account;
     @SerializedName("nickname")
     private String nickname;
+    @SerializedName("avatar_url")
+    private String avatar;
+    @SerializedName("gender")
+    private Integer gender;
+    @SerializedName("signature")
+    private String signature;
 
     @Override
     protected String getLoggerName() {
-        return "UpdateNicknameRequest";
+        return "UpdateUserProfileRequest";
     }
 
     @Override
@@ -27,6 +33,9 @@ public class UpdateNicknameRequest extends BaseRequest {
         UpdateNicknameRequest request = JsonUtil.jsonStr2Bean(requestString, UpdateNicknameRequest.class);
         this.account = request.getAccount();
         this.nickname = request.getNickname();
+        this.avatar = request.getAvatar();
+        this.gender = request.getGender();
+        this.signature = request.getSignature();
         return request;
     }
 
@@ -44,5 +53,29 @@ public class UpdateNicknameRequest extends BaseRequest {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
+    public String getSignature() {
+        return signature;
+    }
+
+    public void setSignature(String signature) {
+        this.signature = signature;
     }
 }

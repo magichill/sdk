@@ -3,6 +3,8 @@ package com.bingdou.core.model.live;
 import com.bingdou.core.model.User;
 import com.bingdou.tools.IndexUtil;
 
+import java.util.Date;
+
 /**
  * Created by gaoshan on 16-11-8.
  */
@@ -44,6 +46,11 @@ public class Live {
     private int price;
 
     private int rewardPercent;
+
+    private Date startTime;
+    private Date endTime;
+    private Date createTime;
+    private Date updateTime;
 
     public int getId() {
         return id;
@@ -179,6 +186,38 @@ public class Live {
 
     public void setH5Url(String h5Url) {
         this.h5Url = h5Url;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     /**

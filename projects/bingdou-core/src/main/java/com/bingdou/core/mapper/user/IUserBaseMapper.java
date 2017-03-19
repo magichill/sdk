@@ -27,6 +27,8 @@ public interface IUserBaseMapper {
 
     List<User> getUserInfoListByIdList(@Param("idList") List<Integer> idList);
 
+    List<User> getCertificateUserList();
+
     int existUserToken(@Param("userId") Integer userId);
 
     UserToken getUserToken(@Param("userId") Integer userId, @Param("expiredTime") long expiredTime);
@@ -68,9 +70,13 @@ public interface IUserBaseMapper {
 
     int getCountByNickname(String nickname);
 
-    int updateNickname4Member(@Param("userId") int userId, @Param("nickname") String nickname);
+    int updateNickname4Member(@Param("userId") int userId, @Param("nickname") String nickname,
+                               @Param("gender") Integer gender,@Param("signature") String signature,
+                              @Param("avatar") String avatar);
 
-    int updateNickname4Index(@Param("userId") int userId, @Param("nickname") String nickname);
+    int updateNickname4Index(@Param("userId") int userId, @Param("nickname") String nickname,
+                             @Param("gender") Integer gender,@Param("signature") String signature,
+                             @Param("avatar") String avatar);
 
     Integer getVirtualMoneyFen(@Param("userId") int userId, @Param("os") int osIndex);
 

@@ -61,9 +61,9 @@ public class HomePageService extends LiveBaseService implements IMethodService {
         Integer status = findLiveRequest.getStatus();
         String userId = findLiveRequest.getUserId();
         if(start!=null && start >0){
-            start = start-1;
+            start = (start-1)*limit;
         }
-        List<Live> result = getLiveList(status,userId,start,limit);
+        List<Live> result = getLiveList(status,null,start,limit);
         return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildHomePageResponse(result)));
     }
 

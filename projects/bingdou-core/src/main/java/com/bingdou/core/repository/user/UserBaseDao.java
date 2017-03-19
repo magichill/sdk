@@ -19,6 +19,7 @@ public class UserBaseDao {
     @Autowired
     private IUserBaseMapper userBaseMapper;
 
+
     public Integer getIdByLoginName(String loginName) {
         return userBaseMapper.getIdByLoginName(loginName);
     }
@@ -54,6 +55,10 @@ public class UserBaseDao {
         if (idList == null || idList.isEmpty())
             return new ArrayList<User>();
         return userBaseMapper.getUserInfoListByIdList(idList);
+    }
+
+    public List<User> getCertificateUserList() {
+        return userBaseMapper.getCertificateUserList();
     }
 
     public UserToken getUserToken(Integer userId, long expiredTime) {
@@ -156,12 +161,16 @@ public class UserBaseDao {
         return userBaseMapper.getCountByNickname(nickname);
     }
 
-    public int updateNickname4Member(int userId, String nickname) {
-        return userBaseMapper.updateNickname4Member(userId, nickname);
+    public int updateNickname4Member(int userId, String nickname,
+                                     Integer gender,String signature,
+                                     String avatar) {
+        return userBaseMapper.updateNickname4Member(userId, nickname,gender,signature,avatar);
     }
 
-    public int updateNickname4Index(int userId, String nickname) {
-        return userBaseMapper.updateNickname4Index(userId, nickname);
+    public int updateNickname4Index(int userId, String nickname,
+                                    Integer gender,String signature,
+                                    String avatar) {
+        return userBaseMapper.updateNickname4Index(userId, nickname,gender,signature,avatar);
     }
 
     public Integer getVirtualMoney(int userId, int osIndex) {

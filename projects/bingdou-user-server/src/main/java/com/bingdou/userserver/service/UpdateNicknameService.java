@@ -36,12 +36,15 @@ public class UpdateNicknameService extends BaseService implements IMethodService
     @Override
     public User getUser(BaseRequest baseRequest) {
         UpdateNicknameRequest updateNicknameRequest = (UpdateNicknameRequest) baseRequest;
-        return userBaseService.getDetailByIdOrCpIdOrLoginName(updateNicknameRequest.getAccount());
+        User user = userBaseService.getUserDetailByAccount(updateNicknameRequest.getAccount());
+        if (user == null)
+            user = userBaseService.getDetailByIdOrCpIdOrLoginName(updateNicknameRequest.getAccount());
+        return user;
     }
 
     @Override
     public String getMethodName() {
-        return "update_nickname";
+        return "update_user_profile";
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -58,19 +61,28 @@ public class UpdateNicknameService extends BaseService implements IMethodService
 
     private ServiceResult deal(BaseRequest baseRequest, User user) throws Exception {
         UpdateNicknameRequest updateNicknameRequest = (UpdateNicknameRequest) baseRequest;
-        if (StringUtils.isEmpty(updateNicknameRequest.getAccount())
-                || StringUtils.isEmpty(updateNicknameRequest.getNickname())) {
+        String nickName = "";
+        if (StringUtils.isEmpty(updateNicknameRequest.getAccount())) {
             return ServiceResultUtil.illegal("请求参数错误");
         }
-        if (!ValidateUtil.isValidNickname(updateNicknameRequest.getNickname())) {
-            return ServiceResultUtil.illegal("昵称格式错误");
+        if(StringUtils.isEmpty(updateNicknameRequest.getNickname())){
+            nickName = user.getNickName();
+        }else {
+            if (!ValidateUtil.isValidNickname(updateNicknameRequest.getNickname())) {
+                return ServiceResultUtil.illegal("昵称格式错误");
+            }
+            nickName = updateNicknameRequest.getNickname();
+            boolean exist = userBaseService.existNickname(updateNicknameRequest.getNickname());
+            if (exist) {
+                return ServiceResultUtil.illegal("昵称已存在");
+            }
         }
-        boolean exist = userBaseService.existNickname(updateNicknameRequest.getNickname());
-        if (exist) {
-            return ServiceResultUtil.illegal("昵称已存在");
-        }
+
         boolean success = userBaseService.updateNickname(user.getId(),
-                updateNicknameRequest.getNickname());
+                nickName,
+                updateNicknameRequest.getGender(),
+                updateNicknameRequest.getSignature(),
+                updateNicknameRequest.getAvatar());
         if (success) {
             LogContext.instance().info("修改成功");
             return ServiceResultUtil.success();

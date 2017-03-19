@@ -4,6 +4,7 @@ import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -38,6 +39,11 @@ public class HomePageResponse {
             composedLiveResponse.setPlaybackUrl(live.getReplayUrl());
             composedLiveResponse.setH5Url(live.getH5Url());
             composedLiveResponse.setStatus(live.getStatus());
+            composedLiveResponse.setOrientation(live.getOrientation());
+            composedLiveResponse.setCreateAt(live.getCreateTime()==null?0:live.getCreateTime().getTime());
+            composedLiveResponse.setUpdateAt(live.getUpdateTime()==null?0:live.getUpdateTime().getTime());
+            composedLiveResponse.setStartAt(live.getStartTime()==null?0:live.getStartTime().getTime());
+            composedLiveResponse.setEndAt(live.getEndTime()==null?0:live.getEndTime().getTime());
 
             if(live.getUser()!= null) {
                 User user = live.getUser();
@@ -47,7 +53,9 @@ public class HomePageResponse {
                 userResponse.setCpdId(user.getCpId());
                 userResponse.setGender(user.getGender());
                 userResponse.setNickName(user.getNickName());
-                userResponse.setSignature(user.getSignature());
+                if(!StringUtils.isEmpty(user.getSignature())) {
+                    userResponse.setSignature(user.getSignature());
+                }
                 composedLiveResponse.setUserResponse(userResponse);
             }
             liveResponses.add(composedLiveResponse);

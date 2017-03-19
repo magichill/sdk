@@ -29,6 +29,12 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class UserInfoService extends BaseService implements IMethodService {
 
+    @Autowired
+    private VipGradeService vipGradeService;
+
+    @Autowired
+    private FocusService focusService;
+
     @Override
     public BaseRequest getBaseRequest(HttpServletRequest request) throws Exception {
         GetUserInfoRequest getUserInfoRequest = new GetUserInfoRequest();
@@ -38,7 +44,7 @@ public class UserInfoService extends BaseService implements IMethodService {
 
     @Override
     public boolean checkUser() {
-        return true;
+        return false;
     }
 
     @Override
@@ -73,17 +79,21 @@ public class UserInfoService extends BaseService implements IMethodService {
         if (StringUtils.isEmpty(getUserInfoRequest.getAccount())) {
             return ServiceResultUtil.illegal("请求参数错误");
         }
+        user = getUser(getUserInfoRequest);
+        if(user == null){
+            return ServiceResultUtil.illegal("用户不存在");
+        }
         GetUserInfoResponse getUserInfoResponse = new GetUserInfoResponse();
         //TODO 用户等级
 //        UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
-        LogContext.instance().info("获取用户TOKEN对象");
-        UserToken userToken = userBaseService.getUserTokenObject(user.getId());
-        if (userToken != null) {
-            user.setToken(userToken.getToken());
-            user.setvToken(userToken.getValidateToken());
-        }
-        boolean isSupportVirtualMoney = false;
-        boolean isSigned = false;
+//        LogContext.instance().info("获取用户TOKEN对象");
+//        UserToken userToken = userBaseService.getUserTokenObject(user.getId());
+//        if (userToken != null) {
+//            user.setToken(userToken.getToken());
+//            user.setvToken(userToken.getValidateToken());
+//        }
+//        boolean isSupportVirtualMoney = false;
+//        boolean isSigned = false;
         //TODO 用户认证状态
         Integer certificationStatus = userBaseService.getCertificateStatus(user.getId());
 

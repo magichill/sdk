@@ -15,12 +15,12 @@ public class UserResponse {
     private int gender;
     @SerializedName("level")
     private int level;
-    @SerializedName("avatarUrl")
+    @SerializedName("avatar_url")
     private String avatarUrl = "http://o8ov5bkvs.bkt.clouddn.com/1159184461660189";
     @SerializedName("short_id")
     private String cpdId;
     @SerializedName("signature")
-    private String signature;
+    private String signature = "这个人的签名被吃了";
     @SerializedName("certification_status")
     private int certificationStatus;
     @SerializedName("following_status")

@@ -3,6 +3,8 @@ package com.bingdou.api.response;
 import com.bingdou.core.model.live.Live;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Created by gaoshan on 16-11-4.
  */
@@ -43,10 +45,16 @@ public class CreateLiveResponse {
     private String tags;
 
     @SerializedName("start_at")
-    private long startAt;
+    private Long startAt;
 
     @SerializedName("end_at")
-    private long endAt;
+    private Long endAt;
+
+    @SerializedName("create_at")
+    private Long createAt;
+
+    @SerializedName("update_at")
+    private Long updateAt;
 
     @SerializedName("preview_created_at")
     private long previewCreateAt;
@@ -157,19 +165,19 @@ public class CreateLiveResponse {
         this.tags = tags;
     }
 
-    public long getStartAt() {
+    public Long getStartAt() {
         return startAt;
     }
 
-    public void setStartAt(long startAt) {
+    public void setStartAt(Long startAt) {
         this.startAt = startAt;
     }
 
-    public long getEndAt() {
+    public Long getEndAt() {
         return endAt;
     }
 
-    public void setEndAt(long endAt) {
+    public void setEndAt(Long endAt) {
         this.endAt = endAt;
     }
 
@@ -229,6 +237,22 @@ public class CreateLiveResponse {
         this.replayUrl = replayUrl;
     }
 
+    public Long getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Long createAt) {
+        this.createAt = createAt;
+    }
+
+    public Long getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(Long updateAt) {
+        this.updateAt = updateAt;
+    }
+
     public void parseFromLive(Live live){
         if(live == null){
             return ;
@@ -242,6 +266,9 @@ public class CreateLiveResponse {
         setH5Url(live.getH5Url());
         setTitle(live.getLiveTitle());
         setReplayUrl(live.getReplayUrl());
-
+        setStartAt(live.getStartTime()==null?0:live.getStartTime().getTime());
+        setEndAt(live.getEndTime()==null?0:live.getEndTime().getTime());
+        setCreateAt(live.getCreateTime()==null?0:live.getCreateTime().getTime());
+        setUpdateAt(live.getUpdateTime()==null?0:live.getUpdateTime().getTime());
     }
 }
