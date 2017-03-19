@@ -38,6 +38,11 @@ public abstract class LiveBaseService extends BaseService {
         return liveDao.getLiveList(status,userId,start,limit);
     }
 
+    public List<Live> getFocusLiveList(Integer userId,int start,int limit){
+        LogContext.instance().info("获取用户关注的主播直播数据");
+        return liveDao.getFocusLiveList(userId,start,limit);
+    }
+
     public boolean createLive(Live live){
         LogContext.instance().info("插入新直播数据");
         liveDao.addLiveIndex(live);

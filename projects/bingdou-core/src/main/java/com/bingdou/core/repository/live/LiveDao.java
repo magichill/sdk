@@ -33,6 +33,10 @@ public class LiveDao {
         return liveMapper.getLiveList(status,userId,start,limit);
     }
 
+    public List<Live> getFocusLiveList(Integer userId,int start,int limit){
+        return liveMapper.getFocusLiveListByUserId(userId,start,limit);
+    }
+
     public List<Live> getRecordLiveList(int start,int limit){
         return liveMapper.getRecordLiveList(start,limit);
     }

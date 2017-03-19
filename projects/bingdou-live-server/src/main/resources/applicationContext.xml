@@ -39,6 +39,7 @@
                 <ref local="getChatTokenService" />
                 <ref local="updateAnnounceService" />
                 <ref local="discoveryService" />
+                <ref local="homeFollowService" />
             </list>
         </property>
     </bean>
