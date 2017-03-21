@@ -14,7 +14,7 @@ public interface IFocusMapper {
 
     int getFollowerCount(@Param("userId") int userId);
 
-    int checkFocusInfo(@Param("userId") Integer userId, @Param("followId") int followId);
+    Integer checkFocusInfoStatus(@Param("userId") Integer userId, @Param("followId") int followId);
 
     void insertFocusInfo(@Param("userId") Integer userId, @Param("followId") int followId);
 

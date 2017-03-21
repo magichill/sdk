@@ -16,10 +16,10 @@
         ]]>
     </select>
 
-    <select id="checkFocusInfo" parameterType="java.lang.Integer"
+    <select id="checkFocusInfoStatus" parameterType="java.lang.Integer"
             resultType="java.lang.Integer">
         <![CDATA[
-        SELECT COUNT(1) FROM ${userDB}.mc_focus_info WHERE mid=#{userId} and follow_id = #{followId}
+        SELECT status FROM ${userDB}.mc_focus_info WHERE mid=#{userId} and follow_id = #{followId}
         ]]>
     </select>
 
@@ -33,7 +33,8 @@
     <update id="updateFocusInfo" parameterType="java.util.Map">
         <![CDATA[
           UPDATE ${userDB}.mc_focus_info
-          set mid=#{userId},follow_id=#{followId},status=#{status}
+          set status=#{status}
+          where mid=#{userId} and follow_id=#{followId}
         ]]>
     </update>
 

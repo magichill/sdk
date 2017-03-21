@@ -36,8 +36,8 @@
         SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.h5_url,li.mid,
         ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,
         li.start_time,li.end_time,li.create_time,li.update_time
-        FROM sdk_user.mc_focus_info fi
-        JOIN sdk_live.lc_live_index li  ON li.mid = fi.follow_id
+        FROM ${userDB}.mc_focus_info fi
+        JOIN ${liveDB}.lc_live_index li  ON li.mid = fi.follow_id
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         WHERE fi.mid=#{userId} AND li.status != -1
         ORDER BY li.status,li.create_time DESC limit #{start},#{limit}
@@ -93,7 +93,7 @@
 
     <update id="updateLiveIndex" parameterType="java.util.Map">
         update ${liveDB}.lc_live_index
-        set status=#{status},update_time=now(),
+        set status=#{status},update_time=now()
         <if test="replayUrl != null">
             ,replay_url=#{replayUrl}
         </if>

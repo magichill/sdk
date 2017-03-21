@@ -44,7 +44,7 @@ public class UserInfoService extends BaseService implements IMethodService {
 
     @Override
     public boolean checkUser() {
-        return false;
+        return true;
     }
 
     @Override
@@ -53,6 +53,14 @@ public class UserInfoService extends BaseService implements IMethodService {
         User user = userBaseService.getUserDetailByAccount(getUserInfoRequest.getAccount());
         if (user == null)
             user = userBaseService.getDetailByIdOrCpIdOrLoginName(getUserInfoRequest.getAccount());
+        return user;
+    }
+
+    public User getQueryUser(BaseRequest baseRequest){
+        GetUserInfoRequest getUserInfoRequest = (GetUserInfoRequest) baseRequest;
+        User user = userBaseService.getUserDetailByAccount(getUserInfoRequest.getQueryAccount());
+        if (user == null)
+            user = userBaseService.getDetailByIdOrCpIdOrLoginName(getUserInfoRequest.getQueryAccount());
         return user;
     }
 
@@ -76,12 +84,16 @@ public class UserInfoService extends BaseService implements IMethodService {
     }
 
     private ServiceResult deal(HttpServletRequest request, GetUserInfoRequest getUserInfoRequest, User user) throws Exception {
-        if (StringUtils.isEmpty(getUserInfoRequest.getAccount())) {
+        if (StringUtils.isEmpty(getUserInfoRequest.getAccount()) || StringUtils.isEmpty(getUserInfoRequest.getQueryAccount())) {
             return ServiceResultUtil.illegal("请求参数错误");
         }
-        user = getUser(getUserInfoRequest);
-        if(user == null){
-            return ServiceResultUtil.illegal("用户不存在");
+
+        User queryUser = user;
+        if(!getUserInfoRequest.getAccount().equals(getUserInfoRequest.getQueryAccount())) {
+            queryUser = getQueryUser(getUserInfoRequest);
+            if (queryUser == null) {
+                return ServiceResultUtil.illegal("查询的用户不存在");
+            }
         }
         GetUserInfoResponse getUserInfoResponse = new GetUserInfoResponse();
         //TODO 用户等级
@@ -96,11 +108,11 @@ public class UserInfoService extends BaseService implements IMethodService {
 //        boolean isSigned = false;
         //TODO 用户认证状态
         Integer certificationStatus = userBaseService.getCertificateStatus(user.getId());
-
+        Integer focusStatus = focusService.checkFocusInfoStatus(user.getId(),queryUser.getId());
 
 //        getUserInfoResponse.parseFromUser(user, userVipGrade, isSupportVirtualMoney, isSigned, 0);
 //        getUserInfoResponse.parseFromUser(user, userVipGrade, certificationStatus, 0,userStat);
-        getUserInfoResponse.parseFromUser(user, certificationStatus, 0);
+        getUserInfoResponse.parseFromUser(queryUser, certificationStatus, focusStatus==null?0:focusStatus);
         JsonElement result = JsonUtil.bean2JsonTree(getUserInfoResponse);
         LogContext.instance().info("获取用户信息成功");
         return ServiceResultUtil.success(result);

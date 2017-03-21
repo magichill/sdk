@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.IConsumeMapper">
+    <insert id="addConsumeRecord" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_consume_record
+          (mid,host_id,price,live_id,create_time,update_time)
+          VALUE(#{mid},#{hostId},#{price},#{live_id},now(),now())
+        ]]>
+    </insert>
+
+    <select id="getIncomeByHostId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+          count(price)
+        FROM ${liveDB}.lc_consume_record
+        WHERE host_id=#{hostId}
+        ]]>
+    </select>
+
+
+</mapper>

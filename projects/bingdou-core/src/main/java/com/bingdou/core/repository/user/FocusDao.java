@@ -16,9 +16,9 @@ public class FocusDao {
     @Autowired
     private IFocusMapper focusMapper;
 
-    public boolean checkFocusInfo(int userId,int followId){
-        int count = focusMapper.checkFocusInfo(userId,followId);
-        return count > 0;
+    public Integer checkFocusInfoStatus(int userId,int followId){
+        Integer status = focusMapper.checkFocusInfoStatus(userId,followId);
+        return status;
     }
     public int getFollowerCount(int userId){
         return focusMapper.getFollowerCount(userId);

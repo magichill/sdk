@@ -23,13 +23,13 @@ public class FocusService {
      * @param followerUser
      * @return
      */
-    public boolean isFocusInfoExist(User user,User followerUser){
+    public Integer isFocusInfoExist(User user,User followerUser){
         LogContext.instance().info("检查用户关注信息是否存在");
-        return checkFocusInfo(user.getId(),followerUser.getId());
+        return checkFocusInfoStatus(user.getId(),followerUser.getId());
     }
 
-    public boolean checkFocusInfo(int userId,int followerId){
-        return focusDao.checkFocusInfo(userId,followerId);
+    public Integer checkFocusInfoStatus(int userId,int followerId){
+        return focusDao.checkFocusInfoStatus(userId,followerId);
     }
 
     /**

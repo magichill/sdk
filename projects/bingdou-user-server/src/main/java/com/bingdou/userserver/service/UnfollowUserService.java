@@ -51,9 +51,12 @@ public class UnfollowUserService extends BaseService implements IMethodService {
         }
         User followerUser = getFollower(focusRequest.getFollowId());
         if(user != null && followerUser != null){
-            boolean focusInfoExist = focusService.isFocusInfoExist(user,followerUser);
-            if(focusInfoExist){
+            Integer focusStatus = focusService.isFocusInfoExist(user,followerUser);
+            if(focusStatus!=null){
                 LogContext.instance().info("关注用户信息存在，更新为未关注状态！");
+                if(focusStatus == 0){
+                    return ServiceResultUtil.illegal("您并未关注当前用户");
+                }
                 focusService.updateFocusInfo(user, followerUser,0);
             }else {
                 LogContext.instance().info("关注用户信息不存在，无法取消关注！");

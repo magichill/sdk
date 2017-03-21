@@ -1,4 +1,4 @@
-package com.bingdou.userserver.request;
+package com.bingdou.api.request;
 
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.tools.JsonUtil;
@@ -7,17 +7,15 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * 获取用户信息请求类
+ * Created by gaoshan on 17/3/20.
  */
-public class GetUserInfoRequest extends BaseRequest {
+public class BuyLiveRequest extends BaseRequest {
 
-    @SerializedName("query_account")
-    private String queryAccount;
-    /**
-     * 用户账号,可以是用户名、邮箱或手机号或CP ID
-     */
     @SerializedName("account")
     private String account;
+
+    @SerializedName("live_id")
+    private Integer liveId;
 
     public String getAccount() {
         return account;
@@ -27,24 +25,24 @@ public class GetUserInfoRequest extends BaseRequest {
         this.account = account;
     }
 
-    public String getQueryAccount() {
-        return queryAccount;
+    public Integer getLiveId() {
+        return liveId;
     }
 
-    public void setQueryAccount(String queryAccount) {
-        this.queryAccount = queryAccount;
+    public void setLiveId(Integer liveId) {
+        this.liveId = liveId;
     }
 
     @Override
     protected String getLoggerName() {
-        return "GetUserInfoRequest";
+        return "BuyLiveRequest";
     }
 
     @Override
     protected BaseRequest setFields(String requestString) {
-        GetUserInfoRequest request = JsonUtil.jsonStr2Bean(requestString, GetUserInfoRequest.class);
+        BuyLiveRequest request = JsonUtil.jsonStr2Bean(requestString, BuyLiveRequest.class);
         this.account = request.getAccount();
-        this.queryAccount = request.getQueryAccount();
+        this.liveId = request.getLiveId();
         return request;
     }
 

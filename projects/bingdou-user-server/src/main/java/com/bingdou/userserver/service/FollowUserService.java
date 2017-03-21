@@ -51,9 +51,12 @@ public class FollowUserService  extends BaseService implements IMethodService {
         }
         User followerUser = getFollower(focusRequest.getFollowId());
         if(user != null && followerUser != null){
-            boolean focusInfoExist = focusService.isFocusInfoExist(user,followerUser);
-            if(focusInfoExist){
+            Integer focusStatus = focusService.isFocusInfoExist(user,followerUser);
+            if(focusStatus!=null){
                 LogContext.instance().info("关注用户信息存在，更新状态！");
+                if(focusStatus == 1){
+                    return ServiceResultUtil.illegal("您已关注过该用户");
+                }
                 focusService.updateFocusInfo(user, followerUser,1);
             }else {
                 LogContext.instance().info("关注用户信息不存在，创建关注记录！");
