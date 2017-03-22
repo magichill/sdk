@@ -1,8 +1,7 @@
 package com.bingdou.api.service;
 
-import com.bingdou.api.request.FindLiveRequest;
 import com.bingdou.api.request.GetHomeFollowRequest;
-import com.bingdou.api.response.FindLiveResponse;
+import com.bingdou.api.response.HomeFollowResponse;
 import com.bingdou.api.response.HomePageResponse;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
@@ -71,12 +70,14 @@ public class HomeFollowService extends LiveBaseService implements IMethodService
             start = (start - 1) * limit;
         }
         List<Live> result = getFocusLiveList(user.getId(), start, limit);
-        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildHomePageResponse(result)));
+        List<User> userList = userBaseService.getFocusUserWithoutLive(user.getId());
+        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildHomeFollowResponse(result,userList)));
     }
 
-    private HomePageResponse buildHomePageResponse(List<Live> liveList) {
-        HomePageResponse response = new HomePageResponse();
+    private HomeFollowResponse buildHomeFollowResponse(List<Live> liveList,List<User> userList){
+        HomeFollowResponse response = new HomeFollowResponse();
         response.parseFromLive(liveList);
+        response.parseFromUser(userList);
         return response;
     }
 }

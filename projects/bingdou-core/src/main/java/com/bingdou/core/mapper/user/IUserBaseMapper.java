@@ -29,6 +29,8 @@ public interface IUserBaseMapper {
 
     List<User> getCertificateUserList();
 
+    List<User> getFocusUserWithoutLive(@Param("userId") Integer userId);
+
     int existUserToken(@Param("userId") Integer userId);
 
     UserToken getUserToken(@Param("userId") Integer userId, @Param("expiredTime") long expiredTime);

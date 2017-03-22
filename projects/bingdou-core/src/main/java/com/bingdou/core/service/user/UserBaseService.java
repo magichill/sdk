@@ -454,6 +454,11 @@ public class UserBaseService {
     public List<User> getCertificateUsers(){
         return userBaseDao.getCertificateUserList();
     }
+    public List<User> getFocusUserWithoutLive(Integer userId){
+        return userBaseDao.getFocusUserWithoutLive(userId);
+    }
+
+
     public Integer getCertificateStatus(int userId ){
         return certificateDao.getAnchorStatus(userId);
     }

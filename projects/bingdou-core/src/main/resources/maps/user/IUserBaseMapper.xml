@@ -12,6 +12,8 @@
           md.money,
           m.status,
           mi.avatar,
+          mi.signature,
+          mi.gender,
           md.loginerrortime,
           mi.signature,
           md.loginerror,
@@ -231,6 +233,25 @@
         VALUE(#{userId},#{os},#{moneyFen})
     </insert>
 
+    <select id="getFocusUserWithoutLive" resultMap="userDetail" parameterType="java.util.Map">
+        <![CDATA[
+        SELECT
+          mi.id,
+          mi.loginname,
+          mi.mobile,
+          mi.email,
+          mi.avatar,
+          mi.signature,
+          mi.gender,
+          mi.cpid,
+          mi.nickname
+        FROM ${userDB}.mc_focus_info fi
+        LEFT JOIN ${userDB}.mc_member_index mi ON fi.follow_id = mi.id
+        WHERE EXISTS(SELECT 1 FROM ${liveDB}.lc_live_index li
+        WHERE fi.follow_id!=li.mid) and fi.status=1 and fi.mid=#{userId}
+        ]]>
+    </select>
+
     <resultMap id="userToken" type="com.bingdou.core.model.UserToken">
         <result property="token" column="token"/>
         <result property="validateToken" column="v_token"/>
@@ -246,6 +267,7 @@
         <result property="email" column="email"/>
         <result property="money" column="money"/>
         <result property="avatar" column="avatar"/>
+        <result property="gender" column="gender"/>
         <result property="status" column="status"/>
         <result property="signature" column="signature"/>
         <result property="loginErrorTime" column="loginerrortime"/>

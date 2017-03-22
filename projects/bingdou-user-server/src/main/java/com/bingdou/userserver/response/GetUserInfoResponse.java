@@ -1,6 +1,7 @@
 package com.bingdou.userserver.response;
 
 import com.bingdou.core.model.User;
+import com.bingdou.userserver.constant.ResponseConstant;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -28,7 +29,7 @@ public class GetUserInfoResponse extends UserProfileResponse {
         setLevel(user.getVipLevel());
         setAvatar(user.getAvatar());
         setCpIdOrId(user.getCpId());
-        setSignature(user.getSignature());
+        setSignature(user.getSignature()==null? ResponseConstant.DEFAULT_SIGNATURE:user.getSignature());
         setCertificationStatus(certificationStatus);
         setFocusStatus(focusStatus);
         setSignature(user.getSignature());

@@ -6,6 +6,7 @@ import com.bingdou.core.model.UserVipGrade;
 import com.bingdou.core.utils.UserUtils;
 import com.bingdou.tools.LogContext;
 import com.bingdou.tools.NumberUtil;
+import com.bingdou.userserver.constant.ResponseConstant;
 import com.google.gson.annotations.SerializedName;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
@@ -80,6 +81,7 @@ public class LoginResponse {
 
         userProfileResponse.setMobile(user.getMobile());
 
+        userProfileResponse.setSignature(user.getSignature()==null? ResponseConstant.DEFAULT_SIGNATURE:user.getSignature());
         statsDataResponse.setLevelId(user.getSafeLevel());
         statsDataResponse.setVipLevel(userVipGrade.getUserLevelId());
         userProfileResponse.setNickName(user.getNickName());
@@ -88,13 +90,7 @@ public class LoginResponse {
 
 
         statsDataResponse.setUserRechargeMoney(userVipGrade.getMoney());
-        if (userVipGrade.getNextLevelRechargeAmount() > 0) {
-            statsDataResponse.setNextVipLevelMoney(userVipGrade.getNextLevelRechargeAmount());
-            statsDataResponse.setVipUpNeedMoney(userVipGrade.getNextLevelNeedRechargeAmount());
-        } else {
-            statsDataResponse.setNextVipLevelMoney(0f);
-            statsDataResponse.setVipUpNeedMoney(0f);
-        }
+        buildVipData(userVipGrade,statsDataResponse);
         userProfileResponse.setCertificationStatus(certificationStatus);
         if(userStat != null) {
             statsDataResponse.setLikeCount(userStat.getLikeCount());
@@ -136,30 +132,20 @@ public class LoginResponse {
         UserStatsDataResponse statsDataResponse = new UserStatsDataResponse();
         userProfileResponse.setUserPrimaryId(user.getId());
         userProfileResponse.setCpIdOrId(user.getReturnUserId());
+        userProfileResponse.setLevel(user.getVipLevel());
         userProfileResponse.setGender(user.getGender());
+        userProfileResponse.setAvatar(user.getAvatar());
+
         userProfileResponse.setMobile(user.getMobile());
 
+        userProfileResponse.setSignature(user.getSignature()==null? ResponseConstant.DEFAULT_SIGNATURE:user.getSignature());
         statsDataResponse.setLevelId(user.getSafeLevel());
-
+        statsDataResponse.setVipLevel(userVipGrade.getUserLevelId());
         userProfileResponse.setNickName(user.getNickName());
         setToken(user.getToken());
         setvToken(user.getvToken());
-        if(userVipGrade != null) {
-            statsDataResponse.setVipLevel(userVipGrade.getUserLevelId());
-            statsDataResponse.setUserRechargeMoney(userVipGrade.getMoney());
-            if (userVipGrade.getNextLevelRechargeAmount() > 0) {
-                statsDataResponse.setNextVipLevelMoney(userVipGrade.getNextLevelRechargeAmount());
-                statsDataResponse.setVipUpNeedMoney(userVipGrade.getNextLevelNeedRechargeAmount());
-            } else {
-                statsDataResponse.setNextVipLevelMoney(0f);
-                statsDataResponse.setVipUpNeedMoney(0f);
-            }
-        }else{
-            statsDataResponse.setVipLevel(0);
-            statsDataResponse.setUserRechargeMoney(0f);
-            statsDataResponse.setNextVipLevelMoney(0f);
-            statsDataResponse.setVipUpNeedMoney(0f);
-        }
+
+        buildStatsDataResponse(userVipGrade,statsDataResponse);
         userProfileResponse.setCertificationStatus(0);
         statsDataResponse.setLikeCount(0);
         statsDataResponse.setFollowers(0);
@@ -178,6 +164,30 @@ public class LoginResponse {
 //        setNickName(user.getNickName());
 //    }
 
+    private UserStatsDataResponse buildStatsDataResponse(UserVipGrade userVipGrade,UserStatsDataResponse statsDataResponse){
+        if(userVipGrade != null) {
+            statsDataResponse.setVipLevel(userVipGrade.getUserLevelId());
+            statsDataResponse.setUserRechargeMoney(userVipGrade.getMoney());
+            buildVipData(userVipGrade,statsDataResponse);
+        }else{
+            statsDataResponse.setVipLevel(0);
+            statsDataResponse.setUserRechargeMoney(0f);
+            statsDataResponse.setNextVipLevelMoney(0f);
+            statsDataResponse.setVipUpNeedMoney(0f);
+        }
+        return statsDataResponse;
+    }
+
+    private UserStatsDataResponse buildVipData(UserVipGrade userVipGrade,UserStatsDataResponse statsDataResponse){
+        if (userVipGrade.getNextLevelRechargeAmount() > 0) {
+            statsDataResponse.setNextVipLevelMoney(userVipGrade.getNextLevelRechargeAmount());
+            statsDataResponse.setVipUpNeedMoney(userVipGrade.getNextLevelNeedRechargeAmount());
+        } else {
+            statsDataResponse.setNextVipLevelMoney(0f);
+            statsDataResponse.setVipUpNeedMoney(0f);
+        }
+        return statsDataResponse;
+    }
     public UserProfileResponse getUserProfileResponse() {
         return userProfileResponse;
     }

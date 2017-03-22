@@ -60,7 +60,7 @@ public class FocusService {
      */
     public int getFollowerCount(int userId){
         LogContext.instance().info("查询关注用户数量");
-        return focusDao.getFansCount(userId);
+        return focusDao.getFollowerCount(userId);
     }
 
     /**

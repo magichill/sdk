@@ -61,6 +61,10 @@ public class UserBaseDao {
         return userBaseMapper.getCertificateUserList();
     }
 
+    public List<User> getFocusUserWithoutLive(Integer userId) {
+        return userBaseMapper.getFocusUserWithoutLive(userId);
+    }
+
     public UserToken getUserToken(Integer userId, long expiredTime) {
         if (userId <= 0)
             return null;

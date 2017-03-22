@@ -40,6 +40,7 @@
         JOIN ${liveDB}.lc_live_index li  ON li.mid = fi.follow_id
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         WHERE fi.mid=#{userId} AND li.status != -1
+        GROUP BY fi.follow_id
         ORDER BY li.status,li.create_time DESC limit #{start},#{limit}
     </select>
 
