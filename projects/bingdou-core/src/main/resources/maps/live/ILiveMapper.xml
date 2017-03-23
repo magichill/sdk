@@ -139,6 +139,15 @@
         where id=#{liveId}
     </update>
 
+    <select id="getLiveInfoByMid" parameterType="java.util.Map" resultMap="liveDetail">
+        <![CDATA[
+        SELECT
+          id,live_title,live_picture,status,mid,push_stream,pull_stream,h5_url,orientation,create_time,update_time
+        FROM ${liveDB}.lc_live_index
+        WHERE mid=#{userId} and status!=-1
+        order by status,create_time desc limit #{start},#{limit}
+        ]]>
+    </select>
     <resultMap id="liveDetail" type="com.bingdou.core.model.live.Live">
         <result property="id" column="id"/>
         <result property="liveTitle" column="live_title"/>

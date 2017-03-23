@@ -25,12 +25,12 @@ public interface IFocusMapper {
      * @param userId
      * @return
      */
-    List<User> getFollower(@Param("userId") Integer userId);
+    List<User> getFollower(@Param("userId") Integer userId,@Param("start") int start,@Param("limit") int limit);
 
     /**
      * 获取用户关注列表
      * @param userId
      * @return
      */
-    List<User> getFollowing(@Param("userId") Integer userId);
+    List<User> getFollowing(@Param("userId") Integer userId,@Param("start") int start,@Param("limit") int limit);
 }

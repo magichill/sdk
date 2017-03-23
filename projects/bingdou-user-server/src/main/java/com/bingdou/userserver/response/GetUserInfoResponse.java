@@ -3,6 +3,7 @@ package com.bingdou.userserver.response;
 import com.bingdou.core.model.User;
 import com.bingdou.userserver.constant.ResponseConstant;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * 获取用户信息请求响应
@@ -29,10 +30,9 @@ public class GetUserInfoResponse extends UserProfileResponse {
         setLevel(user.getVipLevel());
         setAvatar(user.getAvatar());
         setCpIdOrId(user.getCpId());
-        setSignature(user.getSignature()==null? ResponseConstant.DEFAULT_SIGNATURE:user.getSignature());
+        setSignature(StringUtils.isEmpty(user.getSignature())? ResponseConstant.DEFAULT_SIGNATURE:user.getSignature());
         setCertificationStatus(certificationStatus);
         setFocusStatus(focusStatus);
-        setSignature(user.getSignature());
         setMobile(user.getMobile());
         setCity("");
         setOpenId("");

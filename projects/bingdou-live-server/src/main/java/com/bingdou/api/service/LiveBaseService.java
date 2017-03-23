@@ -56,10 +56,15 @@ public abstract class LiveBaseService extends BaseService {
     }
 
     public boolean createLive(User user, CreateLiveRequest request, CreateLiveResponse response, String streamName){
+        LogContext.instance().info("创建直播数据");
         Live live = buildLive(user,request,response,streamName);
         return createLive(live);
     }
 
+    public List<Live> getLiveInfoByMid(User user,int start,int limit){
+        LogContext.instance().info("获取用户直播数据列表");
+        return liveDao.getLiveInfoByMid(user.getId(),start,limit);
+    }
     public boolean updateAnnounceLive(User user, UpdateAnnouceRequest request){
         LogContext.instance().info("更新预告内容");
         Live live = getLiveInfo(request.getLiveId());

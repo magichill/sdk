@@ -78,8 +78,13 @@ public class GetFollowingService extends BaseService implements IMethodService {
         if(user == null){
             return ServiceResultUtil.illegal("用户不存在");
         }
+        Integer start = getFollowingRequest.getPage();
+        Integer limit = getFollowingRequest.getCount();
+        if (start != null && start > 0) {
+            start = (start - 1) * limit;
+        }
         GetFollowingResponse getFollowingResponse = new GetFollowingResponse();
-        List<User> followers = focusService.getFollowing(user.getId());
+        List<User> followers = focusService.getFollowing(user.getId(),start,limit);
         getFollowingResponse.parseFromUserList(followers);
         JsonElement result = JsonUtil.bean2JsonTree(getFollowingResponse);
         LogContext.instance().info("获取用户关注列表成功");

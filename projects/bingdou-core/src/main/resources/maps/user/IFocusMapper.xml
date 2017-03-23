@@ -38,21 +38,23 @@
         ]]>
     </update>
 
-    <select id="getFollowing" parameterType="java.lang.Integer"
+    <select id="getFollowing" parameterType="java.util.Map"
             resultMap="userDetail">
         <![CDATA[
         SELECT mmi.id,mmi.nickname,mmi.gender,mmi.avatar,mmi.cpid,mmi.signature FROM ${userDB}.mc_focus_info mfi
         LEFT JOIN ${userDB}.mc_member_index mmi ON mfi.follow_id = mmi.id
         WHERE mfi.mid = #{userId} and mfi.status = 1
+        limit #{start},#{limit}
         ]]>
     </select>
 
-    <select id="getFollower" parameterType="java.lang.Integer"
+    <select id="getFollower" parameterType="java.util.Map"
             resultMap="userDetail">
         <![CDATA[
         SELECT mmi.id,mmi.nickname,mmi.gender,mmi.avatar,mmi.cpid,mmi.signature FROM ${userDB}.mc_focus_info mfi
         LEFT JOIN ${userDB}.mc_member_index mmi ON mfi.mid = mmi.id
         WHERE mfi.follow_id = #{userId} and mfi.status = 1
+        limit #{start},#{limit}
         ]]>
     </select>
 

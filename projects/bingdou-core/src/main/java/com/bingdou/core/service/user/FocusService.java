@@ -73,13 +73,13 @@ public class FocusService {
         return focusDao.getFansCount(userId);
     }
 
-    public List<User> getFollower(int userId){
+    public List<User> getFollower(int userId,int start,int limit){
         LogContext.instance().info("查询用户粉丝列表");
-        return focusDao.getFollower(userId);
+        return focusDao.getFollower(userId,start,limit);
     }
 
-    public List<User> getFollowing(int userId){
+    public List<User> getFollowing(int userId,int start,int limit){
         LogContext.instance().info("查询用户关注列表");
-        return focusDao.getFollowing(userId);
+        return focusDao.getFollowing(userId,start,limit);
     }
 }

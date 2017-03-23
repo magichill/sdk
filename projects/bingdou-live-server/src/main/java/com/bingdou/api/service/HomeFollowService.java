@@ -2,7 +2,6 @@ package com.bingdou.api.service;
 
 import com.bingdou.api.request.GetHomeFollowRequest;
 import com.bingdou.api.response.HomeFollowResponse;
-import com.bingdou.api.response.HomePageResponse;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;

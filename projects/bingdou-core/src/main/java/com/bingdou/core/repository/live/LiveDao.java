@@ -76,4 +76,8 @@ public class LiveDao {
         liveMapper.updateAccountLiveIndex(live);
     }
 
+    public List<Live> getLiveInfoByMid(Integer userId,int start,int limit){
+        return liveMapper.getLiveInfoByMid(userId,start,limit);
+    }
+
 }

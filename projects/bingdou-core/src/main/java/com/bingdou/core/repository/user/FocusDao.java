@@ -36,11 +36,11 @@ public class FocusDao {
         focusMapper.updateFocusInfo(userId,followId,status);
     }
 
-    public List<User> getFollower(int userId){
-        return focusMapper.getFollower(userId);
+    public List<User> getFollower(int userId,int start,int limit){
+        return focusMapper.getFollower(userId,start,limit);
     }
 
-    public List<User> getFollowing(int userId){
-        return focusMapper.getFollowing(userId);
+    public List<User> getFollowing(int userId,int start,int limit){
+        return focusMapper.getFollowing(userId, start,limit);
     }
 }
