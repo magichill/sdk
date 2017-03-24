@@ -8,11 +8,13 @@ import com.bingdou.core.model.live.Live;
 import com.bingdou.core.model.live.LiveType;
 import com.bingdou.core.repository.live.LiveDao;
 import com.bingdou.core.service.BaseService;
+import com.bingdou.tools.DateUtil;
 import com.bingdou.tools.LogContext;
 import com.bingdou.tools.NumberUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -93,6 +95,10 @@ public abstract class LiveBaseService extends BaseService {
         }
         if(StringUtils.isNotEmpty(request.getTitle())){
             live.setLiveTitle(request.getTitle());
+        }
+        if(request.getStartAt()!=null){
+            Date date = new Date(request.getStartAt());
+            live.setStartTime(date);
         }
         liveDao.updateAnnounceLiveIndex(live);
         liveDao.updateAnnounceLive(live);

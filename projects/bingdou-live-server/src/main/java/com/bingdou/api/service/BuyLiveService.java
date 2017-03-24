@@ -1,6 +1,7 @@
 package com.bingdou.api.service;
 
 import com.bingdou.api.request.BuyLiveRequest;
+import com.bingdou.core.constants.PayTypeData;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
@@ -11,8 +12,11 @@ import com.bingdou.core.service.IMethodService;
 import com.bingdou.core.service.live.ConsumeService;
 import com.bingdou.tools.CodecUtils;
 import com.bingdou.tools.HttpClientUtil;
+import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
+import com.bingdou.tools.constants.KeyGroup;
 import com.google.common.collect.Maps;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,7 +46,7 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
     public ServiceResult execute4Server(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         BuyLiveRequest buyLiveRequest = (BuyLiveRequest) baseRequest;
         Application application = appBaseService.getAppByAppId(buyLiveRequest.getAppId());
-        return null;
+        return dealBuyLive(buyLiveRequest,user,application);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -50,7 +54,7 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         BuyLiveRequest buyLiveRequest = (BuyLiveRequest) baseRequest;
         Application application = appBaseService.getAppByAppId(buyLiveRequest.getAppId());
-        return null;
+        return dealBuyLive(buyLiveRequest,user,application);
     }
 
     @Override
@@ -71,7 +75,7 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
         return userBaseService.getDetailByIdOrCpIdOrLoginName(String.valueOf(buyLiveRequest.getAccount()));
     }
 
-    private ServiceResult dealBuyLive(BuyLiveRequest buyLiveRequest,User user,Application application){
+    private ServiceResult dealBuyLive(BuyLiveRequest buyLiveRequest,User user,Application application) throws Exception {
         if(StringUtils.isEmpty(buyLiveRequest.getAccount()) || buyLiveRequest.getLiveId() == null){
             return ServiceResultUtil.illegal("参数不合法");
         }
@@ -80,30 +84,55 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
         if(live == null){
             return ServiceResultUtil.illegal("直播不存在");
         }
-        consumeService.addConsumeRecord(live,user);
-        return ServiceResultUtil.success();
+        Map<String,String> map = requestConsumeCoin(buyLiveRequest,live);
+        if(map!= null && StringUtils.isEmpty(map.get("error"))){
+            consumeService.addConsumeRecord(live,user);
+            LogContext.instance().info("购买直播成功");
+            return ServiceResultUtil.success(JsonUtil.bean2JsonTree(map));
+        }else{
+            return ServiceResultUtil.illegal("支付失败");
+        }
     }
 
-    private Map requestConsumeCoin(String payUrl,String param,BuyLiveRequest buyLiveRequest){
+    private Map requestConsumeCoin(BuyLiveRequest buyLiveRequest,Live live) throws Exception{
 
-//        Map<String,String> paramMap = Maps.newHashMap();
-//        paramMap.put("param", CodecUtils.aesEncode(param, ENCODE_KEY));
-//        paramMap.put("request_source_index",buyLiveRequest.getRequestSource());
-//        paramMap.put("sign", CodecUtils.getMySign(param,SIGN_KEY));
-//        String content = "";
-//        try {
-//            content = HttpClientUtil.doPostHttpClient("request_consume_coin",payUrl,null,);
-//            LogContext.instance().info("支付接口请求参数:"+param);
-//            LogContext.instance().info("支付接口返回加密值："+content);
-//            Map contentMap = JSON.parseObject(CodecUtils.aesDecode(content, ENCODE_KEY), Map.class);
-//            LogContext.instance().info("支付接口返回解密值："+JSON.toJSONString(contentMap));
-//            Map resultMap = JSON.parseObject(ObjectUtils.toString(contentMap.get("result")), Map.class);
-//            resultMap.put("error", ObjectUtils.toString(contentMap.get("error_message"), ""));
-//            return resultMap;
-//        }catch (Exception e){
-//            LogContext.instance().error("支付接口失败返回值："+content+"[exception in pay]");
-//            return null;
-//        }
-        return null;
+        String payUrl = PayTypeData.CONSUME_BINGDOU_URL;
+        Map<String,String> paramMap = Maps.newHashMap();
+        StringBuffer sb = new StringBuffer();
+        sb.append("{\"cpid_or_id\":");
+        sb.append("\"").append(buyLiveRequest.getAccount()).append("\",");
+        sb.append("{\"user_order_id\":");
+        sb.append("\"").append(DigestUtils.md5Hex(buyLiveRequest.getAppId() + System.currentTimeMillis())).append("\",");
+        sb.append("{\"order_money\":");
+        sb.append(live.getPrice()).append(",");
+        sb.append("{\"goods_name\":");
+        sb.append("\"").append("购买直播" + live.getId()).append("\",");
+        sb.append("{\"goods_description\":");
+        sb.append("\"").append("购买直播").append("\",");
+        sb.append("{\"goods_price\":");
+        sb.append(live.getPrice()).append(",");
+        sb.append("{\"token\":");
+        sb.append("\"").append(buyLiveRequest.getToken()).append("\",");
+        sb.append("{\"app_id\":");
+        sb.append("\"").append("123456").append("\"");
+        sb.append("}");
+        paramMap.put("param", CodecUtils.aesEncode(sb.toString(), KeyGroup.DEFAULT));
+        paramMap.put("request_source_index",buyLiveRequest.getRequestSource());
+        paramMap.put("sign", CodecUtils.getMySign(sb.toString(),KeyGroup.DEFAULT));
+        String content = "";
+
+        try {
+            content = HttpClientUtil.doPostHttpClient("request_consume_coin",payUrl,null,paramMap,3000,3000);
+            LogContext.instance().info("支付接口请求参数:");
+            LogContext.instance().info("支付接口返回加密值："+content);
+            Map contentMap = JsonUtil.jsonStr2Bean(CodecUtils.aesDecode(content, KeyGroup.DEFAULT), Map.class);
+            LogContext.instance().info("支付接口返回解密值："+JsonUtil.bean2JsonStr(contentMap));
+            Map resultMap = JsonUtil.jsonStr2Bean(String.valueOf(contentMap.get("result")), Map.class);
+            resultMap.put("error", String.valueOf(contentMap.get("error_message")));
+            return resultMap;
+        }catch (Exception e){
+            LogContext.instance().error("支付接口失败返回值："+content+"[exception in pay]");
+            return null;
+        }
     }
 }

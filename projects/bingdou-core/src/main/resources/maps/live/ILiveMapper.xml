@@ -126,17 +126,16 @@
     </update>
 
     <update id="updateAnnounceLive" parameterType="com.bingdou.core.model.live.Live">
-        update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
-        set live_title=#{liveTitle},live_picture=#{livePicture},orientation=#{orientation},
-        password=#{password},price=#{price},reward_percent=${rewardPercent}
-        where lid=#{liveId}
+        update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(id)}
+        set live_title=#{liveTitle},live_picture=#{livePicture},start_time=#{startTime}
+        where lid=#{id}
     </update>
 
     <update id="updateAnnounceLiveIndex" parameterType="com.bingdou.core.model.live.Live">
         update ${liveDB}.lc_live_index
         set live_title=#{liveTitle},live_picture=#{livePicture},orientation=#{orientation},
-        password=#{password},price=#{price},reward_percent=${rewardPercent}
-        where id=#{liveId}
+        password=#{password},price=#{price},reward_percent=${rewardPercent},start_time=#{startTime}
+        where id=#{id}
     </update>
 
     <select id="getLiveInfoByMid" parameterType="java.util.Map" resultMap="liveDetail">
@@ -162,6 +161,7 @@
         <result property="updateTime" column="update_time"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
+        <result property="mid" column="mid"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="mid"/>
             <result property="gender" column="gender"/>

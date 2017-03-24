@@ -11,8 +11,8 @@ import java.util.List;
 public interface ILiveMapper {
 
     void addLiveIndex(Live live);
-    void updateAccountLive(Live live);
-    void updateAccountLiveIndex(Live live);
+    void updateAnnounceLive(Live live);
+    void updateAnnounceLiveIndex(Live live);
 
     void addLive(@Param("liveId") int liveId, @Param("liveTitle") String liveTitle, @Param("mid") Integer mid,
                  @Param("liveType") int liveType,@Param("livePicture") String livePicture, @Param("pushStream") String pushStream,

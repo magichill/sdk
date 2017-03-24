@@ -69,11 +69,11 @@ public class LiveDao {
     }
 
     public void updateAnnounceLive(Live live){
-        liveMapper.updateAccountLive(live);
+        liveMapper.updateAnnounceLive(live);
     }
 
     public void updateAnnounceLiveIndex(Live live){
-        liveMapper.updateAccountLiveIndex(live);
+        liveMapper.updateAnnounceLiveIndex(live);
     }
 
     public List<Live> getLiveInfoByMid(Integer userId,int start,int limit){

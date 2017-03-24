@@ -31,19 +31,7 @@ public class HomePageResponse {
         List<ComposedLiveResponse> liveResponses = Lists.newArrayList();
         for(Live live :liveList){
             ComposedLiveResponse composedLiveResponse = new ComposedLiveResponse();
-            composedLiveResponse.setId(live.getId());
-            composedLiveResponse.setPlayUrl(live.getPullStream());
-            composedLiveResponse.setCoverUrl(live.getLivePicture());
-            composedLiveResponse.setTitle(live.getLiveTitle());
-            composedLiveResponse.setPublishUrl(live.getPushStream());
-            composedLiveResponse.setPlaybackUrl(live.getReplayUrl());
-            composedLiveResponse.setH5Url(live.getH5Url());
-            composedLiveResponse.setStatus(live.getStatus());
-            composedLiveResponse.setOrientation(live.getOrientation());
-            composedLiveResponse.setCreateAt(live.getCreateTime()==null?0:live.getCreateTime().getTime());
-            composedLiveResponse.setUpdateAt(live.getUpdateTime()==null?0:live.getUpdateTime().getTime());
-            composedLiveResponse.setStartAt(live.getStartTime()==null?0:live.getStartTime().getTime());
-            composedLiveResponse.setEndAt(live.getEndTime()==null?0:live.getEndTime().getTime());
+            composedLiveResponse.parseFromLive(live);
 
             if(live.getUser()!= null) {
                 User user = live.getUser();

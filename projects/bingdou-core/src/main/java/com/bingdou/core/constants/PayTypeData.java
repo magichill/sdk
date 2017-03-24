@@ -140,6 +140,7 @@ public class PayTypeData {
     public static final String PAY_TYPE_ALI_NO_PWD_PAY_RECHARGE_NOTIFY_URL;
     public static final String PAY_TYPE_ALI_NO_PWD_PAY_CONSUME_NOTIFY_URL;
 
+    public static final String CONSUME_BINGDOU_URL;
     private PayTypeData() {
     }
 
@@ -201,6 +202,7 @@ public class PayTypeData {
         PAY_TYPE_ALI_NO_PWD_AUTH_NOTIFY_URL = prop.getProperty("ali.no.pwd.auth.notify.url");
         PAY_TYPE_ALI_NO_PWD_PAY_RECHARGE_NOTIFY_URL = prop.getProperty("ali.no.pwd.pay.recharge.notify.url");
         PAY_TYPE_ALI_NO_PWD_PAY_CONSUME_NOTIFY_URL = prop.getProperty("ali.no.pwd.pay.consume.notify.url");
+        CONSUME_BINGDOU_URL = prop.getProperty("bingdou.consume.coin.url");
     }
 
 }

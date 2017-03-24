@@ -1,5 +1,6 @@
 package com.bingdou.api.response;
 
+import com.bingdou.core.model.live.Live;
 import com.google.gson.annotations.SerializedName;
 
 
@@ -248,5 +249,21 @@ public class ComposedLiveResponse {
 
     public void setUpdateAt(Long updateAt) {
         this.updateAt = updateAt;
+    }
+
+    public void parseFromLive(Live live){
+        setId(live.getId());
+        setPlayUrl(live.getPullStream());
+        setCoverUrl(live.getLivePicture());
+        setTitle(live.getLiveTitle());
+        setPublishUrl(live.getPushStream());
+        setPlaybackUrl(live.getReplayUrl());
+        setH5Url(live.getH5Url());
+        setStatus(live.getStatus());
+        setOrientation(live.getOrientation());
+        setCreateAt(live.getCreateTime()==null?0:live.getCreateTime().getTime());
+        setUpdateAt(live.getUpdateTime()==null?0:live.getUpdateTime().getTime());
+        setStartAt(live.getStartTime()==null?0:live.getStartTime().getTime());
+        setEndAt(live.getEndTime()==null?0:live.getEndTime().getTime());
     }
 }

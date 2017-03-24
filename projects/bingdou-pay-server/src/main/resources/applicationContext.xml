@@ -19,7 +19,7 @@
                 <!--<ref local="changeAppOwnershipService"/>-->
                 <!--<ref local="getAppInfoService"/>-->
                 <!--<ref local="filterAppsService"/>-->
-                <!--<ref local="consumeHaimaCoinService"/>-->
+                <ref local="consumeBingdouCoinService"/>
                 <!--<ref local="transferMoneyService"/>-->
                 <!--<ref local="search4TransferOrderService"/>-->
                 <!--<ref local="search4MerchantMoneyService"/>-->

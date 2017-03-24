@@ -1,11 +1,14 @@
 package com.bingdou.api.service;
 
 import com.bingdou.api.request.UpdateAnnouceRequest;
+import com.bingdou.api.response.ComposedLiveResponse;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
+import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
@@ -57,12 +60,16 @@ public class UpdateAnnounceService extends LiveBaseService implements IMethodSer
     }
 
     private ServiceResult dealUpdateAnnounce(UpdateAnnouceRequest updateAnnouceRequest, HttpServletRequest request,User user) throws Exception {
+        LogContext.instance().info("更新预告开始");
         if(StringUtils.isEmpty(updateAnnouceRequest.getUserId()) || updateAnnouceRequest.getLiveId() < 0){
             return ServiceResultUtil.illegal("参数不合法");
         }
         if(updateAnnounceLive(user,updateAnnouceRequest)){
             LogContext.instance().info("更新预告直播成功");
-            return ServiceResultUtil.success();
+            Live live = getLiveInfo(updateAnnouceRequest.getLiveId());
+            ComposedLiveResponse composedLiveResponse = new ComposedLiveResponse();
+            composedLiveResponse.parseFromLive(live);
+            return ServiceResultUtil.success(JsonUtil.bean2JsonTree(composedLiveResponse));
         }else{
             LogContext.instance().info("更新预告直播失败");
             return ServiceResultUtil.illegal("更新预告失败");
