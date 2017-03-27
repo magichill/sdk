@@ -10,10 +10,7 @@ import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
 import com.bingdou.core.service.live.ConsumeService;
-import com.bingdou.tools.CodecUtils;
-import com.bingdou.tools.HttpClientUtil;
-import com.bingdou.tools.JsonUtil;
-import com.bingdou.tools.LogContext;
+import com.bingdou.tools.*;
 import com.bingdou.tools.constants.KeyGroup;
 import com.google.common.collect.Maps;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -79,10 +76,14 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
         if(StringUtils.isEmpty(buyLiveRequest.getAccount()) || buyLiveRequest.getLiveId() == null){
             return ServiceResultUtil.illegal("参数不合法");
         }
-
         Live live = getLiveInfo(buyLiveRequest.getLiveId());
         if(live == null){
             return ServiceResultUtil.illegal("直播不存在");
+        }
+        //TODO 判断用户是否购买过当前直播
+        boolean isBuy = consumeService.exisRecord(live,user);
+        if(isBuy){
+            return ServiceResultUtil.illegal("您已购买过该视频");
         }
         Map<String,String> map = requestConsumeCoin(buyLiveRequest,live);
         if(map!= null && StringUtils.isEmpty(map.get("error"))){
@@ -99,25 +100,25 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
         String payUrl = PayTypeData.CONSUME_BINGDOU_URL;
         Map<String,String> paramMap = Maps.newHashMap();
         StringBuffer sb = new StringBuffer();
-        sb.append("{\"cpid_or_id\":");
+        sb.append("{\"account\":");
         sb.append("\"").append(buyLiveRequest.getAccount()).append("\",");
-        sb.append("{\"user_order_id\":");
+        sb.append("\"user_order_id\":");
         sb.append("\"").append(DigestUtils.md5Hex(buyLiveRequest.getAppId() + System.currentTimeMillis())).append("\",");
-        sb.append("{\"order_money\":");
-        sb.append(live.getPrice()).append(",");
-        sb.append("{\"goods_name\":");
+        sb.append("\"order_money\":");
+        sb.append(NumberUtil.convertYuanFromFen(live.getPrice())).append(",");
+        sb.append("\"goods_name\":");
         sb.append("\"").append("购买直播" + live.getId()).append("\",");
-        sb.append("{\"goods_description\":");
-        sb.append("\"").append("购买直播").append("\",");
-        sb.append("{\"goods_price\":");
-        sb.append(live.getPrice()).append(",");
-        sb.append("{\"token\":");
+        sb.append("\"goods_description\":");
+        sb.append("\"").append(buyLiveRequest.getAppId()).append("\",");
+        sb.append("\"goods_price\":");
+        sb.append(NumberUtil.convertYuanFromFen(live.getPrice())).append(",");
+        sb.append("\"token\":");
         sb.append("\"").append(buyLiveRequest.getToken()).append("\",");
-        sb.append("{\"app_id\":");
+        sb.append("\"app_id\":");
         sb.append("\"").append("123456").append("\"");
         sb.append("}");
         paramMap.put("param", CodecUtils.aesEncode(sb.toString(), KeyGroup.DEFAULT));
-        paramMap.put("request_source_index",buyLiveRequest.getRequestSource());
+        paramMap.put("request_source_index","live-server");
         paramMap.put("sign", CodecUtils.getMySign(sb.toString(),KeyGroup.DEFAULT));
         String content = "";
 

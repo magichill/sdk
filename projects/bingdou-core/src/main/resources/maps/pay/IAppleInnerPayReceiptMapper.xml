@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IAppleInnerPayReceiptMapper">
+
+    <insert id="insertReceipt" parameterType="com.bingdou.core.model.AppleInnerPayReceipt">
+        <![CDATA[
+        INSERT INTO ${payDB}.mc_apple_inner_pay_receipt(status,environment,receipt_type,adam_id,
+        app_item_id,bundle_id,application_version,receipt_creation_date_ms,request_date_ms,
+        original_application_version,quantity,product_id,transaction_id,
+        original_transaction_id,purchase_date_ms,original_purchase_date_ms,is_trial_period,recharge_order_id)
+        VALUES
+        (#{status},#{environment},#{receiptType},#{adamId},#{appItemId},#{bundleId},
+        #{applicationVersion},#{receiptCreationDateMs},#{requestDateMs},
+        #{originalApplicationVersion},#{quantity},#{productId},#{transactionId},
+        #{originalTransactionId},#{purchaseDateMs},#{originalPurchaseDateMs},#{isTrialPeriod},#{rechargeOrderId})
+        ]]>
+    </insert>
+
+    <select id="getSuccessReceiptCountByTransactionId" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM ${payDB}.mc_apple_inner_pay_receipt
+        WHERE transaction_id=#{transactionId} AND status=0
+    </select>
+
+</mapper>

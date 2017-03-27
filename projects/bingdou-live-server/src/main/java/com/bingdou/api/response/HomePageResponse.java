@@ -36,14 +36,7 @@ public class HomePageResponse {
             if(live.getUser()!= null) {
                 User user = live.getUser();
                 UserResponse userResponse = new UserResponse();
-                userResponse.setId(user.getId());
-                userResponse.setAvatarUrl(user.getAvatar());
-                userResponse.setCpdId(user.getCpId());
-                userResponse.setGender(user.getGender());
-                userResponse.setNickName(user.getNickName());
-                if(!StringUtils.isEmpty(user.getSignature())) {
-                    userResponse.setSignature(user.getSignature());
-                }
+                userResponse.parseFromUser(user);
                 composedLiveResponse.setUserResponse(userResponse);
             }
             liveResponses.add(composedLiveResponse);

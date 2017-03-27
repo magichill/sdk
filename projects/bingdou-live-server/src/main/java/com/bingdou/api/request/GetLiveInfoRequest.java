@@ -10,10 +10,10 @@ import com.google.gson.annotations.SerializedName;
 public class GetLiveInfoRequest extends BaseRequest {
 
     @SerializedName("live_id")
-    private int liveId;
+    private Integer liveId;
 
-    @SerializedName("user_id")
-    private String userId;
+    @SerializedName("account")
+    private String account;
 
     @Override
     protected String getLoggerName() {
@@ -25,23 +25,23 @@ public class GetLiveInfoRequest extends BaseRequest {
         GetLiveInfoRequest request = JsonUtil.jsonStr2Bean(requestString,
                 GetLiveInfoRequest.class);
         this.liveId = request.getLiveId();
-        this.userId = request.getUserId();
+        this.account = request.getAccount();
         return request;
     }
 
-    public int getLiveId() {
+    public Integer getLiveId() {
         return liveId;
     }
 
-    public void setLiveId(int liveId) {
+    public void setLiveId(Integer liveId) {
         this.liveId = liveId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getAccount() {
+        return account;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setAccount(String account) {
+        this.account = account;
     }
 }

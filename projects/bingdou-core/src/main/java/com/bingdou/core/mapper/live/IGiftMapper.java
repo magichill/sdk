@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface IGiftMapper {
 
-    Gift getGiftById(@Param("liveId") int liveId);
+    Gift getGiftById(@Param("giftId") int giftId);
 
     List<Gift> getEnableGiftList();
 

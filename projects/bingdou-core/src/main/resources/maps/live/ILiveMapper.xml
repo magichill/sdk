@@ -5,7 +5,7 @@
     <select id="getLiveById" parameterType="java.lang.Integer" resultMap="liveDetail">
         <![CDATA[
         SELECT
-          li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url
+          li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price
         FROM ${liveDB}.lc_live_index li
         JOIN ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)} ll ON li.id=ll.lid
         WHERE li.id=#{liveId}
@@ -15,8 +15,8 @@
     <insert id="addLive" parameterType="java.util.Map">
         <![CDATA[
           INSERT INTO ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
-          (live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,h5_url,create_time,update_time)
-          VALUE(#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},#{h5Url},now(),now())
+          (lid,live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,h5_url,create_time,update_time)
+          VALUE(#{liveId},#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},#{h5Url},now(),now())
         ]]>
     </insert>
 
@@ -157,6 +157,7 @@
         <result property="pullStream" column="pull_stream"/>
         <result property="replayUrl" column="replay_url"/>
         <result property="h5Url" column="h5_url"/>
+        <result property="price" column="price"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="startTime" column="start_time"/>

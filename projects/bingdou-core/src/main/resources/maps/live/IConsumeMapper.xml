@@ -5,7 +5,7 @@
         <![CDATA[
           INSERT INTO ${liveDB}.lc_consume_record
           (mid,host_id,price,live_id,create_time,update_time)
-          VALUE(#{mid},#{hostId},#{price},#{live_id},now(),now())
+          VALUE(#{mid},#{hostId},#{price},#{liveId},now(),now())
         ]]>
     </insert>
 
@@ -18,5 +18,13 @@
         ]]>
     </select>
 
+    <select id="getIncomeByHostId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+          count(1)
+        FROM ${liveDB}.lc_consume_record
+        WHERE mid=#{mid} and live_id=#{liveId}
+        ]]>
+    </select>
 
 </mapper>

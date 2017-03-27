@@ -18,4 +18,8 @@ public class ConsumeDao {
     public void addConsumeRecord(Live live,User user){
         consumeMapper.addConsumeRecord(live.getId(),live.getMid(),live.getPrice(),user.getId());
     }
+
+    public Integer existRecord(Live live,User user){
+        return consumeMapper.existRecord(live.getId(),user.getId());
+    }
 }

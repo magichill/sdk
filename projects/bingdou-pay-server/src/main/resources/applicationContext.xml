@@ -27,7 +27,7 @@
                 <ref local="createConsumeOrderService"/>
                 <ref local="verifyOrderService"/>
                 <!--<ref local="getRebateInfoService"/>-->
-                <!--<ref local="appleInnerPayService"/>-->
+                <ref local="appleInnerPayService"/>
                 <!--<ref local="getPayTypeListService"/>-->
                 <!--<ref local="getPropsService"/>-->
                 <!--<ref local="getChargeBackMoneyService"/>-->

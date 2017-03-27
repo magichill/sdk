@@ -1,6 +1,8 @@
 package com.bingdou.api.response;
 
+import com.bingdou.core.model.User;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * Created by gaoshan on 17/2/18.
@@ -96,5 +98,16 @@ public class UserResponse {
 
     public void setFollowingStatus(int followingStatus) {
         this.followingStatus = followingStatus;
+    }
+
+    public void parseFromUser(User user){
+        setId(user.getId());
+        setAvatarUrl(user.getAvatar());
+        setCpdId(user.getCpId());
+        setGender(user.getGender());
+        setNickName(user.getNickName());
+        if(!StringUtils.isEmpty(user.getSignature())) {
+            setSignature(user.getSignature());
+        }
     }
 }

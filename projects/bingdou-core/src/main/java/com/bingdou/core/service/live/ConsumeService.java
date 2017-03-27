@@ -20,4 +20,14 @@ public class ConsumeService {
         LogContext.instance().info("插入用户消费记录");
         consumeDao.addConsumeRecord(live,user);
     }
+
+    public boolean exisRecord(Live live,User user){
+        LogContext.instance().info("查询用户是否购买过直播");
+        Integer existRecord = consumeDao.existRecord(live,user);
+        if(existRecord > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

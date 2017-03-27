@@ -10,7 +10,7 @@ public class VerifyOrderResponse {
 
     @SerializedName("verify_result")
     private int verifyResult = -1;
-    @SerializedName("cpid_or_id")
+    @SerializedName("short_id")
     private String cpIdOrId;
     @SerializedName("money")
     private Float money;

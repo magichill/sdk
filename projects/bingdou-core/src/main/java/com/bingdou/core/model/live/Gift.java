@@ -15,6 +15,8 @@ public class Gift {
 
     private int status;
 
+    private Integer price;
+
     public int getId() {
         return id;
     }
@@ -39,6 +41,14 @@ public class Gift {
         this.giftPic = giftPic;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public int getGiftType() {
         return giftType;
     }
@@ -54,4 +64,6 @@ public class Gift {
     public void setStatus(int status) {
         this.status = status;
     }
+
+
 }

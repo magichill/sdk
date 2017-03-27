@@ -1,14 +1,22 @@
 package com.bingdou.api.service;
 
 import com.bingdou.api.request.GetLiveInfoRequest;
+import com.bingdou.api.response.ComposedLiveResponse;
+import com.bingdou.api.response.UserResponse;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
+import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.core.service.user.FocusService;
 import com.bingdou.tools.JsonUtil;
+import com.bingdou.tools.LogContext;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,11 +24,16 @@ import javax.servlet.http.HttpServletRequest;
  * Created by gaoshan on 16-11-4.
  */
 @Service
-public class GetLiveInfoService extends BaseService implements IMethodService {
+public class GetLiveInfoService extends LiveBaseService implements IMethodService {
+
+    @Autowired
+    private FocusService focusService;
 
     @Override
     public BaseRequest getBaseRequest(HttpServletRequest request) throws Exception {
-        return null;
+        GetLiveInfoRequest getLiveInfoRequest = new GetLiveInfoRequest();
+        getLiveInfoRequest.parseRequest(request);
+        return getLiveInfoRequest;
     }
 
     @Override
@@ -30,7 +43,11 @@ public class GetLiveInfoService extends BaseService implements IMethodService {
 
     @Override
     public User getUser(BaseRequest baseRequest) {
-        return null;
+        GetLiveInfoRequest getLiveInfoRequest = (GetLiveInfoRequest) baseRequest;
+        User user = userBaseService.getUserDetailByAccount(getLiveInfoRequest.getAccount());
+        if (user == null)
+            user = userBaseService.getDetailByIdOrCpIdOrLoginName(getLiveInfoRequest.getAccount());
+        return user;
     }
 
     @Override
@@ -38,23 +55,38 @@ public class GetLiveInfoService extends BaseService implements IMethodService {
         return "get_live_info";
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ServiceResult execute4Server(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         GetLiveInfoRequest getLiveInfoRequest = (GetLiveInfoRequest) baseRequest;
-
-        return null;
+        return getLiveInfo(getLiveInfoRequest,request,user);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public ServiceResult execute4Client(HttpServletRequest request, BaseRequest baseRequest, User user) throws Exception {
         GetLiveInfoRequest getLiveInfoRequest = (GetLiveInfoRequest) baseRequest;
-
-        return null;
+        return getLiveInfo(getLiveInfoRequest,request,user);
     }
 
-    private ServiceResult getLiveInfo(GetLiveInfoRequest getLiveInfoRequest, HttpServletRequest request) throws Exception {
-
-        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(""));
+    private ServiceResult getLiveInfo(GetLiveInfoRequest getLiveInfoRequest, HttpServletRequest request,User user) throws Exception {
+        LogContext.instance().info("获取直播数据详情");
+        if(StringUtils.isEmpty(getLiveInfoRequest.getAccount()) || getLiveInfoRequest.getLiveId()==null){
+            return ServiceResultUtil.illegal("参数不正确");
+        }
+        Live live = getLiveInfo(getLiveInfoRequest.getLiveId());
+        if(live == null){
+            return ServiceResultUtil.illegal("直播不存在或已删除");
+        }
+        ComposedLiveResponse composedLiveResponse = new ComposedLiveResponse();
+        composedLiveResponse.parseFromLive(live);
+        User liveOwner = userBaseService.getDetailById(live.getMid());
+        UserResponse userResponse = new UserResponse();
+        userResponse.parseFromUser(liveOwner);
+        Integer focusStatus = focusService.checkFocusInfoStatus(user.getId(),liveOwner.getId());
+        userResponse.setFollowingStatus(focusStatus==null?0:focusStatus);
+        composedLiveResponse.setUserResponse(userResponse);
+        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(composedLiveResponse));
     }
 
 }
