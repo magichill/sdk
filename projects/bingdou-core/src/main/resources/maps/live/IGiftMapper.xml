@@ -7,7 +7,7 @@
         SELECT
           id,gift_title,gift_pic,gift_type,status,price
         FROM ${liveDB}.lc_gift
-        WHERE li.id=#{giftId}
+        WHERE id=#{giftId}
         ]]>
     </select>
 

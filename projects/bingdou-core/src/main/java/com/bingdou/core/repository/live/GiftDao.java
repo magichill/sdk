@@ -18,12 +18,10 @@ public class GiftDao {
     private IGiftMapper giftMapper;
 
     public List<Gift> getGiftList(){
-        LogContext.instance().info("获取礼物列表");
         return giftMapper.getEnableGiftList();
     }
 
     public Gift getGiftById(Integer giftId){
-        LogContext.instance().info("获取礼物信息");
         return giftMapper.getGiftById(giftId);
     }
 

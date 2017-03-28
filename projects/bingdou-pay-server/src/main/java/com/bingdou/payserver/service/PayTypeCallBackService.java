@@ -87,7 +87,7 @@ public class PayTypeCallBackService {
 //                        user.getId(), response.getAmount(), rechargeOrder.getPropId(), rechargeOrder.getAppId(),
 //                        userVipGrade.isInBlackList(), rechargeOrder.getOrderId());
 //            }
-            addBackMoney(backMoney, response, rechargeOrder);
+//            addBackMoney(backMoney, response, rechargeOrder);
         } else {
             LogContext.instance().info("直充回调逻辑");
             LogContext.instance().info("处理组合消费逻辑");

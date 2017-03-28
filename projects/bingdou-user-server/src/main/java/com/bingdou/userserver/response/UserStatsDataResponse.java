@@ -3,6 +3,7 @@ package com.bingdou.userserver.response;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.UserStat;
 import com.bingdou.core.model.UserVipGrade;
+import com.bingdou.tools.NumberUtil;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -190,6 +191,7 @@ public class UserStatsDataResponse {
             setNextVipLevelMoney(0f);
             setVipUpNeedMoney(0f);
         }
+        setAccount(NumberUtil.convertYuanFromFen(user.getMoney()));
         setLikeCount(userStat.getLikeCount());
         setFollowers(userStat.getFollowers());
     }

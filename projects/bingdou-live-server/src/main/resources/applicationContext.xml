@@ -42,6 +42,8 @@
                 <ref local="homeFollowService" />
                 <ref local="getUserLivesService" />
                 <ref local="buyLiveService" />
+                <ref local="getGiftListService" />
+                <ref local="sendGiftService" />
             </list>
         </property>
     </bean>

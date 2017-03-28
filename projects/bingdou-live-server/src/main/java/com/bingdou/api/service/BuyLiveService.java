@@ -1,6 +1,7 @@
 package com.bingdou.api.service;
 
 import com.bingdou.api.request.BuyLiveRequest;
+import com.bingdou.api.utils.PayRequestUtils;
 import com.bingdou.core.constants.PayTypeData;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.core.helper.ServiceResult;
@@ -87,9 +88,14 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
         }
         Map<String,String> map = requestConsumeCoin(buyLiveRequest,live);
         if(map!= null && StringUtils.isEmpty(map.get("error"))){
-            consumeService.addConsumeRecord(live,user);
-            LogContext.instance().info("购买直播成功");
-            return ServiceResultUtil.success(JsonUtil.bean2JsonTree(map));
+            if(StringUtils.isEmpty(map.get("error"))) {
+                consumeService.addConsumeRecord(live,user);
+                LogContext.instance().info("购买直播成功");
+                return ServiceResultUtil.success(JsonUtil.bean2JsonTree(map));
+            }else{
+                LogContext.instance().info("购买直播失败");
+                return ServiceResultUtil.illegal(map.get("error"));
+            }
         }else{
             return ServiceResultUtil.illegal("支付失败");
         }
@@ -120,20 +126,7 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
         paramMap.put("param", CodecUtils.aesEncode(sb.toString(), KeyGroup.DEFAULT));
         paramMap.put("request_source_index","live-server");
         paramMap.put("sign", CodecUtils.getMySign(sb.toString(),KeyGroup.DEFAULT));
-        String content = "";
 
-        try {
-            content = HttpClientUtil.doPostHttpClient("request_consume_coin",payUrl,null,paramMap,3000,3000);
-            LogContext.instance().info("支付接口请求参数:");
-            LogContext.instance().info("支付接口返回加密值："+content);
-            Map contentMap = JsonUtil.jsonStr2Bean(CodecUtils.aesDecode(content, KeyGroup.DEFAULT), Map.class);
-            LogContext.instance().info("支付接口返回解密值："+JsonUtil.bean2JsonStr(contentMap));
-            Map resultMap = JsonUtil.jsonStr2Bean(String.valueOf(contentMap.get("result")), Map.class);
-            resultMap.put("error", String.valueOf(contentMap.get("error_message")));
-            return resultMap;
-        }catch (Exception e){
-            LogContext.instance().error("支付接口失败返回值："+content+"[exception in pay]");
-            return null;
-        }
+        return PayRequestUtils.getPayInfo(payUrl,paramMap);
     }
 }

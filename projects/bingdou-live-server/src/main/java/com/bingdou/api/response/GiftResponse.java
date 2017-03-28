@@ -1,5 +1,7 @@
 package com.bingdou.api.response;
 
+import com.bingdou.core.model.live.Gift;
+import com.bingdou.tools.NumberUtil;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -18,6 +20,9 @@ public class GiftResponse {
 
     @SerializedName("gift_type")
     private int giftType;
+
+    @SerializedName("gift_price")
+    private float giftPrice;
 
     public int getGiftId() {
         return giftId;
@@ -49,5 +54,25 @@ public class GiftResponse {
 
     public void setGiftType(int giftType) {
         this.giftType = giftType;
+    }
+
+
+    public float getGiftPrice() {
+        return giftPrice;
+    }
+
+    public void setGiftPrice(float giftPrice) {
+        this.giftPrice = giftPrice;
+    }
+
+    public void parseFromGift(Gift gift){
+        if(gift == null){
+            return ;
+        }
+        setGiftId(gift.getId());
+        setGiftPic(gift.getGiftPic());
+        setGiftTitle(gift.getGiftTitle());
+        setGiftType(gift.getGiftType());
+        setGiftPrice(NumberUtil.convertYuanFromFen(gift.getPrice()));
     }
 }
