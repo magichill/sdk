@@ -242,7 +242,8 @@ public class PayUtils {
         moneyLog.setUserId(userId);
         moneyLog.setItem(rechargeOrderId);
         moneyLog.setMoney(amount);
-        moneyLog.setMoneyBalance(userMoney + amount);
+        //TODO 充值金额与冰豆比例 1:10
+        moneyLog.setMoneyBalance(userMoney + amount*10);
         moneyLog.setReason(payType.getName() + "充值");
         moneyLog.setType(MoneyLogType.RECHARGE.getIndex());
         return moneyLog;

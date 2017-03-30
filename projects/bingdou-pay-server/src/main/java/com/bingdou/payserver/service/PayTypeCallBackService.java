@@ -275,7 +275,7 @@ public class PayTypeCallBackService {
             }
         }
         if (isNotEnough) {
-            LogContext.instance().error("用户余额不足,不下发CP道具,将把现金部分加入到海马币余额中");
+            LogContext.instance().error("用户余额不足,不下发CP道具,将把现金部分加入到冰豆余额中");
             userBaseService.updateMoneyById(user.getId(), user.getMoney(),
                     PayUtils.buildRechargeMoneyLog(rechargeOrder.getOrderId(),
                             PayType.getByIndex(rechargeOrder.getPayType()), user.getId(),

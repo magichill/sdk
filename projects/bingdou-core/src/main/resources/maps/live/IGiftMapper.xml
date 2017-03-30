@@ -5,22 +5,52 @@
     <select id="getGiftById" parameterType="java.lang.Integer" resultMap="giftDetail">
         <![CDATA[
         SELECT
-          id,gift_title,gift_pic,gift_type,status,price
+          id,gift_title,gift_pic,gift_type,status,price,gift_desc
         FROM ${liveDB}.lc_gift
         WHERE id=#{giftId}
         ]]>
     </select>
 
-    <insert id="addGift" parameterType="java.util.Map">
+    <insert id="addGift" parameterType="com.bingdou.core.model.live.Gift">
         <![CDATA[
           INSERT INTO ${liveDB}.lc_gift
-          (gift_title,,gift_pic,status,gift_type,create_time,update_time)
-          VALUE(#{giftTitle},#{giftPic},1,#{gift_type},UNIX_TIMESTAMP(),UNIX_TIMESTAMP())
+          (gift_title,gift_pic,price,gift_desc,status,gift_type,create_time,update_time)
+          VALUE(#{giftTitle},#{giftPic},#{price},#{giftDesc},1,#{giftType},now(),now())
         ]]>
     </insert>
 
+    <update id="updateGift" parameterType="com.bingdou.core.model.live.Gift">
+        update ${liveDB}.lc_gift
+        set update_time=now()
+        <if test="giftTitle!=null">
+            ,gift_title=#{giftTitle}
+        </if>
+        <if test="giftPic!=null">
+            ,gift_pic=#{giftPic}
+        </if>
+        <if test="giftDesc!=null">
+            ,gift_desc=#{giftDesc}
+        </if>
+        <if test="status!=null">
+            ,status=#{status}
+        </if>
+        <if test="giftType!=null">
+            ,gift_type=#{giftType}
+        </if>
+        <if test="price!=null">
+            ,price=#{price}
+        </if>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteGift" parameterType="java.lang.Integer">
+        delete from ${liveDB}.lc_gift
+        where id=#{id}
+    </delete>
+
+
     <select id="getEnableGiftList" resultMap="giftDetail">
-        select id,gift_title,gift_pic,gift_type,status,price from ${liveDB}.lc_gift where status=1
+        select id,gift_title,gift_pic,gift_type,status,price,gift_desc from ${liveDB}.lc_gift where status=1
     </select>
 
     <resultMap id="giftDetail" type="com.bingdou.core.model.live.Gift">
@@ -30,6 +60,7 @@
         <result property="status" column="status"/>
         <result property="giftType" column="gift_type"/>
         <result property="price" column="price"/>
+        <result property="giftDesc" column="gift_desc"/>
 
     </resultMap>
 

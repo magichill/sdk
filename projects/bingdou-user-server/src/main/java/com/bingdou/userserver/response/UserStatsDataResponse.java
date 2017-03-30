@@ -17,7 +17,7 @@ public class UserStatsDataResponse {
     private Integer likeCount = 0;
     @SerializedName("earnings")
     private float earnings = 0f;
-    @SerializedName("account")
+    @SerializedName("balance")
     private float account = 0f;
     @SerializedName("followers")
     private Integer followers = 0;
@@ -43,9 +43,6 @@ public class UserStatsDataResponse {
     private String otherTags = "";
     @SerializedName("charged_at")
     private long chargeTime = 0l;
-
-    //TODO contributors map<user>
-
 
     public int getLiveCount() {
         return liveCount;

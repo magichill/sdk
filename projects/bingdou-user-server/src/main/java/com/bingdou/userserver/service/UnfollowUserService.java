@@ -46,7 +46,8 @@ public class UnfollowUserService extends BaseService implements IMethodService {
     }
 
     private ServiceResult dealUnfollowUser(HttpServletRequest request, FocusRequest focusRequest, User user) throws Exception {
-        if (StringUtils.isEmpty(focusRequest.getUserId()) || StringUtils.isEmpty(focusRequest.getFollowId()) ) {
+        if (StringUtils.isEmpty(focusRequest.getUserId()) || StringUtils.isEmpty(focusRequest.getFollowId())
+                || focusRequest.getFollowId().equals(focusRequest.getUserId())) {
             return ServiceResultUtil.illegal("请求参数错误");
         }
         User followerUser = getFollower(focusRequest.getFollowId());

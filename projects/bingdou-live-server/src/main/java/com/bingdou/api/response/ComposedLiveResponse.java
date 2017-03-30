@@ -66,14 +66,21 @@ public class ComposedLiveResponse {
     @SerializedName("update_at")
     private Long updateAt;
 
-    @SerializedName("preview_created_at")
-    private long previewCreatedAt;
+    @SerializedName("video_type")
+    private Integer videoType;
 
-    @SerializedName("preview_updated_at")
-    private long previewUpdatedAt;
+    @SerializedName("password")
+    private String password;
+
+    @SerializedName("price")
+    private Integer price;
+
+    @SerializedName("reward_percent")
+    private Integer rewardPercent;
 
     @SerializedName("playback_duration")
     private long playbackDuration = 0;
+
 
     public UserResponse getUserResponse() {
         return userResponse;
@@ -187,22 +194,6 @@ public class ComposedLiveResponse {
         this.tags = tags;
     }
 
-    public long getPreviewCreatedAt() {
-        return previewCreatedAt;
-    }
-
-    public void setPreviewCreatedAt(long previewCreatedAt) {
-        this.previewCreatedAt = previewCreatedAt;
-    }
-
-    public long getPreviewUpdatedAt() {
-        return previewUpdatedAt;
-    }
-
-    public void setPreviewUpdatedAt(long previewUpdatedAt) {
-        this.previewUpdatedAt = previewUpdatedAt;
-    }
-
     public long getPlaybackDuration() {
         return playbackDuration;
     }
@@ -251,6 +242,38 @@ public class ComposedLiveResponse {
         this.updateAt = updateAt;
     }
 
+    public Integer getVideoType() {
+        return videoType;
+    }
+
+    public void setVideoType(Integer videoType) {
+        this.videoType = videoType;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getRewardPercent() {
+        return rewardPercent;
+    }
+
+    public void setRewardPercent(Integer rewardPercent) {
+        this.rewardPercent = rewardPercent;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     public void parseFromLive(Live live){
         setId(live.getId());
         setPlayUrl(live.getPullStream());
@@ -260,10 +283,15 @@ public class ComposedLiveResponse {
         setPlaybackUrl(live.getReplayUrl());
         setH5Url(live.getH5Url());
         setStatus(live.getStatus());
+        setTags(live.getTags());
         setOrientation(live.getOrientation());
         setCreateAt(live.getCreateTime()==null?0:live.getCreateTime().getTime());
         setUpdateAt(live.getUpdateTime()==null?0:live.getUpdateTime().getTime());
         setStartAt(live.getStartTime()==null?0:live.getStartTime().getTime());
         setEndAt(live.getEndTime()==null?0:live.getEndTime().getTime());
+        setPassword(live.getPassword());
+        setPrice(live.getPrice());
+        setRewardPercent(live.getRewardPercent());
+        setVideoType(live.getLiveType());
     }
 }

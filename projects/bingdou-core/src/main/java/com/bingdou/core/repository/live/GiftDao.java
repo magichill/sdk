@@ -25,5 +25,25 @@ public class GiftDao {
         return giftMapper.getGiftById(giftId);
     }
 
+    public boolean addGift(Gift gift) {
+        giftMapper.addGift(gift);
+        return true;
+    }
+
+    public boolean updateGift(Gift gift){
+        if(gift == null){
+            return false;
+        }
+        giftMapper.updateGift(gift);
+        return true;
+    }
+
+    public boolean deleteGift(Integer id){
+        if(id == null){
+            return false;
+        }
+        giftMapper.deleteGift(id);
+        return true;
+    }
 
 }

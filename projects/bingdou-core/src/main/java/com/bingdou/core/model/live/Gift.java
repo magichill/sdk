@@ -17,6 +17,8 @@ public class Gift {
 
     private Integer price;
 
+    private String giftDesc;
+
     public int getId() {
         return id;
     }
@@ -65,5 +67,11 @@ public class Gift {
         this.status = status;
     }
 
+    public String getGiftDesc() {
+        return giftDesc;
+    }
 
+    public void setGiftDesc(String giftDesc) {
+        this.giftDesc = giftDesc;
+    }
 }

@@ -40,4 +40,19 @@ public class GiftService {
         LogContext.instance().info("记录赠送礼物");
         sendGiftDao.addSendGift(live,user,gift,sendNum);
     }
+
+    public boolean addGift(Gift gift){
+        LogContext.instance().info("新增礼物");
+        return giftDao.addGift(gift);
+    }
+
+    public boolean updateGift(Gift gift){
+        LogContext.instance().info("更新礼物");
+        return giftDao.updateGift(gift);
+    }
+
+    public boolean deleteGift(Integer id){
+        LogContext.instance().info("删除礼物");
+        return giftDao.deleteGift(id);
+    }
 }

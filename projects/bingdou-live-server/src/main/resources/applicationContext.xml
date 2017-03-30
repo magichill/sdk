@@ -44,6 +44,8 @@
                 <ref local="buyLiveService" />
                 <ref local="getGiftListService" />
                 <ref local="sendGiftService" />
+                <ref local="addGiftService" />
+                <ref local="updateGiftService" />
             </list>
         </property>
     </bean>

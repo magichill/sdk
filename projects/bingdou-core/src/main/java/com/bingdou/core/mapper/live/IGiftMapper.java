@@ -14,6 +14,10 @@ public interface IGiftMapper {
 
     List<Gift> getEnableGiftList();
 
-    void addGift(@Param("giftTitle") String giftTitle, @Param("giftPic") String giftPic,
-                 @Param("giftType") int gift_type);
+    void addGift(Gift gift);
+
+    void updateGift(Gift gift);
+
+    void deleteGift(@Param("id") Integer id);
+
 }

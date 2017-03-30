@@ -5,7 +5,9 @@
     <select id="getLiveById" parameterType="java.lang.Integer" resultMap="liveDetail">
         <![CDATA[
         SELECT
-          li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price
+          li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,
+          li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,
+          li.start_time,li.end_time
         FROM ${liveDB}.lc_live_index li
         JOIN ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)} ll ON li.id=ll.lid
         WHERE li.id=#{liveId}
@@ -46,8 +48,9 @@
 
     <select id="getLiveList" parameterType="java.util.Map" resultMap="liveDetail">
         SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.h5_url,li.mid,
-        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,
-        li.start_time,li.end_time,li.create_time,li.update_time
+        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,li.tags,
+        li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
+        li.price,li.live_type
         FROM ${liveDB}.lc_live_index li
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         WHERE 1=1 AND li.status != -1
@@ -163,6 +166,10 @@
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
         <result property="mid" column="mid"/>
+        <result property="tags" column="tags"/>
+        <result property="rewardPercent" column="reward_percent"/>
+        <result property="password" column="password"/>
+        <result property="liveType" column="live_type"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="mid"/>
             <result property="gender" column="gender"/>
