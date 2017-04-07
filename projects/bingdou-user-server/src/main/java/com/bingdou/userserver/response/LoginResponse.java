@@ -90,7 +90,7 @@ public class LoginResponse {
 
 
         statsDataResponse.setUserRechargeMoney(userVipGrade.getMoney());
-        statsDataResponse.setAccount(NumberUtil.convertYuanFromFen(user.getMoney()));
+        statsDataResponse.setAccount(user.getMoney());
         buildVipData(userVipGrade,statsDataResponse);
         userProfileResponse.setCertificationStatus(certificationStatus);
         if(userStat != null) {
@@ -142,7 +142,7 @@ public class LoginResponse {
         userProfileResponse.setSignature(user.getSignature()==null? ResponseConstant.DEFAULT_SIGNATURE:user.getSignature());
         statsDataResponse.setLevelId(user.getSafeLevel());
         statsDataResponse.setVipLevel(userVipGrade.getUserLevelId());
-        statsDataResponse.setAccount(NumberUtil.convertYuanFromFen(user.getMoney()));
+        statsDataResponse.setAccount(user.getMoney());
         userProfileResponse.setNickName(user.getNickName());
         setToken(user.getToken());
         setvToken(user.getvToken());

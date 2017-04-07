@@ -9,14 +9,23 @@
         ]]>
     </insert>
 
-    <!--<select id="getIncomeByHostId" parameterType="java.lang.Integer" resultType="java.lang.Integer">-->
-        <!--<![CDATA[-->
-        <!--SELECT-->
-          <!--count(price)-->
-        <!--FROM ${liveDB}.lc_consume_record-->
-        <!--WHERE host_id=#{hostId}-->
-        <!--]]>-->
-    <!--</select>-->
+    <select id="getIncomeByHostId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+          sum(price)
+        FROM ${liveDB}.lc_consume_record
+        WHERE host_id=#{hostId}
+        ]]>
+    </select>
+
+    <select id="getConsumeByMid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+          sum(price)
+        FROM ${liveDB}.lc_consume_record
+        WHERE mid=#{mid}
+        ]]>
+    </select>
 
     <select id="existRecord" parameterType="java.util.Map" resultType="java.lang.Integer">
         <![CDATA[

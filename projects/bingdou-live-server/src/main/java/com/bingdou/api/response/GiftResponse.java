@@ -1,7 +1,6 @@
 package com.bingdou.api.response;
 
 import com.bingdou.core.model.live.Gift;
-import com.bingdou.tools.NumberUtil;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -73,6 +72,6 @@ public class GiftResponse {
         setGiftPic(gift.getGiftPic());
         setGiftTitle(gift.getGiftTitle());
         setGiftType(gift.getGiftType());
-        setGiftPrice(NumberUtil.convertYuanFromFen(gift.getPrice()));
+        setGiftPrice(gift.getPrice());
     }
 }

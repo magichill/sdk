@@ -41,6 +41,8 @@ public class Live {
 
     private String tags;
 
+    private VideoTag tag;
+
     private String password;
 
     private int price;
@@ -218,6 +220,14 @@ public class Live {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public VideoTag getTag() {
+        return tag;
+    }
+
+    public void setTag(VideoTag tag) {
+        this.tag = tag;
     }
 
     /**

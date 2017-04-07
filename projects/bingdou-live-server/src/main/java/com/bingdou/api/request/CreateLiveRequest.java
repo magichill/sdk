@@ -39,7 +39,7 @@ public class CreateLiveRequest extends BaseRequest {
     @SerializedName("password")
     private String password;
     @SerializedName("price")
-    private float price = 0;
+    private Integer price = 0;
 
     @SerializedName("reward_percent")
     private int percent = 0;
@@ -184,11 +184,11 @@ public class CreateLiveRequest extends BaseRequest {
         this.password = password;
     }
 
-    public float getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

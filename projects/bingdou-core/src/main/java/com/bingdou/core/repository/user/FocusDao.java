@@ -20,11 +20,11 @@ public class FocusDao {
         Integer status = focusMapper.checkFocusInfoStatus(userId,followId);
         return status;
     }
-    public int getFollowerCount(int userId){
+    public Integer getFollowerCount(int userId){
         return focusMapper.getFollowerCount(userId);
     }
 
-    public int getFansCount(int userId){
+    public Integer getFansCount(int userId){
         return focusMapper.getFansCount(userId);
     }
 

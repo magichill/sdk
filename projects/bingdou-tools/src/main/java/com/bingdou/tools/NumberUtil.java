@@ -49,9 +49,21 @@ public class NumberUtil {
         return multiply(bgYuan, bigDecimal).intValue();
     }
 
+    public static int convertFenFromBingdou(float yuan) {
+        BigDecimal bgYuan = new BigDecimal(yuan);
+        BigDecimal bigDecimal = new BigDecimal(1);
+        return multiply(bgYuan, bigDecimal).intValue();
+    }
+
     public static float convertYuanFromFen(int fen) {
         BigDecimal bgFen = new BigDecimal(fen);
         BigDecimal bigDecimal = new BigDecimal(100);
+        return divide(bgFen, bigDecimal);
+    }
+
+    public static float convertBingdouFromFen(int fen) {
+        BigDecimal bgFen = new BigDecimal(fen);
+        BigDecimal bigDecimal = new BigDecimal(1);
         return divide(bgFen, bigDecimal);
     }
 

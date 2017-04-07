@@ -11,4 +11,8 @@ public interface IConsumeMapper {
                  @Param("price") Integer price,@Param("hostId") Integer hostId);
 
     Integer existRecord(@Param("liveId") int liveId, @Param("mid") Integer mid);
+
+    Integer getIncomeByHostId(@Param("hostId") Integer hostId);
+
+    Integer getConsumeByMid(@Param("mid") Integer mid);
 }

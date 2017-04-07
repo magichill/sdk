@@ -1,9 +1,12 @@
 package com.bingdou.api.response;
 
 import com.bingdou.core.model.live.Live;
+import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by gaoshan on 16-11-4.
@@ -32,6 +35,9 @@ public class CreateLiveResponse {
     @SerializedName("like_count")
     private int likeCount;
 
+    @SerializedName("video_type")
+    private int videoType;
+
     @SerializedName("share_count")
     private int shareCount;
 
@@ -41,8 +47,11 @@ public class CreateLiveResponse {
     @SerializedName("chatroom_id")
     private long chatRoomId;
 
-    @SerializedName("tags")
-    private String tags;
+//    @SerializedName("tags")
+//    private List<String> tags;
+
+    @SerializedName("tag")
+    private LiveTagResponse liveTagResponse;
 
     @SerializedName("start_at")
     private Long startAt;
@@ -56,11 +65,11 @@ public class CreateLiveResponse {
     @SerializedName("update_at")
     private Long updateAt;
 
-    @SerializedName("preview_created_at")
-    private long previewCreateAt;
-
-    @SerializedName("preview_updated_at")
-    private long previewUpdateAt;
+//    @SerializedName("preview_created_at")
+//    private long previewCreateAt;
+//
+//    @SerializedName("preview_updated_at")
+//    private long previewUpdateAt;
 
     @SerializedName("playback_duration")
     private int duration;
@@ -157,12 +166,12 @@ public class CreateLiveResponse {
         this.chatRoomId = chatRoomId;
     }
 
-    public String getTags() {
-        return tags;
+    public LiveTagResponse getLiveTagResponse() {
+        return liveTagResponse;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void setLiveTagResponse(LiveTagResponse liveTagResponse) {
+        this.liveTagResponse = liveTagResponse;
     }
 
     public Long getStartAt() {
@@ -179,22 +188,6 @@ public class CreateLiveResponse {
 
     public void setEndAt(Long endAt) {
         this.endAt = endAt;
-    }
-
-    public long getPreviewCreateAt() {
-        return previewCreateAt;
-    }
-
-    public void setPreviewCreateAt(long previewCreateAt) {
-        this.previewCreateAt = previewCreateAt;
-    }
-
-    public long getPreviewUpdateAt() {
-        return previewUpdateAt;
-    }
-
-    public void setPreviewUpdateAt(long previewUpdateAt) {
-        this.previewUpdateAt = previewUpdateAt;
     }
 
     public int getDuration() {
@@ -253,6 +246,14 @@ public class CreateLiveResponse {
         this.updateAt = updateAt;
     }
 
+    public int getVideoType() {
+        return videoType;
+    }
+
+    public void setVideoType(int videoType) {
+        this.videoType = videoType;
+    }
+
     public void parseFromLive(Live live){
         if(live == null){
             return ;
@@ -270,5 +271,17 @@ public class CreateLiveResponse {
         setEndAt(live.getEndTime()==null?0:live.getEndTime().getTime());
         setCreateAt(live.getCreateTime()==null?0:live.getCreateTime().getTime());
         setUpdateAt(live.getUpdateTime()==null?0:live.getUpdateTime().getTime());
+//        List tagList = Lists.newArrayList();
+//        String tags = live.getTags();
+//        if(!StringUtils.isEmpty(tags)) {
+//            String[] tagArg = tags.split(",");
+//            for(String tag : tagArg){
+//                tagList.add(tag);
+//            }
+//        }
+        LiveTagResponse liveTagResponse = new LiveTagResponse();
+        liveTagResponse.parseFromTag(live.getTag());
+        setLiveTagResponse(liveTagResponse);
+        setVideoType(live.getLiveType());
     }
 }

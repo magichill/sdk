@@ -85,7 +85,7 @@ public abstract class LiveBaseService extends BaseService {
             live.setLivePicture(request.getCoverUrl());
         }
         if(request.getPrice() != null) {
-            live.setPrice(NumberUtil.convertFenFromYuan(request.getPrice()));
+            live.setPrice(request.getPrice());
         }
         if(StringUtils.isNotEmpty(request.getPassword())) {
             live.setPassword(request.getPassword());
@@ -99,6 +99,9 @@ public abstract class LiveBaseService extends BaseService {
         if(request.getStartAt()!=null){
             Date date = new Date(request.getStartAt());
             live.setStartTime(date);
+        }
+        if(request.getVideoType()!= null){
+            live.setLiveType(request.getVideoType());
         }
         liveDao.updateAnnounceLiveIndex(live);
         liveDao.updateAnnounceLive(live);
@@ -120,8 +123,9 @@ public abstract class LiveBaseService extends BaseService {
         live.setOrientation(createLiveRequest.getOrientation());
         live.setTags(createLiveRequest.getTags());
         live.setPassword(createLiveRequest.getPassword());
-        live.setPrice(NumberUtil.convertFenFromYuan(createLiveRequest.getPrice()));
+        live.setPrice(createLiveRequest.getPrice());
         live.setRewardPercent(createLiveRequest.getPercent());
+        live.setStartTime(new Date(createLiveRequest.getStartAt()));
 
         return live;
     }

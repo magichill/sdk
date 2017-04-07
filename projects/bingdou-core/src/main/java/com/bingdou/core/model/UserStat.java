@@ -9,8 +9,8 @@ public class UserStat {
     private int likeCount;
     private int followers;
     private long expValue;
-    private long incomeLoyalty;
-    private long consumeLoyalty;
+    private Integer incomeLoyalty;
+    private Integer consumeLoyalty;
     private String officialTag;
     private String otherTags;
 
@@ -46,19 +46,19 @@ public class UserStat {
         this.expValue = expValue;
     }
 
-    public long getIncomeLoyalty() {
+    public Integer getIncomeLoyalty() {
         return incomeLoyalty;
     }
 
-    public void setIncomeLoyalty(long incomeLoyalty) {
+    public void setIncomeLoyalty(Integer incomeLoyalty) {
         this.incomeLoyalty = incomeLoyalty;
     }
 
-    public long getConsumeLoyalty() {
+    public Integer getConsumeLoyalty() {
         return consumeLoyalty;
     }
 
-    public void setConsumeLoyalty(long consumeLoyalty) {
+    public void setConsumeLoyalty(Integer consumeLoyalty) {
         this.consumeLoyalty = consumeLoyalty;
     }
 

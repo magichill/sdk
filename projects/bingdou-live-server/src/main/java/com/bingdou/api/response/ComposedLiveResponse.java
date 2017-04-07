@@ -1,7 +1,11 @@
 package com.bingdou.api.response;
 
 import com.bingdou.core.model.live.Live;
+import com.google.common.collect.Lists;
 import com.google.gson.annotations.SerializedName;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.List;
 
 
 /**
@@ -51,8 +55,11 @@ public class ComposedLiveResponse {
     @SerializedName("playback_view_count")
     private int playbackCount = 0;
 
-    @SerializedName("tags")
-    private String tags;
+//    @SerializedName("tags")
+//    private List<String> tags;
+
+    @SerializedName("tag")
+    private LiveTagResponse liveTagResponse;
 
     @SerializedName("start_at")
     private Long startAt;
@@ -80,6 +87,9 @@ public class ComposedLiveResponse {
 
     @SerializedName("playback_duration")
     private long playbackDuration = 0;
+
+    @SerializedName("lock")
+    private Boolean lock;
 
 
     public UserResponse getUserResponse() {
@@ -186,12 +196,21 @@ public class ComposedLiveResponse {
         this.playbackCount = playbackCount;
     }
 
-    public String getTags() {
-        return tags;
+//    public List<String> getTags() {
+//        return tags;
+//    }
+//
+//    public void setTags(List<String> tags) {
+//        this.tags = tags;
+//    }
+
+
+    public LiveTagResponse getLiveTagResponse() {
+        return liveTagResponse;
     }
 
-    public void setTags(String tags) {
-        this.tags = tags;
+    public void setLiveTagResponse(LiveTagResponse liveTagResponse) {
+        this.liveTagResponse = liveTagResponse;
     }
 
     public long getPlaybackDuration() {
@@ -274,6 +293,14 @@ public class ComposedLiveResponse {
         this.price = price;
     }
 
+    public Boolean getLock() {
+        return lock;
+    }
+
+    public void setLock(Boolean lock) {
+        this.lock = lock;
+    }
+
     public void parseFromLive(Live live){
         setId(live.getId());
         setPlayUrl(live.getPullStream());
@@ -283,7 +310,18 @@ public class ComposedLiveResponse {
         setPlaybackUrl(live.getReplayUrl());
         setH5Url(live.getH5Url());
         setStatus(live.getStatus());
-        setTags(live.getTags());
+//        List tagList = Lists.newArrayList();
+//        String tags = live.getTags();
+//        if(!StringUtils.isEmpty(tags)) {
+//            String[] tagArg = tags.split(",");
+//            for(String tag : tagArg){
+//                tagList.add(tag);
+//            }
+//        }
+//        setTags(tagList);
+        LiveTagResponse liveTagResponse = new LiveTagResponse();
+        liveTagResponse.parseFromTag(live.getTag());
+        setLiveTagResponse(liveTagResponse);
         setOrientation(live.getOrientation());
         setCreateAt(live.getCreateTime()==null?0:live.getCreateTime().getTime());
         setUpdateAt(live.getUpdateTime()==null?0:live.getUpdateTime().getTime());

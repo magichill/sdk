@@ -7,10 +7,11 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface ISendGiftMapper {
 
-//    #{userId},#{hostId},#{liveId},#{giftId},#{sendMoney},#{sendNum}
     void addSendGift(@Param("liveId") int liveId, @Param("mid") Integer mid,
                      @Param("giftId") Integer giftId, @Param("sendMoney") Integer sendMoney,
                      @Param("hostId") Integer hostId,@Param("sendNum") Integer sendNum);
 
     Integer getSendMoneyByMid(@Param("mid") Integer mid);
+
+    Integer getReceiveMoneyByHostId(@Param("hostId") Integer hostId);
 }

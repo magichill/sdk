@@ -16,10 +16,18 @@ public class ConsumeDao {
     private IConsumeMapper consumeMapper;
 
     public void addConsumeRecord(Live live,User user){
-        consumeMapper.addConsumeRecord(live.getId(),live.getMid(),live.getPrice(),user.getId());
+        consumeMapper.addConsumeRecord(live.getId(),user.getId(),live.getPrice(),live.getMid());
     }
 
     public Integer existRecord(Live live,User user){
         return consumeMapper.existRecord(live.getId(),user.getId());
+    }
+
+    public Integer consumePrice(User user){
+        return consumeMapper.getConsumeByMid(user.getId());
+    }
+
+    public Integer incomePrice(User user){
+        return consumeMapper.getIncomeByHostId(user.getId());
     }
 }

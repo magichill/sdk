@@ -8,6 +8,9 @@ import com.bingdou.core.model.UserStat;
 import com.bingdou.core.model.UserVipGrade;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.core.service.live.ConsumeService;
+import com.bingdou.core.service.live.GiftService;
+import com.bingdou.core.service.live.LiveService;
 import com.bingdou.core.service.pay.VipGradeService;
 import com.bingdou.core.service.user.FocusService;
 import com.bingdou.tools.JsonUtil;
@@ -33,6 +36,15 @@ public class UserStatDataService extends BaseService implements IMethodService {
 
     @Autowired
     private FocusService focusService;
+
+    @Autowired
+    private LiveService liveService;
+
+    @Autowired
+    private ConsumeService consumeService;
+
+    @Autowired
+    private GiftService giftService;
 
     @Override
     public String getMethodName() {
@@ -88,9 +100,23 @@ public class UserStatDataService extends BaseService implements IMethodService {
         UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
         Integer followers = focusService.getFansCount(user.getId());
         Integer likeCount = focusService.getFollowerCount(user.getId());
+        Integer liveCount = liveService.getLiveCountByMid(user.getId());
+
+        Integer income = consumeService.getIncomePrice(user);
+        Integer consume = consumeService.getConsumePrice(user);
+
+        Integer giftIncome = giftService.getReceiveMoney(user);
+        Integer giftConsume = giftService.getSendMoney(user);
+
+        Integer incomeLoyalty = income+giftIncome;
+        Integer consumeLoyalty = consume+giftConsume;
         UserStat userStat = new UserStat();
-        userStat.setLikeCount(likeCount);
-        userStat.setFollowers(followers);
+        userStat.setLikeCount(likeCount==null?0:likeCount);
+        userStat.setFollowers(followers==null?0:followers);
+        userStat.setLiveCount(liveCount==null?0:liveCount);
+        userStat.setConsumeLoyalty(consumeLoyalty==null?0:consumeLoyalty);
+        userStat.setIncomeLoyalty(incomeLoyalty==null?0:incomeLoyalty);
+        //TODO earning
         userStatsDataResponse.parseFromUser(user,userVipGrade,userStat);
         JsonElement result = JsonUtil.bean2JsonTree(userStatsDataResponse);
         LogContext.instance().info("获取用户数据信息成功");

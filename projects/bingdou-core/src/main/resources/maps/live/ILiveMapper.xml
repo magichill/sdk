@@ -6,19 +6,29 @@
         <![CDATA[
         SELECT
           li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,
-          li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,
-          li.start_time,li.end_time
+          li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,lt.id as tid,lt.title,
+          lt.tag_pic,lt.tag_type,li.start_time,li.end_time
         FROM ${liveDB}.lc_live_index li
+        LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
         JOIN ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)} ll ON li.id=ll.lid
         WHERE li.id=#{liveId}
+        ]]>
+    </select>
+
+    <select id="getLiveCountByMid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+          COUNT(1)
+        FROM ${liveDB}.lc_live_index
+        WHERE mid=#{mid}
         ]]>
     </select>
 
     <insert id="addLive" parameterType="java.util.Map">
         <![CDATA[
           INSERT INTO ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
-          (lid,live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,h5_url,create_time,update_time)
-          VALUE(#{liveId},#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},#{h5Url},now(),now())
+          (lid,live_title,live_picture,status,stream_name,mid,live_type,push_stream,pull_stream,h5_url,create_time,update_time,start_time)
+          VALUE(#{liveId},#{liveTitle},#{livePicture},1,#{streamName},#{mid},#{liveType},#{pushStream},#{pullStream},#{h5Url},now(),now(),#{startTime})
         ]]>
     </insert>
 
@@ -28,9 +38,9 @@
         </selectKey>
         <![CDATA[
           INSERT INTO ${liveDB}.lc_live_index(id,live_title,live_picture,push_stream,status,pull_stream,
-          h5_url,stream_name,mid,tags,password,price,reward_percent,orientation,live_type,create_time,update_time)
+          h5_url,stream_name,mid,tags,password,price,reward_percent,orientation,live_type,create_time,update_time,start_time)
           VALUE(#{id},#{liveTitle},#{livePicture},#{pushStream},#{status},#{pullStream},#{h5Url},
-          #{streamName},#{mid},#{tags},#{password},#{price},#{rewardPercent},#{orientation},#{liveType},now(),now())
+          #{streamName},#{mid},#{tags},#{password},#{price},#{rewardPercent},#{orientation},#{liveType},now(),now(),#{startTime})
         ]]>
     </insert>
 
@@ -39,7 +49,7 @@
         ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,
         li.start_time,li.end_time,li.create_time,li.update_time
         FROM ${userDB}.mc_focus_info fi
-        JOIN ${liveDB}.lc_live_index li  ON li.mid = fi.follow_id
+        LEFT JOIN ${liveDB}.lc_live_index li  ON li.mid = fi.follow_id
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         WHERE fi.mid=#{userId} AND li.status != -1
         GROUP BY fi.follow_id
@@ -48,11 +58,12 @@
 
     <select id="getLiveList" parameterType="java.util.Map" resultMap="liveDetail">
         SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.h5_url,li.mid,
-        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,li.tags,
-        li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
+        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,lt.id as tid,lt.title,
+        lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
         li.price,li.live_type
         FROM ${liveDB}.lc_live_index li
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
+        LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
         WHERE 1=1 AND li.status != -1
         <if test="status != null">
             <if test="status == 3">
@@ -89,9 +100,12 @@
     <select id="getLiveInfoByStreamName" parameterType="java.util.Map" resultMap="liveDetail">
         <![CDATA[
         SELECT
-          id,live_title,live_picture,status,mid,push_stream,pull_stream,h5_url,orientation,create_time,update_time
-        FROM ${liveDB}.lc_live_index
-        WHERE stream_name=#{streamName}
+          li.id,li.live_title,li.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,
+          li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,lt.id as tid,lt.title,
+          lt.tag_pic,lt.tag_type,li.start_time,li.end_time
+        FROM ${liveDB}.lc_live_index li
+        LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
+        WHERE li.stream_name=#{streamName}
         ]]>
     </select>
 
@@ -130,24 +144,29 @@
 
     <update id="updateAnnounceLive" parameterType="com.bingdou.core.model.live.Live">
         update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(id)}
-        set live_title=#{liveTitle},live_picture=#{livePicture},start_time=#{startTime}
+        set live_title=#{liveTitle},live_picture=#{livePicture},start_time=#{startTime},
+        live_type=#{liveType}
         where lid=#{id}
     </update>
 
     <update id="updateAnnounceLiveIndex" parameterType="com.bingdou.core.model.live.Live">
         update ${liveDB}.lc_live_index
         set live_title=#{liveTitle},live_picture=#{livePicture},orientation=#{orientation},
-        password=#{password},price=#{price},reward_percent=${rewardPercent},start_time=#{startTime}
+        password=#{password},price=#{price},reward_percent=${rewardPercent},start_time=#{startTime},
+        live_type=#{liveType}
         where id=#{id}
     </update>
 
     <select id="getLiveInfoByMid" parameterType="java.util.Map" resultMap="liveDetail">
         <![CDATA[
         SELECT
-          id,live_title,live_picture,status,mid,push_stream,pull_stream,h5_url,orientation,create_time,update_time
-        FROM ${liveDB}.lc_live_index
-        WHERE mid=#{userId} and status!=-1
-        order by status,create_time desc limit #{start},#{limit}
+          li.id,li.live_title,li.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,
+          li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,lt.id as tid,lt.title,
+          lt.tag_pic,lt.tag_type,li.start_time,li.end_time
+        FROM ${liveDB}.lc_live_index li
+        LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
+        WHERE li.mid=#{userId} and li.status!=-1
+        order by li.status,li.create_time desc limit #{start},#{limit}
         ]]>
     </select>
     <resultMap id="liveDetail" type="com.bingdou.core.model.live.Live">
@@ -177,6 +196,12 @@
             <result property="avatar" column="avatar"/>
             <result property="signature" column="signature"/>
             <result property="cpId" column="cpid"/>
+        </association>
+        <association property="tag" javaType="com.bingdou.core.model.live.VideoTag">
+            <id property="id" column="tid"/>
+            <result property="title" column="title" />
+            <result property="tagPic" column="tag_pic" />
+            <result property="tagType" column="tag_type" />
         </association>
     </resultMap>
 

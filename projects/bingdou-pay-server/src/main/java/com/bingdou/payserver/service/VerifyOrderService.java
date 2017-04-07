@@ -124,7 +124,7 @@ public class VerifyOrderService extends BaseService implements IMethodService {
             UserVipGrade userVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
             response.setCpIdOrId(user.getReturnUserId());
             if (user.getMoney() != null)
-                response.setMoney(NumberUtil.convertYuanFromFen(user.getMoney() + virtualMoney));
+                response.setMoney(NumberUtil.convertBingdouFromFen(user.getMoney() + virtualMoney));
             response.setVipLevel(userVipGrade.getUserLevelId());
             float nextLevelRechargeAmount = 0f;
             float nextLevelNeedRechargeAmount = 0f;

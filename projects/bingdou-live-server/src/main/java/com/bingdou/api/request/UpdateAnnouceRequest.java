@@ -20,13 +20,16 @@ public class UpdateAnnouceRequest extends BaseRequest{
     @SerializedName("password")
     private String password;
     @SerializedName("price")
-    private Float price ;
+    private Integer price ;
     @SerializedName("orientation")
     private Integer orientation;
     @SerializedName("start_at")
     private Long startAt;
     @SerializedName("reward_percent")
     private Integer percent = 0;
+
+    @SerializedName("video_type")
+    private Integer videoType ;
 
     public String getUserId() {
         return userId;
@@ -68,12 +71,16 @@ public class UpdateAnnouceRequest extends BaseRequest{
         this.password = password;
     }
 
-    public Float getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public void setOrientation(Integer orientation) {
+        this.orientation = orientation;
     }
 
     public Integer getOrientation() {
@@ -100,6 +107,14 @@ public class UpdateAnnouceRequest extends BaseRequest{
         this.percent = percent;
     }
 
+    public Integer getVideoType() {
+        return videoType;
+    }
+
+    public void setVideoType(Integer videoType) {
+        this.videoType = videoType;
+    }
+
     @Override
     protected String getLoggerName() {
         return "UpdateAnnounceRequest";
@@ -117,6 +132,7 @@ public class UpdateAnnouceRequest extends BaseRequest{
         this.price = request.getPrice();
         this.percent = request.getPercent();
         this.liveId = request.getLiveId();
+        this.videoType = request.getVideoType();
         return request;
     }
 }

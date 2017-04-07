@@ -22,7 +22,8 @@ public class LiveDao {
 
     public void addLive(Live live){
         liveMapper.addLive(live.getId(),live.getLiveTitle(),live.getMid(),live.getLiveType(),
-                live.getLivePicture(),live.getPushStream(),live.getPullStream(),live.getH5Url(),live.getStreamName());
+                live.getLivePicture(),live.getPushStream(),live.getPullStream(),
+                live.getH5Url(),live.getStreamName(),live.getStartTime());
     }
 
     public Live getLiveById(int liveId){
@@ -80,4 +81,7 @@ public class LiveDao {
         return liveMapper.getLiveInfoByMid(userId,start,limit);
     }
 
+    public Integer getLiveCountByMid(Integer userId){
+        return liveMapper.getLiveCountByMid(userId);
+    }
 }

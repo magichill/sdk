@@ -55,4 +55,18 @@ public class GiftService {
         LogContext.instance().info("删除礼物");
         return giftDao.deleteGift(id);
     }
+
+    public Integer getReceiveMoney(User user){
+        Integer receiveMoney = sendGiftDao.getReceiveMoneyByHostId(user);
+        if(receiveMoney == null)
+            return 0;
+        return receiveMoney;
+    }
+
+    public Integer getSendMoney(User user){
+        Integer sendMoney = sendGiftDao.getSendMoneByMid(user);
+        if(sendMoney == null)
+            return 0;
+        return sendMoney;
+    }
 }

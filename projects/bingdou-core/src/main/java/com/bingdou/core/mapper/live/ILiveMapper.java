@@ -3,6 +3,7 @@ package com.bingdou.core.mapper.live;
 import com.bingdou.core.model.live.Live;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public interface ILiveMapper {
 
     void addLive(@Param("liveId") int liveId, @Param("liveTitle") String liveTitle, @Param("mid") Integer mid,
                  @Param("liveType") int liveType,@Param("livePicture") String livePicture, @Param("pushStream") String pushStream,
-                 @Param("pullStream") String pullStream,@Param("h5Url") String h5Url,@Param("streamName") String streamName);
+                 @Param("pullStream") String pullStream,@Param("h5Url") String h5Url,@Param("streamName") String streamName,@Param("startTime") Date startTime);
 
     Live getLiveById(@Param("liveId") int liveId);
 
@@ -26,6 +27,9 @@ public interface ILiveMapper {
     List<Live> getRecordLiveList(@Param("start") int start, @Param("limit") int limit);
 
     Integer getLiveByStreamName(@Param("streamName") String streamName);
+    Integer getLiveCountByMid(@Param("mid") Integer mid);
+
+
 
     Live getLiveInfoByStreamName(@Param("streamName") String streamName);
     void updateLive(@Param("liveId") int liveId,@Param("status") int status);

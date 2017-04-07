@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface IFocusMapper {
 
-    int getFansCount(@Param("userId") int userId);
+    Integer getFansCount(@Param("userId") int userId);
 
-    int getFollowerCount(@Param("userId") int userId);
+    Integer getFollowerCount(@Param("userId") int userId);
 
     Integer checkFocusInfoStatus(@Param("userId") Integer userId, @Param("followId") int followId);
 

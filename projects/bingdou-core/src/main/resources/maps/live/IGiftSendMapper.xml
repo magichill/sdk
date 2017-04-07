@@ -2,6 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bingdou.core.mapper.live.ISendGiftMapper">
 
+    <insert id="addSendGift" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_gift_send_log
+          (mid,host_id,live_id,gift_id,send_money,send_num,create_time)
+          VALUE(#{mid},#{hostId},#{liveId},#{giftId},#{sendMoney},#{sendNum},now())
+        ]]>
+    </insert>
+
+    <select id="getReceiveMoneyByHostId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+          sum(send_money)
+        FROM ${liveDB}.lc_gift_send_log
+        WHERE host_id=#{hostId}
+        ]]>
+    </select>
+
     <select id="getSendMoneyByMid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         <![CDATA[
         SELECT
@@ -11,20 +28,6 @@
         ]]>
     </select>
 
-    <insert id="addSendGift" parameterType="java.util.Map">
-        <![CDATA[
-          INSERT INTO ${liveDB}.lc_gift_send_log
-          (mid,host_id,live_id,gift_id,send_money,send_num,create_time)
-          VALUE(#{mid},#{hostId},#{liveId},#{giftId},#{sendMoney},#{sendNum},now())
-        ]]>
-    </insert>
 
-    <!--<resultMap id="giftDetail" type="com.bingdou.core.model.live.Gift">-->
-        <!--<result property="id" column="id"/>-->
-        <!--<result property="giftTitle" column="gift_title"/>-->
-        <!--<result property="giftPic" column="gift_pic"/>-->
-        <!--<result property="status" column="status"/>-->
-        <!--<result property="giftType" column="gift_type"/>-->
-    <!--</resultMap>-->
 
 </mapper>

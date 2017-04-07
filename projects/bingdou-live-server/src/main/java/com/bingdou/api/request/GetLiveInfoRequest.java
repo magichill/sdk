@@ -15,6 +15,9 @@ public class GetLiveInfoRequest extends BaseRequest {
     @SerializedName("account")
     private String account;
 
+    @SerializedName("password")
+    private String password;
+
     @Override
     protected String getLoggerName() {
         return "GetLiveInfoRequest";
@@ -26,6 +29,7 @@ public class GetLiveInfoRequest extends BaseRequest {
                 GetLiveInfoRequest.class);
         this.liveId = request.getLiveId();
         this.account = request.getAccount();
+        this.password = request.getPassword();
         return request;
     }
 
@@ -43,5 +47,13 @@ public class GetLiveInfoRequest extends BaseRequest {
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

@@ -58,7 +58,7 @@ public class FocusService {
      * @param userId
      * @return
      */
-    public int getFollowerCount(int userId){
+    public Integer getFollowerCount(int userId){
         LogContext.instance().info("查询关注用户数量");
         return focusDao.getFollowerCount(userId);
     }
@@ -68,7 +68,7 @@ public class FocusService {
      * @param userId
      * @return
      */
-    public int getFansCount(int userId){
+    public Integer getFansCount(int userId){
         LogContext.instance().info("查询用户粉丝数量");
         return focusDao.getFansCount(userId);
     }

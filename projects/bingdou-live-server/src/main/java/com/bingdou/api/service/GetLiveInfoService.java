@@ -1,5 +1,6 @@
 package com.bingdou.api.service;
 
+import com.bingdou.api.constant.LiveType;
 import com.bingdou.api.request.GetLiveInfoRequest;
 import com.bingdou.api.response.ComposedLiveResponse;
 import com.bingdou.api.response.UserResponse;
@@ -10,6 +11,7 @@ import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.BaseService;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.core.service.live.ConsumeService;
 import com.bingdou.core.service.user.FocusService;
 import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
@@ -28,6 +30,9 @@ public class GetLiveInfoService extends LiveBaseService implements IMethodServic
 
     @Autowired
     private FocusService focusService;
+
+    @Autowired
+    private ConsumeService consumeService;
 
     @Override
     public BaseRequest getBaseRequest(HttpServletRequest request) throws Exception {
@@ -81,6 +86,23 @@ public class GetLiveInfoService extends LiveBaseService implements IMethodServic
         ComposedLiveResponse composedLiveResponse = new ComposedLiveResponse();
         composedLiveResponse.parseFromLive(live);
         User liveOwner = userBaseService.getDetailById(live.getMid());
+        boolean lock = true;
+        int liveType = live.getLiveType();
+        if(liveType == LiveType.PAY.getIndex() || liveType == LiveType.CHANNEL_PAY.getIndex()){
+            lock = consumeService.exisRecord(live,user);
+        }
+        if(liveType == LiveType.ENCODE.getIndex()){
+            String password = getLiveInfoRequest.getPassword();
+            if(StringUtils.isEmpty(password)){
+                return ServiceResultUtil.illegal("该直播需要密码");
+            }else{
+                if(!password.equals(live.getPassword())){
+                    lock = false;
+                }
+            }
+
+        }
+        composedLiveResponse.setLock(lock);
         UserResponse userResponse = new UserResponse();
         userResponse.parseFromUser(liveOwner);
         Integer focusStatus = focusService.checkFocusInfoStatus(user.getId(),liveOwner.getId());

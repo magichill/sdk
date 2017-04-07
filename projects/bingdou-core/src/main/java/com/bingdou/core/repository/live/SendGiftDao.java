@@ -25,4 +25,15 @@ public class SendGiftDao {
         }
         sendGiftMapper.addSendGift(live.getId(),user.getId(),gift.getId(),gift.getPrice()*sendNum,live.getMid(),sendNum);
     }
+
+
+    public Integer getReceiveMoneyByHostId(User user){
+        LogContext.instance().info("获取收到礼物冰豆数");
+        return sendGiftMapper.getReceiveMoneyByHostId(user.getId());
+    }
+
+    public Integer getSendMoneByMid(User user){
+        LogContext.instance().info("获取赠送礼物冰豆数");
+        return sendGiftMapper.getSendMoneyByMid(user.getId());
+    }
 }

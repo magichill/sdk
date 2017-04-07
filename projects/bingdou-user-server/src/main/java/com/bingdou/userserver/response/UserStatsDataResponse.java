@@ -18,7 +18,7 @@ public class UserStatsDataResponse {
     @SerializedName("earnings")
     private float earnings = 0f;
     @SerializedName("balance")
-    private float account = 0f;
+    private Integer account = 0;
     @SerializedName("followers")
     private Integer followers = 0;
     @SerializedName("vip_level")
@@ -26,9 +26,9 @@ public class UserStatsDataResponse {
     @SerializedName("exp_value")
     private int expValue = 0;
     @SerializedName("income_loyalty")
-    private int incomeLoyalty = 0;
+    private Integer incomeLoyalty = 0;
     @SerializedName("consume_loyalty")
-    private int consumLoyalty = 0;
+    private Integer consumLoyalty = 0;
     @SerializedName("level_id")
     private Integer levelId = 0;
     @SerializedName("vip_up_need_money")
@@ -68,11 +68,11 @@ public class UserStatsDataResponse {
         this.earnings = earnings;
     }
 
-    public float getAccount() {
+    public Integer getAccount() {
         return account;
     }
 
-    public void setAccount(float account) {
+    public void setAccount(Integer account) {
         this.account = account;
     }
 
@@ -100,19 +100,19 @@ public class UserStatsDataResponse {
         this.expValue = expValue;
     }
 
-    public int getIncomeLoyalty() {
+    public Integer getIncomeLoyalty() {
         return incomeLoyalty;
     }
 
-    public void setIncomeLoyalty(int incomeLoyalty) {
+    public void setIncomeLoyalty(Integer incomeLoyalty) {
         this.incomeLoyalty = incomeLoyalty;
     }
 
-    public int getConsumLoyalty() {
+    public Integer getConsumLoyalty() {
         return consumLoyalty;
     }
 
-    public void setConsumLoyalty(int consumLoyalty) {
+    public void setConsumLoyalty(Integer consumLoyalty) {
         this.consumLoyalty = consumLoyalty;
     }
 
@@ -188,8 +188,13 @@ public class UserStatsDataResponse {
             setNextVipLevelMoney(0f);
             setVipUpNeedMoney(0f);
         }
-        setAccount(NumberUtil.convertYuanFromFen(user.getMoney()));
+        setAccount(user.getMoney());
         setLikeCount(userStat.getLikeCount());
         setFollowers(userStat.getFollowers());
+        setLiveCount(userStat.getLiveCount());
+        setIncomeLoyalty(userStat.getIncomeLoyalty());
+        setConsumLoyalty(userStat.getConsumeLoyalty());
+        setEarnings(userStat.getIncomeLoyalty());
+
     }
 }

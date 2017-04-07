@@ -26,7 +26,6 @@
                 <ref local="createLiveService" />
                 <ref local="findLiveService" />
                 <ref local="getLiveInfoService" />
-                <ref local="giftListService" />
                 <ref local="removeLiveService" />
                 <ref local="replayService" />
                 <ref local="streamEndService" />
@@ -46,6 +45,8 @@
                 <ref local="sendGiftService" />
                 <ref local="addGiftService" />
                 <ref local="updateGiftService" />
+                <ref local="getLiveTagsService" />
+                <ref local="addLiveTagService" />
             </list>
         </property>
     </bean>
