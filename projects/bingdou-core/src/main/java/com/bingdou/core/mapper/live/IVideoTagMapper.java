@@ -10,7 +10,8 @@ import java.util.List;
  */
 public interface IVideoTagMapper {
 
-    void addVideoTag(@Param("title") String title, @Param("tagPic") String tagPic, @Param("tagType") Integer tagType);
+    void addVideoTag(@Param("title") String title, @Param("tagPic") String tagPic,
+                     @Param("tagType") Integer tagType,@Param("selectPic") String selectPic);
 
     Integer existVideoTag(@Param("title") String title);
 

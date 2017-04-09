@@ -17,7 +17,8 @@ public class VideoTagDao {
     private IVideoTagMapper videoTagMapper;
 
     public void addVideoTag(VideoTag videoTag){
-        videoTagMapper.addVideoTag(videoTag.getTitle(),videoTag.getTagPic(),videoTag.getTagType());
+        videoTagMapper.addVideoTag(videoTag.getTitle(),videoTag.getTagPic(),
+                videoTag.getTagType(),videoTag.getSelectPic());
     }
 
     public Integer existVideoTag(String title){

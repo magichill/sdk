@@ -5,8 +5,8 @@
     <insert id="addVideoTag" parameterType="java.util.Map">
         <![CDATA[
           INSERT INTO ${liveDB}.lc_video_tag
-          (title,tag_pic,tag_type,status,create_time,update_time)
-          VALUE(#{title},#{tagPic},#{tagType},1,now(),now())
+          (title,tag_pic,select_pic,tag_type,status,create_time,update_time)
+          VALUE(#{title},#{tagPic},#{selectPic},#{tagType},1,now(),now())
         ]]>
     </insert>
 
@@ -22,7 +22,7 @@
     <select id="getAllTags" parameterType="java.util.Map" resultMap="tagDetail">
         <![CDATA[
         SELECT
-          id,title,tag_pic,tag_type
+          id,title,tag_pic,tag_type,select_pic
         FROM ${liveDB}.lc_video_tag
         WHERE status = 1
         ]]>
@@ -32,6 +32,7 @@
         <result property="id" column="id"/>
         <result property="title" column="title"/>
         <result property="tagPic" column="tag_pic"/>
+        <result property="selectPic" column="select_pic"/>
         <result property="tagType" column="tag_type"/>
         <result property="status" column="status"/>
     </resultMap>

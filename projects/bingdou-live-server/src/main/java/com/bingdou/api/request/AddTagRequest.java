@@ -15,6 +15,9 @@ public class AddTagRequest  extends BaseRequest {
     @SerializedName("tag_pic")
     private String tagPic;
 
+    @SerializedName("select_pic")
+    private String selectPic;
+
     @SerializedName("tag_type")
     private Integer tagType;
 
@@ -30,6 +33,7 @@ public class AddTagRequest  extends BaseRequest {
         this.tagTitle = request.getTagTitle();
         this.tagPic = request.getTagPic();
         this.tagType = request.getTagType();
+        this.selectPic = request.getSelectPic();
         return request;
     }
 
@@ -55,5 +59,13 @@ public class AddTagRequest  extends BaseRequest {
 
     public void setTagType(Integer tagType) {
         this.tagType = tagType;
+    }
+
+    public String getSelectPic() {
+        return selectPic;
+    }
+
+    public void setSelectPic(String selectPic) {
+        this.selectPic = selectPic;
     }
 }

@@ -81,6 +81,10 @@ public class LiveDao {
         return liveMapper.getLiveInfoByMid(userId,start,limit);
     }
 
+    public List<Live> getLiveInfoByTagId(Integer tagId,int start,int limit){
+        return liveMapper.getLiveInfoByTagId(tagId,start,limit);
+    }
+
     public Integer getLiveCountByMid(Integer userId){
         return liveMapper.getLiveCountByMid(userId);
     }

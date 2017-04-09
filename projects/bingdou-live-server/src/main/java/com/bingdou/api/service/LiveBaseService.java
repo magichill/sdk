@@ -67,6 +67,12 @@ public abstract class LiveBaseService extends BaseService {
         LogContext.instance().info("获取用户直播数据列表");
         return liveDao.getLiveInfoByMid(user.getId(),start,limit);
     }
+
+    public List<Live> getLiveInfoByTagId(Integer tagId,int start,int limit){
+        LogContext.instance().info("获取标签直播数据列表");
+        return liveDao.getLiveInfoByTagId(tagId,start,limit);
+    }
+
     public boolean updateAnnounceLive(User user, UpdateAnnouceRequest request){
         LogContext.instance().info("更新预告内容");
         Live live = getLiveInfo(request.getLiveId());

@@ -40,4 +40,5 @@ public interface ILiveMapper {
     void updateEndLive(@Param("liveId") int liveId,@Param("status") Integer status,@Param("replayUrl") String replayUrl);
 
     List<Live> getLiveInfoByMid(@Param("userId") Integer userId,@Param("start") int start, @Param("limit") int limit);
+    List<Live> getLiveInfoByTagId(@Param("tagId") Integer tagId,@Param("start") int start, @Param("limit") int limit);
 }

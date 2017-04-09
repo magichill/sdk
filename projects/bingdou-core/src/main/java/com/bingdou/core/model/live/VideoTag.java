@@ -10,6 +10,7 @@ public class VideoTag {
     private Integer id;
     private String title;
     private String tagPic;
+    private String selectPic;
     private Integer tagType;
     private Date createTime;
     private Date updateTime;
@@ -44,6 +45,14 @@ public class VideoTag {
 
     public void setTagType(Integer tagType) {
         this.tagType = tagType;
+    }
+
+    public String getSelectPic() {
+        return selectPic;
+    }
+
+    public void setSelectPic(String selectPic) {
+        this.selectPic = selectPic;
     }
 
     public Date getCreateTime() {

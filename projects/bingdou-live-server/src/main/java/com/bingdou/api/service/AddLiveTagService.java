@@ -58,6 +58,7 @@ public class AddLiveTagService extends LiveBaseService implements IMethodService
 
     private ServiceResult dealAddTag(AddTagRequest addTagRequest){
         if(StringUtils.isEmpty(addTagRequest.getTagPic()) ||
+                StringUtils.isEmpty(addTagRequest.getSelectPic()) ||
                 StringUtils.isEmpty(addTagRequest.getTagTitle()) ||
                 addTagRequest.getTagType() == null){
             return ServiceResultUtil.illegal("参数不正确");
@@ -66,6 +67,7 @@ public class AddLiveTagService extends LiveBaseService implements IMethodService
         videoTag.setTagType(addTagRequest.getTagType());
         videoTag.setTagPic(addTagRequest.getTagPic());
         videoTag.setTitle(addTagRequest.getTagTitle());
+        videoTag.setSelectPic(addTagRequest.getSelectPic());
         videoTagService.addVideoTag(videoTag);
         return ServiceResultUtil.success();
     }

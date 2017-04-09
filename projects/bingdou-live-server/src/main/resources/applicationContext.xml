@@ -47,6 +47,7 @@
                 <ref local="updateGiftService" />
                 <ref local="getLiveTagsService" />
                 <ref local="addLiveTagService" />
+                <ref local="getTagLiveService" />
             </list>
         </property>
     </bean>
