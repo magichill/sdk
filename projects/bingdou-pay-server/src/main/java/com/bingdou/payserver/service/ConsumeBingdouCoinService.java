@@ -116,7 +116,8 @@ public class ConsumeBingdouCoinService extends BaseService implements IMethodSer
         recordCreateLog(user, clientIp, consumeBingdouCoinRequest, consumeOrder, -1);
         recordCompleteLog(user, clientIp, consumeBingdouCoinRequest, consumeOrder, -1);
         ConsumeBingdouCoinResponse response = new ConsumeBingdouCoinResponse();
-        response.setMoney(totalRemainBalanceFen);
+        //TODO 转换成冰豆
+        response.setMoney(NumberUtil.convertBingdouFromFen(totalRemainBalanceFen));
         response.setStatus(OrderStatus.PAYED.getIndex());
 //        userStatisticsService.recordUserActiveRecord4PayCallBackCp(user.getId(), application, orderMoneyFen);
 //        callBackCpServerService.callBack(orderId, application);

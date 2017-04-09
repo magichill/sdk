@@ -39,7 +39,7 @@ public class ConsumeBingdouCoinRequest extends BaseRequest {
     }
 
     public int getOrderMoneyFen() {
-        return NumberUtil.convertFenFromBingdou(this.getOrderMoney());
+        return NumberUtil.convertFenFromYuan(this.getOrderMoney());
     }
 
     public String getAccount() {

@@ -22,7 +22,7 @@ public abstract class FastLoginAuthResult {
             parse(authResult);
             return isAuthSuccess();
         } catch (Exception e) {
-            LogContext.instance().error(e, "µÚÈı·½ÊÚÈ¨µÇÂ¼Ê§°Ü");
+            LogContext.instance().error(e, "ç¬¬ä¸‰æ–¹æˆæƒç™»å½•å¤±è´¥");
         }
         return false;
     }

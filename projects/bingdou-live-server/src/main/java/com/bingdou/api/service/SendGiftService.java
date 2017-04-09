@@ -106,7 +106,7 @@ public class SendGiftService extends LiveBaseService implements IMethodService {
         sb.append("\"user_order_id\":");
         sb.append("\"").append(DigestUtils.md5Hex(sendGiftRequest.getAppId() + System.currentTimeMillis())).append("\",");
         sb.append("\"order_money\":");
-        sb.append(gift.getPrice()).append(",");
+        sb.append(NumberUtil.convertYuanFromBingdou(gift.getPrice())).append(",");
         sb.append("\"goods_name\":");
         sb.append("\"").append("赠送礼物" + gift.getId()).append("\",");
         sb.append("\"goods_description\":");

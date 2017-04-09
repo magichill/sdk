@@ -135,7 +135,7 @@ public class AppleInnerPayService extends BaseService implements IMethodService 
         response.setVerifyResult(PayConstants.APPLE_PAY_VERIFY_SUCCESS);
         response.setOrderId(orderId);
         response.setCpIdOrId(user.getReturnUserId());
-        response.setMoney(NumberUtil.convertYuanFromFen(userMoney));
+        response.setMoney(NumberUtil.convertBingdouFromFen(userMoney));
         UserVipGrade newUserVipGrade = vipGradeService.getUserVipGradeInfo(user.getId());
         response.setVipLevel(newUserVipGrade.getUserLevelId());
         float nextLevelRechargeAmount = 0f;

@@ -18,7 +18,7 @@ public class UserStatsDataResponse {
     @SerializedName("earnings")
     private float earnings = 0f;
     @SerializedName("balance")
-    private Integer account = 0;
+    private Float account = 0f;
     @SerializedName("followers")
     private Integer followers = 0;
     @SerializedName("vip_level")
@@ -68,11 +68,11 @@ public class UserStatsDataResponse {
         this.earnings = earnings;
     }
 
-    public Integer getAccount() {
+    public Float getAccount() {
         return account;
     }
 
-    public void setAccount(Integer account) {
+    public void setAccount(Float account) {
         this.account = account;
     }
 
@@ -188,7 +188,7 @@ public class UserStatsDataResponse {
             setNextVipLevelMoney(0f);
             setVipUpNeedMoney(0f);
         }
-        setAccount(user.getMoney());
+        setAccount(NumberUtil.convertBingdouFromFen(user.getMoney()));
         setLikeCount(userStat.getLikeCount());
         setFollowers(userStat.getFollowers());
         setLiveCount(userStat.getLiveCount());

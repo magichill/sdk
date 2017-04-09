@@ -115,7 +115,7 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
         sb.append("\"user_order_id\":");
         sb.append("\"").append(DigestUtils.md5Hex(buyLiveRequest.getAppId() + System.currentTimeMillis())).append("\",");
         sb.append("\"order_money\":");
-        sb.append(live.getPrice()).append(",");
+        sb.append(NumberUtil.convertYuanFromBingdou(live.getPrice())).append(",");
         sb.append("\"goods_name\":");
         sb.append("\"").append("购买直播" + live.getId()).append("\",");
         sb.append("\"goods_description\":");
