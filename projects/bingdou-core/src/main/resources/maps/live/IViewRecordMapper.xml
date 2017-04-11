@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.IReportChatroomMapper">
+
+    <select id="getReportChatroom" parameterType="java.util.Map" resultMap="reportChatRoomDetail">
+        <![CDATA[
+        SELECT
+          *
+        FROM ${liveDB}.lc_chatroom_record
+        WHERE live_id=#{liveId}
+        ]]>
+    </select>
+
+    <insert id="addReportChatroom" parameterType="com.bingdou.core.model.live.ReportChatroom">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_chatroom_record
+          (live_id,audience_count,view_count,add_audience)
+          VALUE(#{liveId},#{audienceCount},#{viewCount},1);
+        ]]>
+    </insert>
+
+    <update id="updateReportChatroom" parameterType="com.bingdou.core.model.live.ReportChatroom">
+        <![CDATA[
+        update ${liveDB}.lc_chatroom_record
+        set audience_count = #{audienceCount},view_count=#{viewCount},
+            add_audience=#{addAudience}
+        where id=#{id}
+        ]]>
+    </update>
+
+
+    <resultMap id="reportChatRoomDetail" type="com.bingdou.core.model.live.ReportChatroom">
+        <result property="id" column="id"/>
+        <result property="liveId" column="live_id"/>
+        <result property="audienceCount" column="audience_count"/>
+        <result property="addAudience" column="add_audience"/>
+        <result property="viewCount" column="view_count"/>
+    </resultMap>
+
+</mapper>

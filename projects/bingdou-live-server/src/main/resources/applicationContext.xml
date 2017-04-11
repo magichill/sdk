@@ -48,6 +48,8 @@
                 <ref local="getLiveTagsService" />
                 <ref local="addLiveTagService" />
                 <ref local="getTagLiveService" />
+                <ref local="reportShareService" />
+                <ref local="reportChatroomService" />
             </list>
         </property>
     </bean>

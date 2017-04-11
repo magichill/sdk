@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.IReportShareMapper">
+
+    <select id="getReportShare" parameterType="java.util.Map" resultMap="reportShareDetail">
+        <![CDATA[
+        SELECT
+          *
+        FROM ${liveDB}.lc_share_record
+        WHERE broadcaster_id=#{broadcasterId} and mid=#{mid}
+         and share_type=#{shareType}
+        ]]>
+    </select>
+
+    <insert id="addReportShare" parameterType="com.bingdou.core.model.live.ReportShare">
+        <![CDATA[
+          INSERT INTO ${liveDB}.lc_share_record
+          (broadcaster_id,mid,live_id,share_type,share_channel,share_count)
+          VALUE(#{broadcasterId},#{mid},#{liveId},#{shareType},#{shareChannel},1);
+        ]]>
+    </insert>
+
+    <update id="updateReportShare" parameterType="com.bingdou.core.model.live.ReportShare">
+        <![CDATA[
+        update ${liveDB}.lc_share_record
+        set share_count = #{shareCount}
+        where id=#{id}
+        ]]>
+    </update>
+
+
+    <resultMap id="reportShareDetail" type="com.bingdou.core.model.live.ReportShare">
+        <result property="id" column="id"/>
+        <result property="liveId" column="live_id"/>
+        <result property="broadcasterId" column="broadcaster_id"/>
+        <result property="shareType" column="share_type"/>
+        <result property="shareChannel" column="share_channel"/>
+        <result property="shareCount" column="share_count"/>
+        <result property="mid" column="mid"/>
+    </resultMap>
+
+</mapper>
