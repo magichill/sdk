@@ -11,22 +11,43 @@
         ]]>
     </select>
 
+    <select id="getNewCommentByUserId" parameterType="java.lang.Integer" resultMap="commentDetail">
+        <![CDATA[
+        SELECT
+          *
+        FROM ${liveDB}.lc_comment comment
+        WHERE comment.user_id=#{userId} order by created desc limit 1
+        ]]>
+    </select>
+
+    <select id="getPopularList" parameterType="java.lang.Integer" resultMap="commentDetail">
+        <![CDATA[
+        SELECT comment.id,comment.live_id,comment.parent_id,comment.status,comment.user_id,comment.comment_count,
+        comment.text,member.gender,member.nickname,member.avatar,member.signature,member.cpid,comment.created
+        FROM ${liveDB}.lc_comment comment
+        LEFT JOIN ${userDB}.mc_member_index member ON comment.user_id = member.id
+        WHERE comment.live_id = #{liveId}
+        AND comment.status=1
+        order by comment.vote_up desc limit 3
+        ]]>
+    </select>
+
     <insert id="addComment" parameterType="com.bingdou.core.model.live.Comment">
         <![CDATA[
           INSERT INTO ${liveDB}.lc_comment
-          (parent_id,live_id,comment_count,user_id,text,created,status)
-          VALUE(#{parentId},#{liveId},#{commentCount},#{userId},#{text},now(),1);
+          (parent_id,live_id,user_id,text,created,status)
+          VALUE(#{parentId},#{liveId},#{userId},#{text},now(),1);
         ]]>
     </insert>
 
     <select id="getCommentListByLiveId" parameterType="java.util.Map" resultMap="commentDetail">
         SELECT comment.id,comment.live_id,comment.parent_id,comment.status,comment.user_id,comment.comment_count,
-        comment.text,member.gender,member.nickname,member.avatar,member.signature,member.cpid
+        comment.text,member.gender,member.nickname,member.avatar,member.signature,member.cpid,comment.created
         FROM ${liveDB}.lc_comment comment
         LEFT JOIN ${userDB}.mc_member_index member ON comment.user_id = member.id
         WHERE comment.live_id = #{liveId}
         AND comment.status=1
-        order by comment.vote_up desc limit #{start},#{limit}
+        order by comment.created desc limit #{start},#{limit}
     </select>
 
     <update id="likeOrNotComment" parameterType="java.util.Map">
@@ -53,6 +74,7 @@
         <result property="userId" column="user_id"/>
         <result property="commentCount" column="comment_count"/>
         <result property="text" column="text"/>
+        <result property="createdTime" column="created"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="user_id"/>
             <result property="gender" column="gender"/>

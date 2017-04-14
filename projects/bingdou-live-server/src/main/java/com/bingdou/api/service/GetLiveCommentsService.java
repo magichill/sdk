@@ -71,16 +71,20 @@ public class GetLiveCommentsService extends BaseService implements IMethodServic
     }
 
     private ServiceResult dealGetLiveComments(HttpServletRequest request, GetLiveCommentsRequest getLiveCommentsRequest, User user) throws Exception {
-        Long liveId = getLiveCommentsRequest.getLiveId();
+        Integer liveId = getLiveCommentsRequest.getLiveId();
         if (StringUtils.isEmpty(getLiveCommentsRequest.getAccount()) || liveId == null) {
             return ServiceResultUtil.illegal("请求参数错误");
         }
         GetLiveCommentsResponse getLiveCommentsResponse = new GetLiveCommentsResponse();
 
-        int start = getLiveCommentsRequest.getPage();
-        int limit = getLiveCommentsRequest.getCount();
+        Integer start = getLiveCommentsRequest.getPage();
+        Integer limit = getLiveCommentsRequest.getCount();
+        if(start!=null && start >0){
+            start = (start-1)*limit;
+        }
         List<Comment> commentList = commentService.getCommentListByLiveId(liveId,start,limit);
-        getLiveCommentsResponse.parseFromCommentList(commentList);
+        List<Comment> popularList = commentService.getPopularCommentList(liveId);
+        getLiveCommentsResponse.parseFromCommentList(popularList,commentList);
         JsonElement result = JsonUtil.bean2JsonTree(getLiveCommentsResponse);
         LogContext.instance().info("获取视频评论信息成功");
         return ServiceResultUtil.success(result);

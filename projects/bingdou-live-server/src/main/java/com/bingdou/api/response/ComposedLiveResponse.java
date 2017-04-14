@@ -49,6 +49,9 @@ public class ComposedLiveResponse {
     @SerializedName("like_count")
     private int likeCount = 0;
 
+    @SerializedName("description")
+    private String description;
+
     @SerializedName("share_count")
     private int shareCount = 0;
 
@@ -301,6 +304,14 @@ public class ComposedLiveResponse {
         this.lock = lock;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void parseFromLive(Live live){
         setId(live.getId());
         setPlayUrl(live.getPullStream());
@@ -331,5 +342,6 @@ public class ComposedLiveResponse {
         setPrice(live.getPrice());
         setRewardPercent(live.getRewardPercent());
         setVideoType(live.getLiveType());
+        setDescription(live.getDescription());
     }
 }

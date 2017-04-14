@@ -50,6 +50,8 @@
                 <ref local="getTagLiveService" />
                 <ref local="reportShareService" />
                 <ref local="reportChatroomService" />
+                <ref local="addCommentService" />
+                <ref local="updateLiveDescService" />
             </list>
         </property>
     </bean>

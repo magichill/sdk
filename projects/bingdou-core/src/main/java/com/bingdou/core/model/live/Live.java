@@ -45,6 +45,7 @@ public class Live {
 
     private String password;
 
+    private String description;
     private int price;
 
     private int rewardPercent;
@@ -228,6 +229,14 @@ public class Live {
 
     public void setTag(VideoTag tag) {
         this.tag = tag;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**

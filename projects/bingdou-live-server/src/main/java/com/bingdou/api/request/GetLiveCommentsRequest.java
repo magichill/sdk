@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 public class GetLiveCommentsRequest extends BaseRequest {
 
     @SerializedName("live_id")
-    private long liveId;
+    private Integer liveId;
 
     @SerializedName("account")
     private String account;
@@ -23,11 +23,11 @@ public class GetLiveCommentsRequest extends BaseRequest {
     @SerializedName("count")
     private int count = 10;
 
-    public long getLiveId() {
+    public Integer getLiveId() {
         return liveId;
     }
 
-    public void setLiveId(long liveId) {
+    public void setLiveId(Integer liveId) {
         this.liveId = liveId;
     }
 

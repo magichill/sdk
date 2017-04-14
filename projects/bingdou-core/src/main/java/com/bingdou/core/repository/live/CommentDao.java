@@ -20,20 +20,27 @@ public class CommentDao {
         commentMapper.addComment(comment);
     }
 
-    public Comment getCommentById(long commentId){
+    public Comment getCommentById(Integer commentId){
         return commentMapper.getCommentById(commentId);
     }
 
-    public List<Comment> getCommentListByLiveId(long liveId, int start, int limit){
+    public List<Comment> getCommentListByLiveId(Integer liveId, int start, int limit){
         return commentMapper.getCommentListByLiveId(liveId,start,limit);
     }
 
-    public void likeOrNotComment(long commentId,int voteUp){
+    public List<Comment> getPopularList(Integer liveId){
+        return commentMapper.getPopularList(liveId);
+    }
+    public void likeOrNotComment(Integer commentId,int voteUp){
         commentMapper.likeOrNotComment(commentId,voteUp);
     }
 
-    public void removeComment(long commentId){
+    public void removeComment(Integer commentId){
         commentMapper.removeComment(commentId);
+    }
+
+    public Comment getNewCommentByUserId(Integer userId){
+        return commentMapper.getNewCommentByUserId(userId);
     }
 
 

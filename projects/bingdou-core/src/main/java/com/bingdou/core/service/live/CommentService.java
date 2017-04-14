@@ -18,6 +18,14 @@ public class CommentService {
     @Autowired
     private CommentDao commentDao;
 
+    public Comment getNewCommentByUserId(Integer userId){
+        LogContext.instance().info("获取用户最新评论数据");
+        if(userId == null){
+            return null;
+        }
+        return commentDao.getNewCommentByUserId(userId);
+    }
+
     public boolean addComment(Comment comment){
         LogContext.instance().info("插入新的评论数据");
         if(comment == null){
@@ -28,14 +36,14 @@ public class CommentService {
         return true;
     }
 
-    public Comment getCommentById(Long commentId) {
+    public Comment getCommentById(Integer commentId) {
         LogContext.instance().info("获取评论数据");
         if (commentId == null)
             return null;
         return commentDao.getCommentById(commentId);
     }
 
-    public boolean likeOrNotComment(Long commentId,boolean status){
+    public boolean likeOrNotComment(Integer commentId,boolean status){
         if(commentId ==null){
             return false;
         }
@@ -49,11 +57,18 @@ public class CommentService {
         return true;
     }
 
-    public List<Comment> getCommentListByLiveId(Long liveId, int start, int limit){
+    public List<Comment> getCommentListByLiveId(Integer liveId, int start, int limit){
         LogContext.instance().info("获取直播的评论数据");
         if (liveId == null )
             return new ArrayList<Comment>();
         return commentDao.getCommentListByLiveId(liveId,start,limit);
+    }
+
+    public List<Comment> getPopularCommentList(Integer liveId){
+        LogContext.instance().info("获取直播的热门评论数据");
+        if (liveId == null )
+            return new ArrayList<Comment>();
+        return commentDao.getPopularList(liveId);
     }
 
 }

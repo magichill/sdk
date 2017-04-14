@@ -65,6 +65,10 @@ public class LiveDao {
         liveMapper.updateEndLive(liveId, status, replayUrl);
     }
 
+    public void updateDescription(Live live){
+        liveMapper.updateDescription(live);
+    }
+
     public void updateLiveIndex(int liveId,int status,String replayUrl,String startTime,String endTime){
         liveMapper.updateLiveIndex(liveId, status, replayUrl,startTime,endTime);
     }

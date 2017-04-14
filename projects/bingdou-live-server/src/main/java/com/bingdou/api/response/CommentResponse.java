@@ -1,5 +1,6 @@
 package com.bingdou.api.response;
 
+import com.bingdou.core.model.live.Comment;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ public class CommentResponse {
     private String commentContent = "";
 
     @SerializedName("comment_date")
-    private Date commentDate;
+    private Long commentDate;
 
     @SerializedName("likeCount")
     private int likeCount = 0;
@@ -57,11 +58,11 @@ public class CommentResponse {
         this.commentContent = commentContent;
     }
 
-    public Date getCommentDate() {
+    public Long getCommentDate() {
         return commentDate;
     }
 
-    public void setCommentDate(Date commentDate) {
+    public void setCommentDate(Long commentDate) {
         this.commentDate = commentDate;
     }
 
@@ -87,5 +88,21 @@ public class CommentResponse {
 
     public void setReply(String reply) {
         this.reply = reply;
+    }
+
+    public UserResponse getUserResponse() {
+        return userResponse;
+    }
+
+    public void setUserResponse(UserResponse userResponse) {
+        this.userResponse = userResponse;
+    }
+
+    public void parseFromComment(Comment comment){
+        setCommentId(comment.getId());
+        setCommentContent(comment.getText());
+        setLiveId(comment.getLiveId());
+        setCommentDate(comment.getCreatedTime().getTime());
+        setLikeCount(comment.getVoteUp());
     }
 }

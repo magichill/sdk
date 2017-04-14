@@ -7,7 +7,7 @@
         SELECT
           li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,
           li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,lt.id as tid,lt.title,
-          lt.tag_pic,lt.tag_type,li.start_time,li.end_time
+          lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.description
         FROM ${liveDB}.lc_live_index li
         LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
         JOIN ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)} ll ON li.id=ll.lid
@@ -157,6 +157,12 @@
         where id=#{id}
     </update>
 
+    <update id="updateDescription" parameterType="com.bingdou.core.model.live.Live">
+        update ${liveDB}.lc_live_index
+        set description=#{description}
+        where id=#{id}
+    </update>
+
     <select id="getLiveInfoByMid" parameterType="java.util.Map" resultMap="liveDetail">
         <![CDATA[
         SELECT
@@ -202,6 +208,7 @@
         <result property="tags" column="tags"/>
         <result property="rewardPercent" column="reward_percent"/>
         <result property="password" column="password"/>
+        <result property="description" column="description"/>
         <result property="liveType" column="live_type"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="mid"/>
