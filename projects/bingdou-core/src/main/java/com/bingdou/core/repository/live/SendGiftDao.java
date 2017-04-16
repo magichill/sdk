@@ -2,11 +2,14 @@ package com.bingdou.core.repository.live;
 
 import com.bingdou.core.mapper.live.ISendGiftMapper;
 import com.bingdou.core.model.User;
+import com.bingdou.core.model.live.ContributeUserRank;
 import com.bingdou.core.model.live.Gift;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.tools.LogContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by gaoshan on 17/3/27.
@@ -36,4 +39,10 @@ public class SendGiftDao {
         LogContext.instance().info("获取赠送礼物冰豆数");
         return sendGiftMapper.getSendMoneyByMid(user.getId());
     }
+
+    public List<ContributeUserRank> getSendUserList(User user, Integer start, Integer limit){
+        LogContext.instance().info("获取赠送礼物用户排行");
+        return sendGiftMapper.getSendUserList(user.getId(),start,limit);
+    }
+
 }

@@ -29,6 +29,28 @@
     </update>
 
 
+    <select id="getShareRankList" parameterType="java.util.Map"
+            resultMap="userDetail">
+        <![CDATA[
+        SELECT mmi.id,mmi.nickname,mmi.gender,mmi.avatar,mmi.cpid,mmi.signature,lsr.share_count
+        FROM ${liveDB}.lc_share_record lsr
+        LEFT JOIN ${userDB}.mc_member_index mmi ON lsr.mid = mmi.id
+        WHERE lsr.broadcaster_id = #{broadcasterId} and lsr.share_type = 2
+        order by lsr.share_count DESC
+        limit #{start},#{limit}
+        ]]>
+    </select>
+
+    <resultMap id="userDetail" type="com.bingdou.core.model.live.ShareUserRank">
+        <result property="id" column="id"/>
+        <result property="gender" column="gender"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="nickName" column="nickname"/>
+        <result property="signature" column="signature"/>
+        <result property="avatar" column="avatar"/>
+        <result property="shareCount" column="share_count"/>
+    </resultMap>
+
     <resultMap id="reportShareDetail" type="com.bingdou.core.model.live.ReportShare">
         <result property="id" column="id"/>
         <result property="liveId" column="live_id"/>

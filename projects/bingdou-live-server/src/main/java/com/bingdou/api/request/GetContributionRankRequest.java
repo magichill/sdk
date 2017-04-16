@@ -3,22 +3,17 @@ package com.bingdou.api.request;
 import com.bingdou.core.helper.BaseRequest;
 import com.bingdou.tools.JsonUtil;
 import com.google.gson.annotations.SerializedName;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
- * Created by gaoshan on 17/4/11.
+ * Created by gaoshan on 17/4/14.
  */
-public class GetShareRankRequest extends BaseRequest {
+public class GetContributionRankRequest extends BaseRequest {
 
     @SerializedName("account")
     private String account;
 
     @SerializedName("query_account")
     private String queryAccount;
-
-    @SerializedName("live_id")
-    private Integer liveId;
 
     @SerializedName("page")
     private int page = 0;
@@ -28,17 +23,16 @@ public class GetShareRankRequest extends BaseRequest {
 
     @Override
     protected String getLoggerName() {
-        return "GetShareRankRequest";
+        return "GetContributionRankRequest";
     }
 
     @Override
     protected BaseRequest setFields(String requestString) {
-        GetShareRankRequest request = JsonUtil.jsonStr2Bean(requestString, GetShareRankRequest.class);
+        GetContributionRankRequest request = JsonUtil.jsonStr2Bean(requestString, GetContributionRankRequest.class);
         this.account = request.getAccount();
         this.queryAccount = request.getQueryAccount();
         this.page = request.getPage();
         this.count = request.getCount();
-        this.liveId = request.getLiveId();
         return request;
     }
 
@@ -73,18 +67,4 @@ public class GetShareRankRequest extends BaseRequest {
     public void setCount(int count) {
         this.count = count;
     }
-
-    public Integer getLiveId() {
-        return liveId;
-    }
-
-    public void setLiveId(Integer liveId) {
-        this.liveId = liveId;
-    }
-
-    @Override
-    public String toString() {
-        return ToStringBuilder.reflectionToString(this, ToStringStyle.DEFAULT_STYLE);
-    }
-
 }

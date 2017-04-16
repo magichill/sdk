@@ -70,11 +70,10 @@ public class BuyLiveService extends LiveBaseService implements IMethodService {
     @Override
     public User getUser(BaseRequest baseRequest) {
         BuyLiveRequest buyLiveRequest = (BuyLiveRequest) baseRequest;
-//        User user = userBaseService.getUserDetailByAccount(buyLiveRequest.getAccount());
-//        if (user == null)
-//            user = userBaseService.getDetailByIdOrCpIdOrLoginName(buyLiveRequest.getAccount());
-//        return user;
-        return userBaseService.getDetailByIdOrCpIdOrLoginName(String.valueOf(buyLiveRequest.getAccount()));
+        User user = userBaseService.getUserDetailByAccount(buyLiveRequest.getAccount());
+        if (user == null)
+            user = userBaseService.getDetailByIdOrCpIdOrLoginName(buyLiveRequest.getAccount());
+        return user;
     }
 
     private ServiceResult dealBuyLive(BuyLiveRequest buyLiveRequest,User user,Application application) throws Exception {

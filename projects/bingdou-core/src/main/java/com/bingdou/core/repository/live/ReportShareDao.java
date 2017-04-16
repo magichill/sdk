@@ -4,9 +4,12 @@ import com.bingdou.core.mapper.live.IReportShareMapper;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.model.live.ReportShare;
+import com.bingdou.core.model.live.ShareUserRank;
 import com.bingdou.tools.LogContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by gaoshan on 17/4/10.
@@ -34,5 +37,9 @@ public class ReportShareDao {
 
     public ReportShare getReportShare(Integer broadcasterId,Integer shareType,Integer mid){
         return reportShareMapper.getReportShare(broadcasterId,shareType,mid);
+    }
+
+    public List<ShareUserRank> getShareRankList(Integer broadcasterId, Integer start, Integer limit){
+        return reportShareMapper.getShareRankList(broadcasterId,start,limit);
     }
 }

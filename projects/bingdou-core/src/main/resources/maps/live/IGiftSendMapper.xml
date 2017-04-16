@@ -28,6 +28,24 @@
         ]]>
     </select>
 
+    <select id="getSendUserList" parameterType="java.lang.Integer" resultMap="userDetail">
+        <![CDATA[
+        SELECT
+          sum(sl.send_money) as money,mmi.id,mmi.nickname,mmi.gender,mmi.avatar,mmi.cpid,mmi.signature
+          from ${liveDB}.lc_gift_send_log sl
+          left join ${userDB}.mc_member_index mmi on sl.mid=mmi.id
+          WHERE sl.host_id=#{hostId}
+          group by sl.mid order by money DESC limit #{start},#{limit}
+        ]]>
+    </select>
 
-
+    <resultMap id="userDetail" type="com.bingdou.core.model.live.ContributeUserRank">
+        <result property="id" column="id"/>
+        <result property="gender" column="gender"/>
+        <result property="cpId" column="cp_id"/>
+        <result property="nickName" column="nickname"/>
+        <result property="signature" column="signature"/>
+        <result property="avatar" column="avatar"/>
+        <result property="money" column="money"/>
+    </resultMap>
 </mapper>

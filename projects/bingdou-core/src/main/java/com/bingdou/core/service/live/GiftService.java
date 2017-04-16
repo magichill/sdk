@@ -1,11 +1,13 @@
 package com.bingdou.core.service.live;
 
 import com.bingdou.core.model.User;
+import com.bingdou.core.model.live.ContributeUserRank;
 import com.bingdou.core.model.live.Gift;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.repository.live.GiftDao;
 import com.bingdou.core.repository.live.SendGiftDao;
 import com.bingdou.tools.LogContext;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,5 +70,12 @@ public class GiftService {
         if(sendMoney == null)
             return 0;
         return sendMoney;
+    }
+
+    public List<ContributeUserRank> getContributeList(User user, Integer start, Integer limit){
+        if(user == null){
+            return Lists.newArrayList();
+        }
+        return sendGiftDao.getSendUserList(user,start,limit);
     }
 }

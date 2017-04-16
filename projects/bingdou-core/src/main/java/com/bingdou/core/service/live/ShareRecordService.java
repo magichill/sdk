@@ -3,10 +3,13 @@ package com.bingdou.core.service.live;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.model.live.ReportShare;
+import com.bingdou.core.model.live.ShareUserRank;
 import com.bingdou.core.repository.live.ReportShareDao;
 import com.bingdou.tools.LogContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Created by gaoshan on 17/4/10.
@@ -43,4 +46,11 @@ public class ShareRecordService {
         LogContext.instance().info("获取分享日志");
         return reportShareDao.getReportShare(broadcasterId,shareType,mid);
     }
+
+    public List<ShareUserRank> getShareRankList(Integer broadcasterId, Integer start, Integer limit){
+        LogContext.instance().info("获取分享视频的用户列表");
+        return reportShareDao.getShareRankList(broadcasterId,start,limit);
+    }
+
+
 }

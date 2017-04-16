@@ -52,6 +52,8 @@
                 <ref local="reportChatroomService" />
                 <ref local="addCommentService" />
                 <ref local="updateLiveDescService" />
+                <ref local="getContributeListService" />
+                <ref local="getShareRankService" />
             </list>
         </property>
     </bean>
