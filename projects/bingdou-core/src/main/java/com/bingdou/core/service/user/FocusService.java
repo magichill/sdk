@@ -82,4 +82,9 @@ public class FocusService {
         LogContext.instance().info("查询用户关注列表");
         return focusDao.getFollowing(userId,start,limit);
     }
+
+    public List<User> getPopularUsers(){
+        LogContext.instance().info("查询最受关注用户列表");
+        return focusDao.getPopularUsers();
+    }
 }

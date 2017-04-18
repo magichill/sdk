@@ -33,4 +33,10 @@ public interface IFocusMapper {
      * @return
      */
     List<User> getFollowing(@Param("userId") Integer userId,@Param("start") int start,@Param("limit") int limit);
+
+    /**
+     * 获取粉丝最多的20个用户
+     * @return
+     */
+    List<User> getPopularUsers();
 }

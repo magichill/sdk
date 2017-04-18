@@ -30,6 +30,10 @@ public class LiveDao {
         return liveMapper.getLiveById(liveId);
     }
 
+    public Integer getLiveIdByMid(Integer liveId,Integer mid){
+        return liveMapper.getLiveIdByMid(liveId,mid);
+    }
+
     public List<Live> getLiveList(Integer status,String userId,int start,int limit){
         return liveMapper.getLiveList(status,userId,start,limit);
     }

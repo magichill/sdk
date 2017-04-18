@@ -5,7 +5,7 @@
     <select id="getLiveById" parameterType="java.lang.Integer" resultMap="liveDetail">
         <![CDATA[
         SELECT
-          li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,
+          li.id,ll.live_title,ll.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,li.h5_url,
           li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,lt.id as tid,lt.title,
           lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.description
         FROM ${liveDB}.lc_live_index li
@@ -15,12 +15,20 @@
         ]]>
     </select>
 
+    <select id="getLiveIdByMid" resultType="java.lang.Integer">
+        <![CDATA[
+        SELECT
+          id
+        FROM ${liveDB}.lc_live_index
+        WHERE id=#{liveId} and mid = #{mid}
+        ]]>
+    </select>
     <select id="getLiveCountByMid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
         <![CDATA[
         SELECT
           COUNT(1)
         FROM ${liveDB}.lc_live_index
-        WHERE mid=#{mid}
+        WHERE mid=#{mid} and status <> -1
         ]]>
     </select>
 

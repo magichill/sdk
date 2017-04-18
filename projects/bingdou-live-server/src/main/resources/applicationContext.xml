@@ -54,6 +54,8 @@
                 <ref local="updateLiveDescService" />
                 <ref local="getContributeListService" />
                 <ref local="getShareRankService" />
+                <ref local="removeCommentService" />
+                <ref local="removeLiveService" />
             </list>
         </property>
     </bean>

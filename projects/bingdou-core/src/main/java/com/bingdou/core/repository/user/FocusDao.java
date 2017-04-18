@@ -43,4 +43,10 @@ public class FocusDao {
     public List<User> getFollowing(int userId,int start,int limit){
         return focusMapper.getFollowing(userId, start,limit);
     }
+
+    public List<User> getPopularUsers() {
+        return focusMapper.getPopularUsers();
+    }
+
+
 }

@@ -252,6 +252,53 @@
         ]]>
     </select>
 
+    <select id="getActiveUsers" resultMap="userDetail">
+        <![CDATA[
+        select mi.id,
+          mi.loginname,
+          mi.mobile,
+          mi.email,
+          mi.avatar,
+          mi.signature,
+          mi.gender,
+          mi.cpid,
+          mi.nickname,count(li.mid) as videoCount from ${userDB}.mc_member_index mi
+        join ${liveDB}.lc_live_index li on li.mid = mi.id
+        group by li.mid order by videoCount desc limit 20
+        ]]>
+    </select>
+
+    <select id="getRecommendUsers" resultMap="userDetail">
+        <![CDATA[
+        select mi.id,
+          mi.loginname,
+          mi.mobile,
+          mi.email,
+          mi.avatar,
+          mi.signature,
+          mi.gender,
+          mi.cpid,
+          mi.nickname from ${userDB}.mc_member_index mi
+        join ${userDB}.mc_recommend_user ru on ru.mid = mi.id
+        order by ru.order_num desc limit 20
+        ]]>
+    </select>
+
+    <select id="getUserList" resultMap="userDetail" parameterType="java.util.Map">
+        <![CDATA[
+        select mi.id,
+          mi.loginname,
+          mi.mobile,
+          mi.email,
+          mi.avatar,
+          mi.signature,
+          mi.gender,
+          mi.cpid,
+          mi.nickname from ${userDB}.mc_member_index mi
+        order by mi.id desc limit #{start},#{limit}
+        ]]>
+    </select>
+
     <resultMap id="userToken" type="com.bingdou.core.model.UserToken">
         <result property="token" column="token"/>
         <result property="validateToken" column="v_token"/>

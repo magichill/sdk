@@ -462,4 +462,19 @@ public class UserBaseService {
     public Integer getCertificateStatus(int userId ){
         return certificateDao.getAnchorStatus(userId);
     }
+
+    public List<User> getActiveUsers(){
+        LogContext.instance().info("获取活跃用户列表");
+        return userBaseDao.getActiveUsers();
+    }
+
+    public List<User> getRecommendUsers(){
+        LogContext.instance().info("获取推荐用户列表");
+        return userBaseDao.getRecommendUsers();
+    }
+
+    public List<User> getUserList(Integer start,Integer limit){
+        LogContext.instance().info("获取用户列表");
+        return userBaseDao.getUserList(start,limit);
+    }
 }

@@ -71,4 +71,11 @@ public class CommentService {
         return commentDao.getPopularList(liveId);
     }
 
+    public boolean removeComment(Integer commentId){
+        if(commentId == null){
+            return false;
+        }
+        commentDao.removeComment(commentId);
+        return true;
+    }
 }

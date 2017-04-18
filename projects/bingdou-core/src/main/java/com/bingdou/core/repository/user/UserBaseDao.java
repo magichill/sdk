@@ -189,4 +189,15 @@ public class UserBaseDao {
         userBaseMapper.insertVirtualMoney(userId, osIndex, moneyFen);
     }
 
+    public List<User> getActiveUsers(){
+        return userBaseMapper.getActiveUsers();
+    }
+
+    public List<User> getRecommendUsers(){
+        return userBaseMapper.getRecommendUsers();
+    }
+
+    public List<User> getUserList(Integer start,Integer limit){
+        return userBaseMapper.getUserList(start,limit);
+    }
 }

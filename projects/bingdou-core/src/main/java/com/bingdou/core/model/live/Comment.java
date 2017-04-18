@@ -10,9 +10,9 @@ import java.util.Date;
  */
 public class Comment {
 
-    private long id;
-    private long parentId;
-    private long liveId;
+    private Integer id;
+    private Integer parentId;
+    private Integer liveId;
     private int commentCount; //评论回复数量
     private long userId;
     private String text; //评论内容
@@ -22,27 +22,27 @@ public class Comment {
     private int voteDown;
     private User user;
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public long getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(long parentId) {
+    public void setParentId(Integer parentId) {
         this.parentId = parentId;
     }
 
-    public long getLiveId() {
+    public Integer getLiveId() {
         return liveId;
     }
 
-    public void setLiveId(long liveId) {
+    public void setLiveId(Integer liveId) {
         this.liveId = liveId;
     }
 

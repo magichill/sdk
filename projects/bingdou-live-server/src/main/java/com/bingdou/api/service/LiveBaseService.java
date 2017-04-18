@@ -30,6 +30,11 @@ public abstract class LiveBaseService extends BaseService {
         return liveDao.getLiveById(liveId);
     }
 
+    public Integer getLiveIdByMid(int liveId,Integer mid){
+        LogContext.instance().info("获取直播id");
+        return liveDao.getLiveIdByMid(liveId,mid);
+    }
+
     public Live getLiveInfoByStreamName(String streamName){
         LogContext.instance().info("获取直播详细数据");
         return liveDao.getLiveInfoByStreamName(streamName);
@@ -84,6 +89,12 @@ public abstract class LiveBaseService extends BaseService {
         return true;
     }
 
+    public boolean removeLive(Integer liveId){
+        LogContext.instance().info("删除直播");
+        liveDao.updateLiveIndex(liveId,-1,null,null,null);
+        liveDao.updateLiveStatus(liveId,-1);
+        return true;
+    }
     public boolean updateAnnounceLive(User user, UpdateAnnouceRequest request){
         LogContext.instance().info("更新预告内容");
         Live live = getLiveInfo(request.getLiveId());

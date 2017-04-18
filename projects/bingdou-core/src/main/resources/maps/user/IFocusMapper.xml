@@ -58,6 +58,15 @@
         ]]>
     </select>
 
+    <select id="getPopularUsers" resultMap="userDetail">
+        <![CDATA[
+        SELECT mmi.id,mmi.nickname,mmi.gender,mmi.avatar,mmi.cpid,mmi.signature,count(fi.follow_id) as fansCount
+        from ${userDB}.mc_member_index mmi
+        join ${userDB}.mc_focus_info fi on fi.follow_id = mmi.id
+        group by fi.follow_id order by fansCount desc limit 20
+        ]]>
+    </select>
+
     <resultMap id="userDetail" type="com.bingdou.core.model.User">
         <result property="id" column="id"/>
         <result property="gender" column="gender"/>

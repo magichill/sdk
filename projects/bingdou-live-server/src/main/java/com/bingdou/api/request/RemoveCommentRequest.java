@@ -5,15 +5,15 @@ import com.bingdou.tools.JsonUtil;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Created by gaoshan on 16-11-4.
+ * Created by gaoshan on 17/4/17.
  */
-public class RemoveLiveRequest  extends BaseRequest {
+public class RemoveCommentRequest extends BaseRequest {
 
     @SerializedName("account")
     private String account;
 
-    @SerializedName("live_id")
-    private Integer liveId;
+    @SerializedName("comment_id")
+    private Integer commentId;
 
     public String getAccount() {
         return account;
@@ -23,24 +23,24 @@ public class RemoveLiveRequest  extends BaseRequest {
         this.account = account;
     }
 
-    public Integer getLiveId() {
-        return liveId;
+    public Integer getCommentId() {
+        return commentId;
     }
 
-    public void setLiveId(Integer liveId) {
-        this.liveId = liveId;
+    public void setCommentId(Integer commentId) {
+        this.commentId = commentId;
     }
 
     @Override
     protected String getLoggerName() {
-        return "RemoveLiveRequest";
+        return "RemoveCommentRequest";
     }
 
     @Override
     protected BaseRequest setFields(String requestString) {
-        RemoveLiveRequest request = JsonUtil.jsonStr2Bean(requestString, RemoveLiveRequest.class);
+        RemoveCommentRequest request = JsonUtil.jsonStr2Bean(requestString, RemoveCommentRequest.class);
         this.account = request.getAccount();
-        this.liveId = request.getLiveId();
+        this.commentId = request.getCommentId();
         return request;
     }
 }

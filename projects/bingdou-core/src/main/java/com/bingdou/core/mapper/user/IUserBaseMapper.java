@@ -87,4 +87,10 @@ public interface IUserBaseMapper {
 
     void insertVirtualMoney(@Param("userId") int userId, @Param("os") int osIndex,
                             @Param("moneyFen") int moneyFen);
+
+    List<User> getActiveUsers();
+
+    List<User> getRecommendUsers();
+
+    List<User> getUserList(@Param("start") Integer start,@Param("limit") Integer limit);
 }
