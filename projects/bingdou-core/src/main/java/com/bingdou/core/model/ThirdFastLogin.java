@@ -11,6 +11,7 @@ public class ThirdFastLogin {
     private int userId;
     private String authToken;
     private String remark;
+    private String unionId; //微信唯一识别码
 
     public String getOpenId() {
         return openId;
@@ -50,5 +51,13 @@ public class ThirdFastLogin {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 }

@@ -13,6 +13,8 @@ public interface ILiveMapper {
 
     void addLiveIndex(Live live);
     void updateAnnounceLive(Live live);
+    void updateVideoType(@Param("liveId") Integer liveId);
+    void updateIndexVideoType(@Param("liveId") Integer liveId);
     void updateAnnounceLiveIndex(Live live);
     void updateDescription(Live live);
 

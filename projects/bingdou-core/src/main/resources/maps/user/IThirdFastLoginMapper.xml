@@ -3,8 +3,8 @@
 <mapper namespace="com.bingdou.core.mapper.user.IThirdFastLoginMapper">
 
     <insert id="insertLoginInfo" parameterType="com.bingdou.core.model.ThirdFastLogin">
-      INSERT INTO ${userDB}.mc_third_fast_login_record(open_id,open_type,mid,auth_token,remark)
-      VALUE (#{openId},#{openType},#{userId},#{authToken},#{remark})
+      INSERT INTO ${userDB}.mc_third_fast_login_record(open_id,open_type,mid,auth_token,remark,union_id)
+      VALUE (#{openId},#{openType},#{userId},#{authToken},#{remark},#{unionId})
     </insert>
 
     <select id="getLoginAuthCount" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -15,6 +15,11 @@
     <select id="getBingDouUserIdByOpenId" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT mid FROM ${userDB}.mc_third_fast_login_record
         WHERE open_id=#{openId} AND open_type=#{openType}
+    </select>
+
+    <select id="getBingDouUserIdByUnionId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT mid FROM ${userDB}.mc_third_fast_login_record
+        WHERE union_id=#{unionId} AND open_type=#{openType}
     </select>
 
     <update id="updateAuthToken" parameterType="java.util.Map">

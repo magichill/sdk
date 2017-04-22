@@ -34,6 +34,14 @@ public class ThirdFastLoginAuthBaseService {
         return userId;
     }
 
+    public int getBingDouUserIdByUnionId(String unionId, int type) {
+        if (StringUtils.isEmpty(unionId))
+            return 0;
+        Integer userId = thirdFastLoginDao.getBingDouUserIdByUnionInfo(unionId, type);
+        if (userId == null)
+            return 0;
+        return userId;
+    }
     public void insertLoginInfo(ThirdFastLogin thirdFastLogin) {
         thirdFastLoginDao.insertLoginInfo(thirdFastLogin);
     }

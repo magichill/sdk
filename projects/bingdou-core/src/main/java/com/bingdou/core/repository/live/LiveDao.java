@@ -81,6 +81,14 @@ public class LiveDao {
         liveMapper.updateAnnounceLive(live);
     }
 
+    public void updateLiveVideoType(Integer liveId){
+        liveMapper.updateVideoType(liveId);
+    }
+
+    public void updateIndexLiveVideoType(Integer liveId){
+        liveMapper.updateIndexVideoType(liveId);
+    }
+
     public void updateAnnounceLiveIndex(Live live){
         liveMapper.updateAnnounceLiveIndex(live);
     }

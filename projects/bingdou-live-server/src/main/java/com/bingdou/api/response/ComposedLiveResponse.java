@@ -343,5 +343,7 @@ public class ComposedLiveResponse {
         setRewardPercent(live.getRewardPercent());
         setVideoType(live.getLiveType());
         setDescription(live.getDescription());
+        setAudienceCount(live.getAudienceCount());
+        setPlaybackCount(live.getViewCount());
     }
 }

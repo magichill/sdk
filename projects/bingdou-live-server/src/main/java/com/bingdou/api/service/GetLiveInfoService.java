@@ -93,12 +93,8 @@ public class GetLiveInfoService extends LiveBaseService implements IMethodServic
         }
         if(liveType == LiveType.ENCODE.getIndex()){
             String password = getLiveInfoRequest.getPassword();
-            if(StringUtils.isEmpty(password)){
-                return ServiceResultUtil.illegal("该直播需要密码");
-            }else{
-                if(!password.equals(live.getPassword())){
-                    lock = false;
-                }
+            if(StringUtils.isEmpty(password) || !password.equals(live.getPassword())){
+                lock = false;
             }
 
         }

@@ -35,6 +35,10 @@ public class ThirdFastLoginDao {
         return thirdFastLoginMapper.getBingDouUserIdByOpenId(openId,openType);
     }
 
+    public Integer getBingDouUserIdByUnionInfo(String unionId,int openType) {
+        return thirdFastLoginMapper.getBingDouUserIdByUnionId(unionId,openType);
+    }
+
     public int updateLoginAuth(String device, String targetId) {
         return thirdFastLoginMapper.updateLoginAuth(device, targetId);
     }

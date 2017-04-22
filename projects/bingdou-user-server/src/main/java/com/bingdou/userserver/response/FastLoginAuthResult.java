@@ -12,6 +12,7 @@ public abstract class FastLoginAuthResult {
     protected String openId;
     protected String authCode;
     protected String sign;
+    protected String unionId;
 
     protected abstract void parse(JsonObject authResult) throws Exception;
 
@@ -49,5 +50,13 @@ public abstract class FastLoginAuthResult {
 
     public void setSign(String sign) {
         this.sign = sign;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 }

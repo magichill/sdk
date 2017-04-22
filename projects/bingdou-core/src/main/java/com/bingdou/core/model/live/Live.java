@@ -55,6 +55,9 @@ public class Live {
     private Date createTime;
     private Date updateTime;
 
+    private Integer audienceCount =0;
+    private Integer viewCount =0;
+
     public int getId() {
         return id;
     }
@@ -237,6 +240,22 @@ public class Live {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getAudienceCount() {
+        return audienceCount;
+    }
+
+    public void setAudienceCount(Integer audienceCount) {
+        this.audienceCount = audienceCount;
+    }
+
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 
     /**

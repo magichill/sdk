@@ -28,7 +28,7 @@
         SELECT
           COUNT(1)
         FROM ${liveDB}.lc_live_index
-        WHERE mid=#{mid} and status <> -1
+        WHERE mid=#{mid} and status != -1
         ]]>
     </select>
 
@@ -57,7 +57,7 @@
         ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,
         li.start_time,li.end_time,li.create_time,li.update_time
         FROM ${userDB}.mc_focus_info fi
-        LEFT JOIN ${liveDB}.lc_live_index li  ON li.mid = fi.follow_id
+        JOIN ${liveDB}.lc_live_index li  ON li.mid = fi.follow_id
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         WHERE fi.mid=#{userId} AND li.status != -1
         GROUP BY fi.follow_id
@@ -68,9 +68,11 @@
         SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.h5_url,li.mid,
         ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,lt.id as tid,lt.title,
         lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
-        li.price,li.live_type
+        li.price,li.live_type,cr.audience_count+ cr.add_audience as audience_total_count,
+        cr.view_count
         FROM ${liveDB}.lc_live_index li
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
+        LEFT JOIN ${liveDB}.lc_chatroom_record cr ON cr.live_id = li.id
         LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
         WHERE 1=1 AND li.status != -1
         <if test="status != null">
@@ -184,14 +186,28 @@
         ]]>
     </select>
 
+    <update id="updateVideoType" parameterType="java.util.Map">
+        update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
+        set video_type=1
+        where lid=#{liveId}
+    </update>
+
+    <update id="updateIndexVideoType" parameterType="java.util.Map">
+        update ${liveDB}.lc_live_index
+        set video_type=1
+        where id=#{liveId}
+    </update>
+
     <select id="getLiveInfoByTagId" parameterType="java.util.Map" resultMap="liveDetail">
         <![CDATA[
         SELECT
           li.id,li.live_title,li.live_picture,li.status,li.mid,li.push_stream,li.pull_stream,li.replay_url,li.price,
           li.password,li.live_type,li.reward_percent,li.orientation,li.create_time,li.update_time,lt.id as tid,lt.title,
-          lt.tag_pic,lt.tag_type,li.start_time,li.end_time
+          lt.tag_pic,lt.tag_type,li.start_time,li.end_time,
+          ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid
         FROM ${liveDB}.lc_live_index li
         JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
+        JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         WHERE li.tags=#{tagId} and li.status!=-1
         order by li.status,li.create_time desc limit #{start},#{limit}
         ]]>
@@ -218,6 +234,8 @@
         <result property="password" column="password"/>
         <result property="description" column="description"/>
         <result property="liveType" column="live_type"/>
+        <result property="audienceCount" column="audience_total_count"/>
+        <result property="viewCount" column="view_count"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="mid"/>
             <result property="gender" column="gender"/>

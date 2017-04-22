@@ -17,12 +17,14 @@ public class WeixinFastLoginAuthResult extends FastLoginAuthResult {
         }
         this.openId = authResult.get("open_id").getAsString();
         this.channelId = authResult.get("channel_id").getAsString();
+        this.unionId = authResult.get("union_id").getAsString();
         this.authCode = authResult.get("access_token").getAsString();
     }
 
     @Override
     protected boolean isAuthSuccess() {
         if(StringUtils.isEmpty(getOpenId()) || StringUtils.isEmpty(getChannelId())
+                || StringUtils.isEmpty(getUnionId())
                 || StringUtils.isEmpty(getAuthCode()))
             return false;
         return true;
@@ -35,5 +37,4 @@ public class WeixinFastLoginAuthResult extends FastLoginAuthResult {
     public void setChannelId(String channelId) {
         this.channelId = channelId;
     }
-
 }

@@ -136,6 +136,17 @@ public abstract class LiveBaseService extends BaseService {
         return true;
     }
 
+    public boolean updateVideoType(Integer liveId){
+        LogContext.instance().info("更新直播类型");
+        if(liveId == null){
+            LogContext.instance().info("直播不存在");
+            return false;
+        }
+        liveDao.updateIndexLiveVideoType(liveId);
+        liveDao.updateLiveVideoType(liveId);
+        LogContext.instance().info("更新直播类型成功");
+        return true;
+    }
     protected Live buildLive(User user,CreateLiveRequest createLiveRequest, CreateLiveResponse response,String streamName){
         Live live = new Live();
         live.setLiveTitle(createLiveRequest.getLiveTitle());

@@ -112,7 +112,7 @@ public class ThirdFastLoginService extends BaseService implements IMethodService
         } else {
             return ServiceResultUtil.illegal("非法授权登录类型");
         }
-        int userId = thirdFastLoginAuthBaseService.getBingDouUserIdByOpenId(fastLoginAuthResult.getOpenId(),
+        int userId = thirdFastLoginAuthBaseService.getBingDouUserIdByUnionId(fastLoginAuthResult.getUnionId(),
                 thirdFastLoginRequest.getThirdAuthType());
         String clientIp = RequestUtil.getClientIp(request);
 
@@ -154,6 +154,7 @@ public class ThirdFastLoginService extends BaseService implements IMethodService
                 thirdFastLogin.setOpenId(fastLoginAuthResult.getOpenId());
                 thirdFastLogin.setOpenType(thirdFastLoginRequest.getThirdAuthType());
                 thirdFastLogin.setUserId(newUser.getId());
+                thirdFastLogin.setUnionId(fastLoginAuthResult.getUnionId());
                 thirdFastLoginAuthBaseService.insertLoginInfo(thirdFastLogin);
                 User alreadyAddUser = userBaseService.getDetailById(newUser.getId());
                 if(isClient) {
