@@ -34,12 +34,12 @@ public class LiveDao {
         return liveMapper.getLiveIdByMid(liveId,mid);
     }
 
-    public List<Live> getLiveList(Integer status,String userId,int start,int limit){
-        return liveMapper.getLiveList(status,userId,start,limit);
+    public List<Live> getLiveList(Integer status,String userId,int start,int limit,String timestamp){
+        return liveMapper.getLiveList(status,userId,start,limit,timestamp);
     }
 
-    public List<Live> getFocusLiveList(Integer userId,int start,int limit){
-        return liveMapper.getFocusLiveListByUserId(userId,start,limit);
+    public List<Live> getFocusLiveList(Integer userId,int start,int limit,String timestamp){
+        return liveMapper.getFocusLiveListByUserId(userId,start,limit,timestamp);
     }
 
     public List<Live> getRecordLiveList(int start,int limit){

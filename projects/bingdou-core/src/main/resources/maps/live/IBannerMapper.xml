@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.live.IBannerMapper">
+
+    <select id="getBannerList" resultMap="bannerDetail">
+        <![CDATA[
+        SELECT *
+        FROM ${liveDB}.lc_banner
+        order by banner_order desc
+        ]]>
+    </select>
+
+    <!--<insert id="addBanner" parameterType="com.bingdou.core.model.live.Banner">-->
+        <!--<![CDATA[-->
+          <!--INSERT INTO ${liveDB}.lc_banner-->
+          <!--(title,picture_url,banner_type,banner_param,banner_order)-->
+          <!--VALUE(#{bannerTitle},#{bannerPic},#{bannerType},#{bannerContent},#{bannerOrder});-->
+        <!--]]>-->
+    <!--</insert>-->
+
+    <!--<update id="removeComment" parameterType="java.util.Map">-->
+        <!--<![CDATA[-->
+        <!--update ${liveDB}.lc_comment-->
+        <!--set status=0-->
+        <!--where id=#{commentId}-->
+        <!--]]>-->
+    <!--</update>-->
+
+    <resultMap id="bannerDetail" type="com.bingdou.core.model.live.Banner">
+        <result property="id" column="id"/>
+        <result property="bannerTitle" column="title"/>
+        <result property="bannerPic" column="picture_url"/>
+        <result property="bannerType" column="banner_type"/>
+        <result property="bannerContent" column="banner_param"/>
+    </resultMap>
+
+</mapper>

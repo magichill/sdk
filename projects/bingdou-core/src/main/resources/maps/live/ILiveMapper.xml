@@ -61,6 +61,11 @@
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         WHERE fi.mid=#{userId} AND li.status != -1
         GROUP BY fi.follow_id
+        <if test="timestamp != null">
+            <![CDATA[
+              AND li.create_time <= #{timestamp}
+            ]]>
+        </if>
         ORDER BY li.status,li.create_time DESC limit #{start},#{limit}
     </select>
 
@@ -69,10 +74,14 @@
         ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,lt.id as tid,lt.title,
         lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
         li.price,li.live_type,cr.audience_count+ cr.add_audience as audience_total_count,
-        cr.view_count
+        re.enter_count as view_count,sr.share_count as share_count
         FROM ${liveDB}.lc_live_index li
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         LEFT JOIN ${liveDB}.lc_chatroom_record cr ON cr.live_id = li.id
+        LEFT JOIN (select live_id,sum(enter_count) as enter_count from ${liveDB}.lc_report_entry group by live_id)
+        re ON re.live_id = li.id
+        LEFT JOIN (select live_id,sum(share_count) as share_count from ${liveDB}.lc_share_record where share_type=2 group by live_id)
+        sr on sr.live_id = li.id
         LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
         WHERE 1=1 AND li.status != -1
         <if test="status != null">
@@ -85,6 +94,11 @@
         </if>
         <if test="userId != null">
           AND li.mid = #{userId}
+        </if>
+        <if test="timestamp != null">
+            <![CDATA[
+              AND li.create_time <= #{timestamp}
+            ]]>
         </if>
         order by li.status,li.create_time desc limit #{start},#{limit}
     </select>
@@ -188,13 +202,13 @@
 
     <update id="updateVideoType" parameterType="java.util.Map">
         update ${liveDB}.lc_live${@com.bingdou.core.model.live.Live@getTableNumber(liveId)}
-        set video_type=1
+        set live_type=1
         where lid=#{liveId}
     </update>
 
     <update id="updateIndexVideoType" parameterType="java.util.Map">
         update ${liveDB}.lc_live_index
-        set video_type=1
+        set live_type=1
         where id=#{liveId}
     </update>
 
@@ -236,6 +250,7 @@
         <result property="liveType" column="live_type"/>
         <result property="audienceCount" column="audience_total_count"/>
         <result property="viewCount" column="view_count"/>
+        <result property="shareCount" column="share_count"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="mid"/>
             <result property="gender" column="gender"/>

@@ -57,6 +57,7 @@ public class Live {
 
     private Integer audienceCount =0;
     private Integer viewCount =0;
+    private Integer shareCount =0;
 
     public int getId() {
         return id;
@@ -256,6 +257,14 @@ public class Live {
 
     public void setViewCount(Integer viewCount) {
         this.viewCount = viewCount;
+    }
+
+    public Integer getShareCount() {
+        return shareCount;
+    }
+
+    public void setShareCount(Integer shareCount) {
+        this.shareCount = shareCount;
     }
 
     /**

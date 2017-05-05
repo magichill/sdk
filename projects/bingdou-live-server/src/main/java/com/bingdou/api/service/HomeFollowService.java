@@ -8,11 +8,13 @@ import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.tools.DateUtil;
 import com.bingdou.tools.JsonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,15 +70,22 @@ public class HomeFollowService extends LiveBaseService implements IMethodService
         if (start != null && start > 0) {
             start = (start - 1) * limit;
         }
-        List<Live> result = getFocusLiveList(user.getId(), start, limit);
+        String timestamp = "";
+        if(StringUtils.isEmpty(getHomeFollowRequest.getTimestamp()) || start == 0){
+            timestamp = DateUtil.format(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS);
+        }else{
+            timestamp = getHomeFollowRequest.getTimestamp();
+        }
+        List<Live> result = getFocusLiveList(user.getId(), start, limit,timestamp);
         List<User> userList = userBaseService.getFocusUserWithoutLive(user.getId());
-        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildHomeFollowResponse(result,userList)));
+        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildHomeFollowResponse(result,userList,timestamp)));
     }
 
-    private HomeFollowResponse buildHomeFollowResponse(List<Live> liveList,List<User> userList){
+    private HomeFollowResponse buildHomeFollowResponse(List<Live> liveList,List<User> userList,String timestamp){
         HomeFollowResponse response = new HomeFollowResponse();
         response.parseFromLive(liveList);
         response.parseFromUser(userList);
+        response.setTimestamp(timestamp);
         return response;
     }
 }

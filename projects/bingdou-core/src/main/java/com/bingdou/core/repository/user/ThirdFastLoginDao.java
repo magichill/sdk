@@ -27,8 +27,8 @@ public class ThirdFastLoginDao {
         thirdFastLoginMapper.insertLoginInfo(thirdFastLogin);
     }
 
-    public int updateAuthToken(String openId, int openType, String authToken) {
-        return thirdFastLoginMapper.updateAuthToken(openId, openType, authToken);
+    public int updateAuthToken(String unionId, int openType, String authToken) {
+        return thirdFastLoginMapper.updateAuthToken(unionId, openType, authToken);
     }
 
     public Integer getBingDouUserIdByOpenInfo(String openId,int openType) {

@@ -16,12 +16,23 @@ public class HomePageResponse {
     @SerializedName("lives")
     private List<ComposedLiveResponse> lives;
 
+    @SerializedName("timestamp")
+    private String timestamp;
+
     public List<ComposedLiveResponse> getLives() {
         return lives;
     }
 
     public void setLives(List<ComposedLiveResponse> lives) {
         this.lives = lives;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public void parseFromLive(List<Live> liveList){

@@ -9,10 +9,13 @@ import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.tools.DateUtil;
 import com.bingdou.tools.JsonUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,8 +66,14 @@ public class HomePageService extends LiveBaseService implements IMethodService {
         if(start!=null && start >0){
             start = (start-1)*limit;
         }
-        List<Live> result = getLiveList(status,null,start,limit);
-        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildHomePageResponse(result)));
+        String timestamp = "";
+        if(StringUtils.isEmpty(findLiveRequest.getTimestamp()) || start == 0){
+            timestamp = DateUtil.format(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS);
+        }else{
+            timestamp = findLiveRequest.getTimestamp();
+        }
+        List<Live> result = getLiveList(status,null,start,limit,timestamp);
+        return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildHomePageResponse(result,timestamp)));
     }
 
     private FindLiveResponse buildLiveResponse(List<Live> liveList){
@@ -73,9 +82,10 @@ public class HomePageService extends LiveBaseService implements IMethodService {
         return response;
     }
 
-    private HomePageResponse buildHomePageResponse(List<Live> liveList){
+    private HomePageResponse buildHomePageResponse(List<Live> liveList,String timestamp){
         HomePageResponse response = new HomePageResponse();
         response.parseFromLive(liveList);
+        response.setTimestamp(timestamp);
         return response;
     }
 }

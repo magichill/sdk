@@ -46,9 +46,9 @@ public class ThirdFastLoginAuthBaseService {
         thirdFastLoginDao.insertLoginInfo(thirdFastLogin);
     }
 
-    public boolean updateAuthToken(String openId, ThirdFastLoginType thirdFastLoginType,
+    public boolean updateAuthToken(String unionId, ThirdFastLoginType thirdFastLoginType,
                                    String authToken) {
-        int count = thirdFastLoginDao.updateAuthToken(openId, thirdFastLoginType.getIndex(), authToken);
+        int count = thirdFastLoginDao.updateAuthToken(unionId, thirdFastLoginType.getIndex(), authToken);
         return count > 0;
     }
 

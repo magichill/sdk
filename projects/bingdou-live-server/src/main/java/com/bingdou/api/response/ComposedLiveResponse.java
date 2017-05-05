@@ -345,5 +345,6 @@ public class ComposedLiveResponse {
         setDescription(live.getDescription());
         setAudienceCount(live.getAudienceCount());
         setPlaybackCount(live.getViewCount());
+        setShareCount(live.getShareCount());
     }
 }

@@ -3,31 +3,31 @@ package com.bingdou.core.model;
 public enum AliNoPwdPayReturnCode {
 
     /**
-     * ֧��ʧ��
+     * 支付失败
      */
     PAY_FAIL,
     /**
-     * ��������ʧ��
+     * 请求免密失败
      */
     REQUEST_FAIL,
     /**
-     * �µ�ʧ��
+     * 下单失败
      */
     ORDER_FAIL,
     /**
-     * �µ��ɹ�����֧���ɹ�
+     * 下单成功并且支付成功
      */
     ORDER_SUCCESS_PAY_SUCCESS,
     /**
-     * �µ��ɹ�֧��ʧ��
+     * 下单成功支付失败
      */
     ORDER_SUCCESS_PAY_FAIL,
     /**
-     * �µ��ɹ�֧��������
+     * 下单成功支付处理中
      */
     ORDER_SUCCESS_PAY_INPROCESS,
     /**
-     * �������δ֪
+     * 处理结果未知
      */
     UNKNOWN
 

@@ -36,10 +36,11 @@
 
     <select id="getCertificateUserList" resultMap="userDetail">
         <![CDATA[
-        SELECT mi.id,mi.signature,mi.gender,mi.avatar,mi.cpid,mi.nickname,uv.level_id AS vip_level_id
+        SELECT mi.id,mi.signature,mi.gender,mi.avatar,mi.cpid,mi.nickname
         FROM ${userDB}.mc_member_index mi
         LEFT JOIN
-        ${payDB}.mc_user_vip uv on mi.id=uv.id
+        ${userDB}.mc_recommend_user rm on mi.id=rm.mid
+        order by rm.order_num DESC
         LIMIT 5
         ]]>
     </select>

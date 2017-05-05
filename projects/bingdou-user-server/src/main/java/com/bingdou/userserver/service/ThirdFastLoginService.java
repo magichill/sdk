@@ -172,7 +172,7 @@ public class ThirdFastLoginService extends BaseService implements IMethodService
             if (StringUtils.isNotEmpty(errorMessage)) {
                 return ServiceResultUtil.illegal(errorMessage);
             }
-            boolean updateResult = thirdFastLoginAuthBaseService.updateAuthToken(fastLoginAuthResult.getOpenId(),
+            boolean updateResult = thirdFastLoginAuthBaseService.updateAuthToken(fastLoginAuthResult.getUnionId(),
                     ThirdFastLoginType.getByIndex(thirdFastLoginRequest.getThirdAuthType()), fastLoginAuthResult.getAuthCode());
             LogContext.instance().info("更新授权码结果:" + updateResult);
             if (!updateResult) {

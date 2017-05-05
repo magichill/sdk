@@ -74,7 +74,7 @@ public class ModifyVideoTypeService extends LiveBaseService implements IMethodSe
             return ServiceResultUtil.illegal("无权限修改视频类型");
         }
         Map result = Maps.newHashMap();
-        boolean modifyStatus = updateVideoType(liveId);;
+        boolean modifyStatus = updateVideoType(liveId);
         result.put("result",modifyStatus?0:1);
         return ServiceResultUtil.success(JsonUtil.bean2JsonTree(result));
     }

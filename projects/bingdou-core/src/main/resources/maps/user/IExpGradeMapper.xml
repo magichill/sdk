@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bingdou.core.mapper.pay.IExpGradeMapper">
+
+    <select id="getExpAmountByLevelId" parameterType="java.lang.Integer"
+            resultType="java.lang.Integer">
+        <![CDATA[
+          SELECT exp_amount FROM ${userDB}.mc_exp_grade
+          WHERE level_id = #{levelId}
+        ]]>
+    </select>
+
+    <select id="getUserExpGradeInfo" parameterType="int" resultMap="userExpGrade">
+        <![CDATA[
+          SELECT exp_value, level_id AS user_level_id FROM ${userDB}.mc_user_exp WHERE mid=#{userId} LIMIT 1
+        ]]>
+    </select>
+
+    <select id="getVipLevelByExpAmount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        <![CDATA[
+          SELECT level_id FROM ${userDB}.mc_exp_grade WHERE exp_amount<=#{expAmount} ORDER BY level_id DESC LIMIT 1
+        ]]>
+    </select>
+
+    <update id="updateUserExp" parameterType="java.util.Map">
+        <![CDATA[
+          UPDATE ${userDB}.mc_user_exp SET level_id=#{levelId},exp_value=#{exp_value} WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <update id="updateUserExpValue" parameterType="java.util.Map">
+        <![CDATA[
+          UPDATE ${userDB}.mc_user_exp SET exp_value=#{exp_value} WHERE mid=#{userId}
+        ]]>
+    </update>
+
+    <insert id="insertUserExp" parameterType="java.util.Map">
+        <![CDATA[
+          INSERT ${userDB}.mc_user_exp(mid,exp_value,level_id)
+          VALUE(#{userId},#{exp_value},#{levelId})
+        ]]>
+    </insert>
+
+    <resultMap id="userExpGrade" type="com.bingdou.core.model.UserExpGrade">
+        <result property="expValue" column="exp_value"/>
+        <result property="userLevelId" column="user_level_id"/>
+        <result property="expAmount" column="exp_amount"/>
+    </resultMap>
+
+</mapper>

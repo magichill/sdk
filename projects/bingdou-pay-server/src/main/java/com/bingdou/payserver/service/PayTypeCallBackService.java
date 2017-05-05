@@ -135,7 +135,7 @@ public class PayTypeCallBackService {
         }
         if (rechargeOrder.getStatus() == OrderStatus.PAYED.getIndex()) {
             LogContext.instance().error("此订单已经完成,不需要回调");
-            return true;
+            return false;
         }
         return true;
     }

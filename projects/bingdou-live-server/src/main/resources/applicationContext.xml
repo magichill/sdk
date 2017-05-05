@@ -57,6 +57,7 @@
                 <ref local="removeCommentService" />
                 <ref local="removeLiveService" />
                 <ref local="modifyVideoTypeService" />
+                <ref local="getBannerListService" />
             </list>
         </property>
     </bean>

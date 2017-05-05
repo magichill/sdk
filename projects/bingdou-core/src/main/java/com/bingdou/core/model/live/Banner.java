@@ -17,7 +17,9 @@ public class Banner {
 
     private int bannerType;
 
-    private String bannerLink;
+    private String bannerContent;
+
+    private Integer bannerOrder;
 
     private Date createTime;
 
@@ -63,12 +65,12 @@ public class Banner {
         this.bannerType = bannerType;
     }
 
-    public String getBannerLink() {
-        return bannerLink;
+    public String getBannerContent() {
+        return bannerContent;
     }
 
-    public void setBannerLink(String bannerLink) {
-        this.bannerLink = bannerLink;
+    public void setBannerContent(String bannerContent) {
+        this.bannerContent = bannerContent;
     }
 
     public Date getCreateTime() {
@@ -85,5 +87,13 @@ public class Banner {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getBannerOrder() {
+        return bannerOrder;
+    }
+
+    public void setBannerOrder(Integer bannerOrder) {
+        this.bannerOrder = bannerOrder;
     }
 }

@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 /**
- * Ö§¸¶±¦ÃâÃÜÊÚÈ¨ĞÅÏ¢»º´æÀà
+ * æ”¯ä»˜å®å…å¯†æˆæƒä¿¡æ¯ç¼“å­˜ç±»
  * Created by gaoshan on 16/12/28.
  */
 @Component
@@ -26,7 +26,7 @@ public class AliPayNoPwdAuthJedisCacheManager extends JedisManager implements IA
                 result = statusStr;
             }
         } catch (Exception e) {
-            LogContext.instance().error(e, "»ñÈ¡Ö§¸¶±¦ÃâÃÜÊÇ·ñÊÚÈ¨»º´æ´íÎó");
+            LogContext.instance().error(e, "è·å–æ”¯ä»˜å®å…å¯†æ˜¯å¦æˆæƒç¼“å­˜é”™è¯¯");
         }
         return result;
     }
@@ -41,7 +41,7 @@ public class AliPayNoPwdAuthJedisCacheManager extends JedisManager implements IA
             set(RedisDBConstants.ALI_NO_PWD_AUTH_DB_INDEX, key, status + "", -1);
             result = true;
         } catch (Exception e) {
-            LogContext.instance().error(e, "»ñÈ¡Ö§¸¶±¦ÃâÃÜÊÇ·ñÊÚÈ¨»º´æ´íÎó");
+            LogContext.instance().error(e, "è·å–æ”¯ä»˜å®å…å¯†æ˜¯å¦æˆæƒç¼“å­˜é”™è¯¯");
         }
         return result;
     }

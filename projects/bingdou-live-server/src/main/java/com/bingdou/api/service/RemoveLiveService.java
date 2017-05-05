@@ -7,6 +7,7 @@ import com.bingdou.core.helper.ServiceResult;
 import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
+import com.bingdou.core.model.live.LiveStatus;
 import com.bingdou.core.service.IMethodService;
 import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
@@ -72,9 +73,14 @@ public class RemoveLiveService extends LiveBaseService implements IMethodService
         }
 
         Live live = getLiveInfo(removeLiveRequest.getLiveId());
-        if(live == null || live.getLiveType() == LiveType.PAY.getIndex()
-                || live.getLiveType() == LiveType.CHANNEL_PAY.getIndex()){
-            return ServiceResultUtil.illegal("视频不可删除");
+        if(live == null || LiveStatus.DEL_LIVE.getIndex()==live.getStatus()){
+            return ServiceResultUtil.illegal("直播不存在或已删除");
+        }
+        if(LiveStatus.getByIndex(live.getStatus())!=LiveStatus.REVIEW) {
+            if(live.getLiveType() == LiveType.PAY.getIndex()
+                    || live.getLiveType() == LiveType.CHANNEL_PAY.getIndex()) {
+                return ServiceResultUtil.illegal("视频不可删除");
+            }
         }
         Integer liveId = getLiveIdByMid(removeLiveRequest.getLiveId(),user.getId());
         Map result = Maps.newHashMap();

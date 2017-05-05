@@ -60,6 +60,11 @@ public abstract class BaseRequest {
      */
     private String method;
 
+    @SerializedName("timestamp")
+    private String timestamp;
+
+
+
     /**
      * 解析请求对象
      */
@@ -96,6 +101,7 @@ public abstract class BaseRequest {
                 this.otherInfo = baseRequest.getOtherInfo();
                 this.token = baseRequest.getToken();
                 this.channel = baseRequest.getChannel();
+                this.timestamp = baseRequest.getTimestamp();
             } else {
                 logContext.error("签名错误");
                 throw new Exception("签名错误");
@@ -166,6 +172,14 @@ public abstract class BaseRequest {
 
     public String getMethod() {
         return this.method;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     @Override

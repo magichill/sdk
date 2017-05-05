@@ -47,7 +47,12 @@ public class CncRecordCallTypeService implements IRecordCallTypeService {
         CncRecordStartRequest cncRequest = JsonUtil.jsonStr2Bean((String)request.getAttribute("cncRequest"),CncRecordStartRequest.class);
         LogContext.instance().info("处理网宿录制开始回调请求");
         LogContext.instance().info("请求参数:"+ JsonUtil.bean2JsonStr(cncRequest));
-        return true;
+        boolean isSuccess = false;
+        String streamName = dealCncStreamName(cncRequest.getStreamName());
+        if(StringUtils.isNotEmpty(streamName)){
+            isSuccess = recordCallbackService.notifyAppServer(streamName,true,null);
+        }
+        return isSuccess;
     }
 
     private boolean dealCallbackFinish(HttpServletRequest request){

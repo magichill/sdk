@@ -20,7 +20,7 @@ public class UserStatisticsJedisCacheManager extends JedisManager implements IUs
         try {
             amid = get(RedisDBConstants.USER_STATISTICS_DB_INDEX, redisKey);
         } catch (Exception e) {
-            LogContext.instance().error(e, "获取用户注册应用历史失败");
+            LogContext.instance().error(e, "鑾峰彇鐢ㄦ埛娉ㄥ唽搴旂敤鍘嗗彶澶辫触");
         }
         return amid;
     }
@@ -36,7 +36,7 @@ public class UserStatisticsJedisCacheManager extends JedisManager implements IUs
             set(RedisDBConstants.USER_STATISTICS_DB_INDEX, redisKey, "amid:" + appMemberId, -1);
             result = true;
         } catch (Exception e) {
-            LogContext.instance().error(e, "设置用户注册应用历史失败");
+            LogContext.instance().error(e, "璁剧疆鐢ㄦ埛娉ㄥ唽搴旂敤鍘嗗彶澶辫触");
         }
         return result;
     }

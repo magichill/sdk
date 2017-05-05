@@ -12,7 +12,7 @@ public interface IThirdFastLoginMapper {
     Integer getBingDouUserIdByOpenId(@Param("openId") String openId, @Param("openType") int openType);
     Integer getBingDouUserIdByUnionId(@Param("unionId") String unionId, @Param("openType") int openType);
 
-    int updateAuthToken(@Param("openId") String openId, @Param("openType") int openType,
+    int updateAuthToken(@Param("unionId") String unionId, @Param("openType") int openType,
                         @Param("authToken") String authToken);
 
     void insertLoginAuth(@Param("device") String device, @Param("targetId") String targetId);

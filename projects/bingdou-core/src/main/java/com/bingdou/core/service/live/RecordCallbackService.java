@@ -2,6 +2,7 @@ package com.bingdou.core.service.live;
 
 
 import com.bingdou.core.model.live.Live;
+import com.bingdou.core.model.live.LiveStatus;
 import com.bingdou.core.repository.live.LiveDao;
 import com.bingdou.core.service.live.callback.NotifyLiveStatus;
 import com.bingdou.tools.HttpClientUtil;
@@ -51,6 +52,7 @@ public class RecordCallbackService {
             status = 2;
         }
         liveDao.updateLiveStatus(liveId,status);
+        liveDao.updateLiveIndex(liveId,status,null,null,null);
         return true;
     }
     //TODO 通知直播聊天室直播流状态
@@ -67,16 +69,24 @@ public class RecordCallbackService {
             return false;
         }
         Live live = liveDao.getLiveInfoByStreamName(streamName);
+        if(live == null){
+            LogContext.instance().info("直播不存在");
+            return false;
+        }
         if (status) {
             liveDao.updateLiveIndex(live.getId(),1,null,"startTime",null);
             liveDao.updateStartLive(live.getId(), 1);
         } else {
+            Integer currentStatus = LiveStatus.getByIndex(live.getStatus()).getIndex();
+            if(currentStatus != LiveStatus.DEL_LIVE.getIndex()){
+                currentStatus = LiveStatus.REPLAY.getIndex();
+            }
             if(StringUtils.isBlank(playUrl)){
-                liveDao.updateLiveIndex(live.getId(),2,null,null,"endTime");
-                liveDao.updateEndLive(live.getId(), 2, null);
+                liveDao.updateLiveIndex(live.getId(),currentStatus,null,null,"endTime");
+                liveDao.updateEndLive(live.getId(), currentStatus, null);
             }else {
-                liveDao.updateLiveIndex(live.getId(), 2, playUrl,null,null);
-                liveDao.updateEndLive(live.getId(), 2, playUrl);
+                liveDao.updateLiveIndex(live.getId(), currentStatus, playUrl,null,null);
+                liveDao.updateEndLive(live.getId(), currentStatus, playUrl);
             }
         }
         return true;

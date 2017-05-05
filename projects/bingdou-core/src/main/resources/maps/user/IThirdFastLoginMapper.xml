@@ -24,7 +24,7 @@
 
     <update id="updateAuthToken" parameterType="java.util.Map">
         UPDATE ${userDB}.mc_third_fast_login_record SET auth_token=#{authToken}
-        WHERE open_id=#{openId} AND open_type=#{openType}
+        WHERE union_id=#{unionId} AND open_type=#{openType}
     </update>
 
     <insert id="insertLoginAuth" parameterType="java.util.Map">

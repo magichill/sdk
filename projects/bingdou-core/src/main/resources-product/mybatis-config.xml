@@ -5,9 +5,9 @@
 
 <configuration>
 	<properties>
-		<property name="payDB" value="sdk_pay"/>
-		<property name="userDB" value="sdk_user"/>
-		<property name="liveDB" value="sdk_live"/>
+		<property name="payDB" value="sdk_online_pay"/>
+		<property name="userDB" value="sdk_online_user"/>
+		<property name="liveDB" value="sdk_online_live"/>
 	</properties>
 	<settings>
 		<setting name="lazyLoadingEnabled" value="false" />

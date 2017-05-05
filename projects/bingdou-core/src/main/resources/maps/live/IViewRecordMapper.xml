@@ -15,7 +15,7 @@
         <![CDATA[
           INSERT INTO ${liveDB}.lc_chatroom_record
           (live_id,audience_count,view_count,add_audience)
-          VALUE(#{liveId},#{audienceCount},#{viewCount},1);
+          VALUE(#{liveId},#{audienceCount},#{viewCount},0);
         ]]>
     </insert>
 

@@ -4,7 +4,7 @@ package com.bingdou.core.mapper.pay;
 import com.bingdou.core.model.AppleInnerPayReceipt;
 
 /**
- * 苹果应用内支付凭证MAPPER
+ * 鑻规灉搴旂敤鍐呮敮浠樺嚟璇丮APPER
  * Created by gaoshan on 17/3/25.
  */
 public interface IAppleInnerPayReceiptMapper {

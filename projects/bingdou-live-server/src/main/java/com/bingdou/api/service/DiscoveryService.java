@@ -8,6 +8,7 @@ import com.bingdou.core.helper.ServiceResultUtil;
 import com.bingdou.core.model.User;
 import com.bingdou.core.model.live.Live;
 import com.bingdou.core.service.IMethodService;
+import com.bingdou.tools.DateUtil;
 import com.bingdou.tools.JsonUtil;
 import com.bingdou.tools.LogContext;
 import com.google.gson.JsonElement;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -74,10 +76,17 @@ public class DiscoveryService extends LiveBaseService implements IMethodService 
         if(start!=null && start >0){
             start = (start-1)*limit;
         }
-        List<Live> liveList = getLiveList(status,null,start,limit);
+        String timestamp = "";
+        if(StringUtils.isEmpty(discoveryRequest.getTimestamp()) || start == 0){
+            timestamp = DateUtil.format(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS);
+        }else{
+            timestamp = discoveryRequest.getTimestamp();
+        }
+        List<Live> liveList = getLiveList(status,null,start,limit,timestamp);
         List<User> userList = userBaseService.getCertificateUsers();
         DiscoveryResponse discoveryResponse = new DiscoveryResponse();
         discoveryResponse.parseFromLiveAndUser(liveList,userList);
+        discoveryResponse.setTimestamp(timestamp);
         LogContext.instance().info("获取发现直播数据成功");
         JsonElement result = JsonUtil.bean2JsonTree(discoveryResponse);
         return ServiceResultUtil.success(result);

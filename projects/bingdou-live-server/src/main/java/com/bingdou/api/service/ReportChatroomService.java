@@ -82,8 +82,8 @@ public class ReportChatroomService extends LiveBaseService implements IMethodSer
             chatroomRecordService.addReportChatroom(user,live,reportChatRoomRequest.getAudienceCount(),
                     reportChatRoomRequest.getViewCount());
         }else{
-            if(reportChatRoomRequest.getAudienceCount() != null && reportChatRoomRequest.getViewCount()!=null) {
-                reportChatroom.setViewCount(reportChatRoomRequest.getViewCount());
+            if(reportChatRoomRequest.getAudienceCount() != null) {
+//                reportChatroom.setViewCount(reportChatRoomRequest.getViewCount());
                 reportChatroom.setAudienceCount(reportChatRoomRequest.getAudienceCount());
             }
             chatroomRecordService.updateReportChatroom(reportChatroom);
@@ -93,7 +93,7 @@ public class ReportChatroomService extends LiveBaseService implements IMethodSer
         if(reportChatroom == null){
             result.put("add_audience", 0);
         }else {
-            result.put("add_audience", reportChatroom.getAudienceCount());
+            result.put("add_audience", reportChatroom.getAddAudience());
         }
         return ServiceResultUtil.success(JsonUtil.bean2JsonTree(result));
     }

@@ -59,7 +59,8 @@ public class FindLiveService extends LiveBaseService implements IMethodService {
         int status = findLiveRequest.getStatus();
         String userId = findLiveRequest.getUserId();
         int liveId = findLiveRequest.getLiveId();
-        List<Live> result = getLiveList(status,userId,1,1);
+
+        List<Live> result = getLiveList(status,userId,1,1,null);
         return ServiceResultUtil.success(JsonUtil.bean2JsonTree(buildLiveResponse(result)));
     }
 
