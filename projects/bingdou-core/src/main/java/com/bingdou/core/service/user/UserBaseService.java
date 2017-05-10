@@ -246,6 +246,12 @@ public class UserBaseService {
                 user.setToken(userToken.getToken());
                 return true;
             }
+            if(userToken != null) {
+                //TODO
+                LogContext.instance().info("登录不更新TOKEN");
+                user.setToken(userToken.getToken());
+                return true;
+            }
         }
         String token = user.generateUserToken();
         String validateToken = user.generateUserValidateToken();

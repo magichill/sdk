@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class UserProfileResponse {
 
     @SerializedName("id")
-    private Integer userPrimaryId = 0;
+    private String userPrimaryId = "0";
     @SerializedName("short_id")
     private String cpIdOrId = "";
     @SerializedName("gender")
@@ -36,12 +36,12 @@ public class UserProfileResponse {
     @SerializedName("latitude")
     private float latitude = 0f;
 
-    public Integer getUserPrimaryId() {
+    public String getUserPrimaryId() {
         return userPrimaryId;
     }
 
     public void setUserPrimaryId(Integer userPrimaryId) {
-        this.userPrimaryId = userPrimaryId;
+        this.userPrimaryId = String.valueOf(100000+userPrimaryId);
     }
 
     public String getCpIdOrId() {
