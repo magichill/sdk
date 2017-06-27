@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * XML¹¤¾ßÀà
+ * XMLå·¥å…·ç±»
  * Created by gaoshan on 16/2/15.
  */
 public class XmlUtil {
@@ -24,11 +24,11 @@ public class XmlUtil {
     }
 
     /**
-     * ¸ù¾İMAP´´½¨XML½á¹¹(¹Ù·½Î¢ĞÅÖ§¸¶ÓÃ)
+     * æ ¹æ®MAPåˆ›å»ºXMLç»“æ„(å®˜æ–¹å¾®ä¿¡æ”¯ä»˜ç”¨)
      */
     public static String buildXmlFromMap4Wx(Map<String, String> map) {
         if (map == null || map.isEmpty()) {
-            LogContext.instance().warn("MAPÎª¿Õ");
+            LogContext.instance().warn("MAPä¸ºç©º");
             return "";
         }
         String xml = "";
@@ -40,13 +40,13 @@ public class XmlUtil {
             }
             xml = document.asXML();
         } catch (Exception e) {
-            LogContext.instance().error(e, "Í¨¹ıMAP´´½¨XMLÊ§°Ü");
+            LogContext.instance().error(e, "é€šè¿‡MAPåˆ›å»ºXMLå¤±è´¥");
         }
         return xml;
     }
 
     /**
-     * ¸ù¾İMAP´´½¨XML½á¹¹(¹Ù·½Î¢ĞÅÖ§¸¶ÓÃ»Øµ÷½á¹ûÓÃ)
+     * æ ¹æ®MAPåˆ›å»ºXMLç»“æ„(å®˜æ–¹å¾®ä¿¡æ”¯ä»˜ç”¨å›è°ƒç»“æœç”¨)
      */
     public static String buildXmlFromMap4WxCallBackResult(boolean success) {
         String xml = "";
@@ -59,18 +59,18 @@ public class XmlUtil {
             element.addElement("return_msg").setText(returnMessage);
             xml = document.asXML();
         } catch (Exception e) {
-            LogContext.instance().error(e, "Í¨¹ıMAP´´½¨XMLÊ§°Ü");
+            LogContext.instance().error(e, "é€šè¿‡MAPåˆ›å»ºXMLå¤±è´¥");
         }
         return xml;
     }
 
     /**
-     * ¸ù¾İXML×Ö·û´®»ñÈ¡MAP(ÊÊÓÃÓÚ¸ù½ÚµãÏÂ¾ÍÒ»¼¶µÄÇé¿ö)
+     * æ ¹æ®XMLå­—ç¬¦ä¸²è·å–MAP(é€‚ç”¨äºæ ¹èŠ‚ç‚¹ä¸‹å°±ä¸€çº§çš„æƒ…å†µ)
      */
     @SuppressWarnings("unchecked")
     public static Map<String, String> getMapFromXmlStr4OneLevel(String xmlStr) {
         if (StringUtils.isEmpty(xmlStr)) {
-            LogContext.instance().warn("XMLÄÚÈİÎª¿Õ»òÕß½ÚµãÃû³ÆÎª¿Õ");
+            LogContext.instance().warn("XMLå†…å®¹ä¸ºç©ºæˆ–è€…èŠ‚ç‚¹åç§°ä¸ºç©º");
             return null;
         }
         Map<String, String> map = new HashMap<String, String>();
@@ -83,18 +83,18 @@ public class XmlUtil {
             }
         } catch (Exception e) {
             map = null;
-            LogContext.instance().error(e, "½âÎöXMLÊ§°Ü");
+            LogContext.instance().error(e, "è§£æXMLå¤±è´¥");
         }
         return map;
     }
 
     /**
-     * ¸ü¼Ó½ÚµãÃû³Æ»ñÈ¡½ÚµãÄÚÈİ(ÊÊÓÃÓÚ¸ù½ÚµãÏÂ¾ÍÒ»¼¶µÄÇé¿ö)
+     * æ›´åŠ èŠ‚ç‚¹åç§°è·å–èŠ‚ç‚¹å†…å®¹(é€‚ç”¨äºæ ¹èŠ‚ç‚¹ä¸‹å°±ä¸€çº§çš„æƒ…å†µ)
      */
     public static String getNodeTextByNodeName4OneLevel(Document document, String nodeName) {
         String value = "";
         if (document == null || StringUtils.isEmpty(nodeName)) {
-            LogContext.instance().warn("documentÎª¿Õ»òÕß½ÚµãÃû³ÆÎª¿Õ");
+            LogContext.instance().warn("documentä¸ºç©ºæˆ–è€…èŠ‚ç‚¹åç§°ä¸ºç©º");
             return value;
         }
         try {
@@ -102,21 +102,21 @@ public class XmlUtil {
             Element element = root.element(nodeName);
             value = element.getTextTrim();
         } catch (Exception e) {
-            LogContext.instance().error(e, "¸ù¾İ½ÚµãÃû³Æ»ñÈ¡½ÚµãÄÚÈİÊ§°Ü");
+            LogContext.instance().error(e, "æ ¹æ®èŠ‚ç‚¹åç§°è·å–èŠ‚ç‚¹å†…å®¹å¤±è´¥");
         }
         return value;
     }
 
     public static Document getDocumentByXmlStr(String xmlStr) {
         if (StringUtils.isEmpty(xmlStr)) {
-            LogContext.instance().error("XMLÄÚÈİÎª¿Õ");
+            LogContext.instance().error("XMLå†…å®¹ä¸ºç©º");
             return null;
         }
         Document document = null;
         try {
             document = DocumentHelper.parseText(xmlStr);
         } catch (Exception e) {
-            LogContext.instance().error(e, "¸ù¾İXMLÄÚÈİ»ñÈ¡DOC¶ÔÏóÊ§°Ü");
+            LogContext.instance().error(e, "æ ¹æ®XMLå†…å®¹è·å–DOCå¯¹è±¡å¤±è´¥");
         }
         return document;
     }
@@ -124,7 +124,7 @@ public class XmlUtil {
     public static String getNodeTextByXPath(Document document, String xPath) {
         String value = "";
         if (document == null || StringUtils.isEmpty(xPath)) {
-            LogContext.instance().error("documentÎª¿Õ»òXPATHÎª¿Õ");
+            LogContext.instance().error("documentä¸ºç©ºæˆ–XPATHä¸ºç©º");
             return value;
         }
         try {
@@ -133,7 +133,7 @@ public class XmlUtil {
                 value = element.getTextTrim();
             }
         } catch (Exception e) {
-            LogContext.instance().error(e, "¸ù¾İXPATH»ñÈ¡½ÚµãÄÚÈİÊ§°Ü");
+            LogContext.instance().error(e, "æ ¹æ®XPATHè·å–èŠ‚ç‚¹å†…å®¹å¤±è´¥");
         }
         return value;
     }
@@ -143,7 +143,7 @@ public class XmlUtil {
             String xmlStr = getByStream(request.getInputStream());
             return getMapFromXmlStr4OneLevel(xmlStr);
         } catch (Exception e) {
-            LogContext.instance().error(e, "¸ù¾İÇëÇóÁ÷»ñÈ¡XML MAPÊ§°Ü");
+            LogContext.instance().error(e, "æ ¹æ®è¯·æ±‚æµè·å–XML MAPå¤±è´¥");
         }
         return null;
     }
@@ -158,13 +158,13 @@ public class XmlUtil {
                 result.append(line);
             }
         } catch (Exception e) {
-            LogContext.instance().error(e, "¸ù¾İÁ÷¶ÁÈ¡XML×Ö·û´®´íÎó");
+            LogContext.instance().error(e, "æ ¹æ®æµè¯»å–XMLå­—ç¬¦ä¸²é”™è¯¯");
         } finally {
             if (bufferedReader != null)
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {
-                    LogContext.instance().error(e, "¸ù¾İÁ÷¶ÁÈ¡XML×Ö·û´®´íÎó");
+                    LogContext.instance().error(e, "æ ¹æ®æµè¯»å–XMLå­—ç¬¦ä¸²é”™è¯¯");
                 }
         }
         return result.toString();

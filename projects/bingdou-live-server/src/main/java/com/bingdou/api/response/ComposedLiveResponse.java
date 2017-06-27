@@ -94,6 +94,8 @@ public class ComposedLiveResponse {
     @SerializedName("lock")
     private Boolean lock;
 
+    @SerializedName("income")
+    private Integer income;
 
     public UserResponse getUserResponse() {
         return userResponse;
@@ -312,6 +314,14 @@ public class ComposedLiveResponse {
         this.description = description;
     }
 
+    public Integer getIncome() {
+        return income;
+    }
+
+    public void setIncome(Integer income) {
+        this.income = income;
+    }
+
     public void parseFromLive(Live live){
         setId(live.getId());
         setPlayUrl(live.getPullStream());
@@ -346,5 +356,6 @@ public class ComposedLiveResponse {
         setAudienceCount(live.getAudienceCount());
         setPlaybackCount(live.getViewCount());
         setShareCount(live.getShareCount());
+        setIncome(live.getIncome());
     }
 }

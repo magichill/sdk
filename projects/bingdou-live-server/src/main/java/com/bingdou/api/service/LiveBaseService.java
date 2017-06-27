@@ -45,6 +45,16 @@ public abstract class LiveBaseService extends BaseService {
         return liveDao.getLiveList(status,userId,start,limit,timestamp);
     }
 
+    public List<Live> getLiveIncomeList(String userId,int start,int limit){
+        LogContext.instance().info("获取直播收入列表数据");
+        return liveDao.getLiveIncomeList(userId,start,limit);
+    }
+
+    public List<Live> getBoughtLiveList(String userId,int start,int limit){
+        LogContext.instance().info("获取购买的视频列表数据");
+        return liveDao.getBoughtLiveList(userId,start,limit);
+    }
+
     public List<Live> getFocusLiveList(Integer userId,int start,int limit,String timestamp){
         LogContext.instance().info("获取用户关注的主播直播数据");
         return liveDao.getFocusLiveList(userId,start,limit,timestamp);

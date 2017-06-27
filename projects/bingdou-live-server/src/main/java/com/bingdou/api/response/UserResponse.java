@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 public class UserResponse {
 
     @SerializedName("id")
-    private int id;
+    private String id;
     @SerializedName("nick_name")
     private String nickName;
     @SerializedName("gender")
@@ -28,12 +28,12 @@ public class UserResponse {
     @SerializedName("following_status")
     private int followingStatus;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id = String.valueOf(100000+id);
     }
 
     public String getNickName() {

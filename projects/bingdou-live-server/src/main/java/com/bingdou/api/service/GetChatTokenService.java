@@ -1,6 +1,7 @@
 package com.bingdou.api.service;
 
 import com.bingdou.api.constant.ChatConstant;
+import com.bingdou.api.constant.Constant;
 import com.bingdou.api.request.GetChatTokenRequest;
 import com.bingdou.core.cache.ICloudTokenCacheManager;
 import com.bingdou.core.helper.BaseRequest;
@@ -73,7 +74,7 @@ public class GetChatTokenService extends LiveBaseService implements IMethodServi
         }
         TokenResult cachToken = cloudTokenCacheManager.getCloudToken(user.getId());
         if(cachToken == null) {
-            RongCloud rongCloud = RongCloud.getInstance(ChatConstant.APP_KEY, ChatConstant.APP_SECRET);
+            RongCloud rongCloud = RongCloud.getInstance(Constant.APP_KEY, Constant.APP_SECRET);
             TokenResult userGetTokenResult = rongCloud.chatUser.getToken("userId" + user.getId(), user.getLoginName(), StringUtils.isEmpty(user.getAvatar())?"http://o8ov5bkvs.bkt.clouddn.com/1159184461660189":user.getAvatar());
             if (userGetTokenResult.getCode() == 200) {
                 LogContext.instance().info("获取用户聊天室token成功");

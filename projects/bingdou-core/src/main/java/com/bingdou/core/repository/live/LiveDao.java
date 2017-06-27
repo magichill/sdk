@@ -38,6 +38,14 @@ public class LiveDao {
         return liveMapper.getLiveList(status,userId,start,limit,timestamp);
     }
 
+    public List<Live> getLiveIncomeList(String userId,int start,int limit){
+        return liveMapper.getLiveIncomeList(userId,start,limit);
+    }
+
+    public List<Live> getBoughtLiveList(String userId,int start,int limit){
+        return liveMapper.getBoughtLiveList(userId,start,limit);
+    }
+
     public List<Live> getFocusLiveList(Integer userId,int start,int limit,String timestamp){
         return liveMapper.getFocusLiveListByUserId(userId,start,limit,timestamp);
     }

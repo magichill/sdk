@@ -59,6 +59,8 @@ public class Live {
     private Integer viewCount =0;
     private Integer shareCount =0;
 
+    private int income;
+
     public int getId() {
         return id;
     }
@@ -265,6 +267,14 @@ public class Live {
 
     public void setShareCount(Integer shareCount) {
         this.shareCount = shareCount;
+    }
+
+    public int getIncome() {
+        return income;
+    }
+
+    public void setIncome(int income) {
+        this.income = income;
     }
 
     /**

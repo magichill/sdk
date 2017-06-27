@@ -15,7 +15,9 @@ dependencies {
             libraries.'dom4j',
             libraries.'javamail',
             libraries.'esapi',
-            libraries.'jaxen'
+            libraries.'jaxen',
+            libraries.'commons-fileupload',
+            libraries.'aliyun-sdk-oss'
     )
 
 }

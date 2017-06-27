@@ -1,5 +1,6 @@
 package com.bingdou.core.service.user;
 
+import com.bingdou.core.constants.SendSmsConstant;
 import com.bingdou.core.helper.LsmSmsResponse;
 import com.bingdou.core.model.SendCodeType;
 import com.bingdou.core.model.SmsSendRecord;
@@ -31,18 +32,17 @@ public class SmsSendService {
     /**
      * 短信通道后缀(签名)
      */
-    private static final String SMS_SIGN = "【冰豆直播】";
+    private static final String SMS_SIGN = SendSmsConstant.SMS_SIGN;
 
     /**
      * luosimao发送短信接口URL
      */
-    private static final String LUOSIMAO_SEND_SMS_URL = "http://sms-api.luosimao.com/v1/send.json";
+    private static final String LUOSIMAO_SEND_SMS_URL = SendSmsConstant.LUOSIMAO_SEND_SMS_URL;
 
     /**
      * luosimao auth key
      */
-//    private static final String LUOSIMAO_AUTH_KEY = "key-d609b769db914a4d959bae3414ed1f7X";
-    private static final String LUOSIMAO_AUTH_KEY = "key-b3310832e3b2c4201508e83057eefa49";
+    private static final String LUOSIMAO_AUTH_KEY = SendSmsConstant.LUOSIMAO_AUTH_KEY;
 
     @Autowired
     private SmsSendRecordDao smsSendRecordDao;

@@ -74,7 +74,7 @@
         <constructor-arg index="1" value="${redis.host}"/>
         <constructor-arg index="2" value="${redis.port}"/>
         <constructor-arg index="3" value="${redis.timeout}"/>
-        <constructor-arg index="4" value="${redis.password}"/>
+        <!--<constructor-arg index="4" value="${redis.password}"/>-->
     </bean>
 
 </beans>

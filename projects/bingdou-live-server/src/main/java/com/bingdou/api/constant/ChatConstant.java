@@ -12,17 +12,17 @@ import java.util.Properties;
 public class ChatConstant {
 
 
-    public static final String APP_KEY;
-    public static final String APP_SECRET;
-
-    static {
-        Properties prop = new Properties();
-        try {
-            prop = PropertiesLoaderUtils.loadAllProperties("live.properties");
-        } catch (IOException e) {
-            LogContext.instance().error(e, "初始化直播数据错误");
-        }
-        APP_KEY = prop.getProperty("chat.app.key");
-        APP_SECRET = prop.getProperty("chat.app.secret");
-    }
+//    public static final String APP_KEY;
+//    public static final String APP_SECRET;
+//
+//    static {
+//        Properties prop = new Properties();
+//        try {
+//            prop = PropertiesLoaderUtils.loadAllProperties("live.properties");
+//        } catch (IOException e) {
+//            LogContext.instance().error(e, "初始化直播数据错误");
+//        }
+//        APP_KEY = prop.getProperty("chat.app.key");
+//        APP_SECRET = prop.getProperty("chat.app.secret");
+//    }
 }

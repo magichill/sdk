@@ -74,7 +74,7 @@
         ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,lt.id as tid,lt.title,
         lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
         li.price,li.live_type,cr.audience_count+ cr.add_audience as audience_total_count,
-        re.enter_count as view_count,sr.share_count as share_count
+        re.enter_count+cr.view_count as view_count,sr.share_count as share_count
         FROM ${liveDB}.lc_live_index li
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
         LEFT JOIN ${liveDB}.lc_chatroom_record cr ON cr.live_id = li.id
@@ -220,7 +220,7 @@
           lt.tag_pic,lt.tag_type,li.start_time,li.end_time,
           ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,
           cr.audience_count+ cr.add_audience as audience_total_count,
-          re.enter_count as view_count,sr.share_count as share_count
+          re.enter_count + cr.view_count  as view_count,sr.share_count as share_count
         FROM ${liveDB}.lc_live_index li
         JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
         JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
@@ -232,6 +232,46 @@
         WHERE li.tags=#{tagId} and li.status!=-1
         order by li.status,li.create_time desc limit #{start},#{limit}
         ]]>
+    </select>
+
+
+    <select id="getBoughtLiveList" parameterType="java.util.Map" resultMap="liveDetail">
+        SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.h5_url,li.mid,
+        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,lt.id as tid,lt.title,
+        lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
+        li.price,li.live_type,cr.audience_count+ cr.add_audience as audience_total_count,
+        re.enter_count+cr.view_count as view_count,sr.share_count as share_count
+        FROM ${liveDB}.lc_live_index li
+        JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
+        LEFT JOIN ${liveDB}.lc_chatroom_record cr ON cr.live_id = li.id
+        LEFT JOIN (select live_id,sum(enter_count) as enter_count from ${liveDB}.lc_report_entry group by live_id)
+        re ON re.live_id = li.id
+        LEFT JOIN (select live_id,sum(share_count) as share_count from ${liveDB}.lc_share_record where share_type=2 group by live_id)
+        sr on sr.live_id = li.id
+        LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
+        LEFT JOIN ${liveDB}.lc_consume_record lcr on lcr.live_id = li.id
+        WHERE li.status != -1 and lcr.mid=#{userId}
+        order by li.status,li.create_time desc limit #{start},#{limit}
+    </select>
+
+    <select id="getLiveIncomeList" parameterType="java.util.Map" resultMap="liveDetail">
+        SELECT li.id,li.live_picture,li.live_title,li.push_stream,li.pull_stream,li.replay_url,li.h5_url,li.mid,
+        ml.avatar,ml.signature,ml.gender,ml.nickname,ml.cpid,li.status,li.orientation,lt.id as tid,lt.title,
+        lt.tag_pic,lt.tag_type,li.start_time,li.end_time,li.create_time,li.update_time,li.password,li.reward_percent,
+        li.price,li.live_type,cr.audience_count+ cr.add_audience as audience_total_count,
+        re.enter_count+cr.view_count as view_count,sr.share_count as share_count,lcr.income as income
+        FROM ${liveDB}.lc_live_index li
+        JOIN ${userDB}.mc_member_index ml ON li.mid = ml.id
+        LEFT JOIN ${liveDB}.lc_chatroom_record cr ON cr.live_id = li.id
+        LEFT JOIN (select live_id,sum(enter_count) as enter_count from ${liveDB}.lc_report_entry group by live_id)
+        re ON re.live_id = li.id
+        LEFT JOIN (select live_id,sum(share_count) as share_count from ${liveDB}.lc_share_record where share_type=2 group by live_id)
+        sr on sr.live_id = li.id
+        LEFT JOIN ${liveDB}.lc_video_tag lt on li.tags = lt.id
+        LEFT JOIN (select live_id,sum(price) as income from ${liveDB}.lc_consume_record group by live_id)
+        lcr on lcr.live_id = li.id
+        WHERE li.status != -1 and li.mid=#{userId}
+        order by li.status,li.create_time desc limit #{start},#{limit}
     </select>
 
     <resultMap id="liveDetail" type="com.bingdou.core.model.live.Live">
@@ -258,6 +298,7 @@
         <result property="audienceCount" column="audience_total_count"/>
         <result property="viewCount" column="view_count"/>
         <result property="shareCount" column="share_count"/>
+        <result property="income" column="income"/>
         <association property="user" javaType="com.bingdou.core.model.User">
             <id property="id" column="mid"/>
             <result property="gender" column="gender"/>

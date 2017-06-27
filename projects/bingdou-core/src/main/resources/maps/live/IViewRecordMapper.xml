@@ -15,14 +15,14 @@
         <![CDATA[
           INSERT INTO ${liveDB}.lc_chatroom_record
           (live_id,audience_count,view_count,add_audience)
-          VALUE(#{liveId},#{audienceCount},#{viewCount},0);
+          VALUE(#{liveId},#{audienceCount},0,0);
         ]]>
     </insert>
 
     <update id="updateReportChatroom" parameterType="com.bingdou.core.model.live.ReportChatroom">
         <![CDATA[
         update ${liveDB}.lc_chatroom_record
-        set audience_count = #{audienceCount},view_count=#{viewCount},
+        set audience_count = #{audienceCount}
             add_audience=#{addAudience}
         where id=#{id}
         ]]>

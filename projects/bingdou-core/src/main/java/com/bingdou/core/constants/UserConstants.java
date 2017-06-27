@@ -11,6 +11,11 @@ public class UserConstants {
      * VIP最高等级
      */
     public static final int TOP_VIP_LEVEL_ID = 12;
+
+    /**
+     * 经验等级
+     */
+    public static final int TOP_EXP_LEVEL_ID = 200;
     /**
      * TOKEN过期时间7天
      */

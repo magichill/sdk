@@ -12,7 +12,7 @@ public class UserExpGrade {
     /**
      * 用户当前经验
      */
-    private Long expValue = 0l;
+    private Integer expValue = 0;
     /**
      * 用户当前实际的经验等级
      */
@@ -20,15 +20,15 @@ public class UserExpGrade {
     /**
      * 用户当前应对应的经验等级总共需要的经验
      */
-    private Long expAmount = 0l;
+    private Integer expAmount = 0;
     /**
      * 下一等级(针对expAmount)总共需要的经验
      */
-    private Long nextLevelExpAmount = 0l;
+    private Integer nextLevelExpAmount = 0;
     /**
      * 下一等级(针对expAmount)还需要的经验
      */
-    private Long nextLevelNeedExpAmount = 0l;
+    private Integer nextLevelNeedExpAmount = 0;
 
     /**
      * 是否是新的VIP用户
@@ -45,35 +45,35 @@ public class UserExpGrade {
         this.userLevelId = userLevelId;
     }
 
-    public Long getExpValue() {
+    public Integer getExpValue() {
         return expValue;
     }
 
-    public void setExpValue(Long expValue) {
+    public void setExpValue(Integer expValue) {
         this.expValue = expValue;
     }
 
-    public Long getExpAmount() {
+    public Integer getExpAmount() {
         return expAmount;
     }
 
-    public void setExpAmount(Long expAmount) {
+    public void setExpAmount(Integer expAmount) {
         this.expAmount = expAmount;
     }
 
-    public Long getNextLevelExpAmount() {
+    public Integer getNextLevelExpAmount() {
         return nextLevelExpAmount;
     }
 
-    public void setNextLevelExpAmount(Long nextLevelExpAmount) {
+    public void setNextLevelExpAmount(Integer nextLevelExpAmount) {
         this.nextLevelExpAmount = nextLevelExpAmount;
     }
 
-    public Long getNextLevelNeedExpAmount() {
+    public Integer getNextLevelNeedExpAmount() {
         return nextLevelNeedExpAmount;
     }
 
-    public void setNextLevelNeedExpAmount(Long nextLevelNeedExpAmount) {
+    public void setNextLevelNeedExpAmount(Integer nextLevelNeedExpAmount) {
         this.nextLevelNeedExpAmount = nextLevelNeedExpAmount;
     }
 

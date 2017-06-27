@@ -26,6 +26,8 @@ public interface ILiveMapper {
 
     Integer getLiveIdByMid(@Param("liveId") Integer liveId,@Param("mid") Integer mid);
     List<Live> getLiveList(@Param("status") Integer status,@Param("userId") String userId,@Param("start") int start, @Param("limit") int limit,@Param("timestamp") String timestamp);
+    List<Live> getLiveIncomeList(@Param("userId") String userId,@Param("start") int start, @Param("limit") int limit);
+    List<Live> getBoughtLiveList(@Param("userId") String userId,@Param("start") int start, @Param("limit") int limit);
     List<Live> getFocusLiveListByUserId(@Param("userId") Integer userId,@Param("start") int start, @Param("limit") int limit,@Param("timestamp") String timestamp);
     List<Live> getOnlineLiveList(@Param("start") int start, @Param("limit") int limit);
     List<Live> getRecordLiveList(@Param("start") int start, @Param("limit") int limit);

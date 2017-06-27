@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface IExpGradeMapper {
 
-    Float getExpAmountByLevelId(int levelId);
+    Integer getExpAmountByLevelId(int levelId);
 
     UserExpGrade getUserExpGradeInfo(int userId);
 

@@ -58,6 +58,10 @@
                 <ref local="removeLiveService" />
                 <ref local="modifyVideoTypeService" />
                 <ref local="getBannerListService" />
+                <ref local="allowUserChatService" />
+                <ref local="banUserChatService" />
+                <ref local="getVideoIncomeService" />
+                <ref local="buyVideoListService" />
             </list>
         </property>
     </bean>

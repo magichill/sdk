@@ -2,6 +2,7 @@ package com.bingdou.api.service;
 
 import com.bingdou.api.constant.CdnType;
 import com.bingdou.api.constant.ChatConstant;
+import com.bingdou.api.constant.Constant;
 import com.bingdou.api.request.CreateLiveRequest;
 import com.bingdou.api.response.CreateLiveResponse;
 import com.bingdou.core.cache.ICdnConfigManager;
@@ -90,7 +91,7 @@ public class CreateLiveService extends LiveBaseService implements IMethodService
         if(createSuccess) {
             LogContext.instance().info("创建直播成功");
             LogContext.instance().info("创建融云聊天室");
-            RongCloud rongCloud = RongCloud.getInstance(ChatConstant.APP_KEY, ChatConstant.APP_SECRET);
+            RongCloud rongCloud = RongCloud.getInstance(Constant.APP_KEY, Constant.APP_SECRET);
 
             Live live = getLiveInfoByStreamName(createLiveRequest.getStreamId());
             ChatRoomInfo[] chatroomCreateChatRoomInfo = {new ChatRoomInfo("chatroom"+live.getId(),live.getLiveTitle() )};
