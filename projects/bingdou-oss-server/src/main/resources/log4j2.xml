@@ -6,7 +6,7 @@
         <Property name="bizLoggerLevel">INFO</Property>
         <Property name="exceptionLoggerLevel">ERROR</Property>
         <!-- 日志根目录 -->
-        <Property name="baseLogPath">/tmp/oss-server</Property>
+        <Property name="baseLogPath">/opt/oss-server</Property>
         <Property name="dataLogPath">${baseLogPath}/data</Property>
         <Property name="commonLogPath">${baseLogPath}/common</Property>
         <!-- 日志格式 -->
